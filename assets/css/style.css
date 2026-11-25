@@ -601,6 +601,112 @@ button:focus-visible {
 }
 
 /* ==========================================================================
+   工具子页面通用框架规范 (Tool Subpage Header & Base Layout)
+   ========================================================================== */
+.tool-header {
+  padding: 32px 0 20px;
+}
+
+.back-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.back-link svg {
+  display: inline-block !important;
+  flex-shrink: 0;
+  transition: transform var(--transition-fast);
+}
+
+.back-link:hover {
+  color: var(--primary);
+}
+
+.back-link:hover svg {
+  transform: translateX(-3px);
+}
+
+.tool-page-title {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.tool-page-desc {
+  font-size: 0.95rem;
+  color: var(--text-regular);
+  max-width: 760px;
+  line-height: 1.6;
+}
+
+/* 统一 SEO 指南文章样式 */
+.guide-article {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  margin-bottom: 40px;
+}
+
+.guide-article h2 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.guide-article h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 20px 0 10px;
+}
+
+.guide-article p {
+  font-size: 0.9rem;
+  color: var(--text-regular);
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+
+.guide-article ul, .guide-article ol {
+  padding-left: 20px;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+  color: var(--text-regular);
+  line-height: 1.7;
+}
+
+.guide-article li {
+  margin-bottom: 6px;
+}
+
+.guide-article code {
+  background: var(--bg-surface-alt);
+  border: 1px solid var(--border-light);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.85em;
+  color: var(--primary);
+  font-family: Menlo, Monaco, Consolas, monospace;
+}
+
+/* ==========================================================================
    英雄区 (Hero & Brand Manifesto)
    ========================================================================== */
 .hero-section {
