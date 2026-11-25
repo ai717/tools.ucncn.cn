@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>流媒体音乐播放器 - 在线 HLS/M3U8 音频与网络电台播放器 | 不烧心工具</title>
+  <meta name="description" content="免费绿色的在线 HLS (.m3u8) 流媒体音乐与音视频播放器。支持网络电台、自适应码率、音频声波可视化律动与流媒体健康诊断。100% 浏览器客户端直连播放，保护隐私绝不中转。">
+  <meta name="keywords" content="流媒体音乐播放器,m3u8播放器,hls播放器,在线音乐播放,网络电台在线收听,音频可视化,hls.js播放器,在线流媒体测试">
+  <link rel="canonical" href="https://tools.ucncn.cn/streaming-music-player.html">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23386641'/%3E%3Cpath d='M30 70 C30 42 50 30 70 30 C70 58 50 70 30 70 Z' fill='%23ffffff'/%3E%3Cpath d='M30 70 L52 48' stroke='%23386641' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='68' cy='32' r='5' fill='%23dbebe0'/%3E%3C/svg%3E">
+
+  <!-- 公共样式基座 -->
+  <link rel="stylesheet" href="assets/css/style.css?v=20261125_2">
+
+  <style>
+    /* 工具页面顶部返回与标题 */
+    .tool-header {
+      padding: 32px 0 20px;
+    }
+    .back-link {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      text-decoration: none;
+      transition: color var(--transition-fast);
+    }
+    .back-link svg {
+      display: inline-block !important;
+      flex-shrink: 0;
+      transition: transform var(--transition-fast);
+    }
+    .back-link:hover {
+      color: var(--primary);
+    }
+    .back-link:hover svg {
+      transform: translateX(-3px);
+    }
+    .tool-page-title {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .tool-page-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 760px;
+      line-height: 1.6;
+    }
+
+    /* 播放器主体卡片 */
+    .player-workspace {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-top: 20px;
+    }
+
+    .player-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* URL 输入与操作栏 */
+    .input-bar-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .stream-input {
+      flex: 1;
+      min-width: 280px;
+      height: 46px;
+      padding: 0 16px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      background: var(--bg-main);
+      color: var(--text-main);
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .stream-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    .btn-play-trigger {
+      height: 46px;
+      padding: 0 24px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: var(--radius-md);
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .btn-play-trigger:hover {
+      background: var(--primary-dark);
+    }
+
+    /* 预设与快捷示例 */
+    .preset-chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+      align-items: center;
+    }
+
+    .preset-chip {
+      font-size: 0.82rem;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .preset-chip:hover {
+      background: #fff;
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* 视听舞台容器 */
+    .stage-container {
+      margin-top: 24px;
+      background: #0f172a;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      position: relative;
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      box-shadow: var(--shadow-md);
+    }
+
+    /* 视频元素 */
+    #mediaPlayer {
+      width: 100%;
+      height: 100%;
+      max-height: 480px;
+      display: none;
+      background: #000;
+    }
+
+    /* 音频可视化舞台 */
+    .audio-stage {
+      width: 100%;
+      height: 320px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+    }
+
+    .vinyl-wrapper {
+      position: relative;
+      width: 130px;
+      height: 130px;
+      margin-bottom: 20px;
+    }
+
+    .vinyl-disc {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: repeating-radial-gradient(circle, #1e293b, #1e293b 2px, #0f172a 3px, #0f172a 5px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.5s ease;
+    }
+
+    .vinyl-disc.spinning {
+      animation: spinVinyl 12s linear infinite;
+    }
+
+    .vinyl-center {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: 3px solid #334155;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1.2rem;
+    }
+
+    @keyframes spinVinyl {
+      100% { transform: rotate(360deg); }
+    }
+
+    /* 频谱 Canvas */
+    #visualizerCanvas {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 110px;
+      pointer-events: none;
+    }
+
+    /* 播放器控制条 */
+    .player-controls-bar {
+      margin-top: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      padding: 14px 18px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+    }
+
+    .controls-left, .controls-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-circle-action {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border-color);
+      background: #fff;
+      color: var(--text-main);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .btn-circle-action:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: scale(1.05);
+    }
+
+    .btn-play-main {
+      width: 46px;
+      height: 46px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      box-shadow: 0 2px 8px rgba(56, 102, 65, 0.3);
+    }
+
+    .btn-play-main:hover {
+      background: var(--primary-dark);
+      color: #fff;
+    }
+
+    .volume-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+    }
+
+    .volume-slider {
+      width: 80px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    .speed-select {
+      height: 34px;
+      padding: 0 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background: #fff;
+      font-size: 0.85rem;
+      color: var(--text-main);
+      cursor: pointer;
+    }
+
+    .mode-toggle-btn {
+      font-size: 0.82rem;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background: #fff;
+      color: var(--text-main);
+      cursor: pointer;
+      font-weight: 500;
+      transition: all var(--transition-fast);
+    }
+
+    .mode-toggle-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* 状态与诊断卡片 */
+    .diagnostics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .diag-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .diag-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .diag-value {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #94a3b8;
+      margin-right: 6px;
+    }
+
+    .status-dot.active {
+      background: #22c55e;
+    }
+
+    .status-dot.loading {
+      background: #eab308;
+    }
+
+    .status-dot.error {
+      background: #ef4444;
+    }
+
+    /* 常见指南 */
+    .guide-article {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      margin-top: 36px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .guide-article h2 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 20px;
+      letter-spacing: -0.01em;
+    }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .faq-item {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px;
+    }
+
+    .faq-item h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+
+    .faq-item p {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      margin-bottom: 0;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 640px) {
+      .player-card {
+        padding: 16px;
+      }
+      .stage-container {
+        min-height: 240px;
+      }
+      .audio-stage {
+        height: 240px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 统一顶部导航 -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="brand">
+          <span class="brand-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+            </svg>
+          </span>
+          <span class="brand-text">tools.ucncn.cn</span>
+        </a>
+        <span class="site-slogan">用着不烧心的免费在线工具箱。免费、免登录、不上传、无广告。</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+      <!-- 统一面包屑导航 -->
+      <div class="tool-header">
+        <a href="index.html" class="back-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          返回工具大厅
+        </a>
+        <h1 class="tool-page-title">
+          <span>📻 流媒体音乐播放器</span>
+          <span style="font-size: 0.8rem; font-weight: 500; background: var(--bg-subtle); padding: 3px 10px; border-radius: 999px; border: 1px solid var(--border-color); color: var(--text-muted);">
+            HLS · M3U8 · 网络电台
+          </span>
+        </h1>
+        <p class="tool-page-desc">
+          纯浏览器客户端运行的在线 HLS (.m3u8) 与网络音频流播放器。支持流媒体健康检测、自适应码率平滑切换、实时声波频谱可视化、倍速调节与画中画模式。零云端中转，隐私安全无痕。
+        </p>
+      </div>
+
+      <!-- 播放器主卡片 -->
+      <div class="player-workspace">
+        <div class="player-card">
+          <!-- 流地址输入栏 -->
+          <div class="input-bar-group">
+            <input type="text" id="streamUrl" class="stream-input" placeholder="输入或粘贴 HLS (.m3u8) / MP3 / AAC / 网络电台流媒体 URL..." autocomplete="off" spellcheck="false" value="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8">
+            <button id="btnPlayStream" class="btn-play-trigger">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              <span>开始播放</span>
+            </button>
+          </div>
+
+          <!-- 经典测试流预设 -->
+          <div class="preset-chips-row">
+            <span style="font-size: 0.8rem; color: var(--text-muted);">快速测试源：</span>
+            <button class="preset-chip" data-url="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" data-mode="video">
+              🎬 Mux 演示音视频流 (.m3u8)
+            </button>
+            <button class="preset-chip" data-url="https://c13.radioboss.fm:18172/stream" data-mode="audio">
+              ☕ 爵士古典轻音乐 (MP3 Stream)
+            </button>
+            <button class="preset-chip" data-url="https://stream.zeno.fm/f3wvbbqmdg8uv" data-mode="audio">
+              🎧 Lo-Fi 治愈慢节奏 (AAC Stream)
+            </button>
+            <button class="preset-chip" data-url="https://icecast.vrt.be/klara-high.mp3" data-mode="audio">
+              📻 欧洲古典音乐广播 (Klara Radio)
+            </button>
+          </div>
+
+          <!-- 播放舞台区域 -->
+          <div class="stage-container" id="stageContainer">
+            <!-- 视频模式渲染节点 -->
+            <video id="mediaPlayer" playsinline crossorigin="anonymous"></video>
+
+            <!-- 音乐模式声波渲染节点 -->
+            <div class="audio-stage" id="audioStage">
+              <div class="vinyl-wrapper">
+                <div class="vinyl-disc" id="vinylDisc">
+                  <div class="vinyl-center">🎵</div>
+                </div>
+              </div>
+              <div style="font-size: 0.95rem; font-weight: 600; color: #f8fafc; z-index: 2;" id="stageTitle">
+                等待加载流媒体...
+              </div>
+              <div style="font-size: 0.8rem; color: #94a3b8; margin-top: 4px; z-index: 2;" id="stageSubtitle">
+                点击“开始播放”启动流媒体解码
+              </div>
+              <!-- 动态音频频谱 -->
+              <canvas id="visualizerCanvas"></canvas>
+            </div>
+          </div>
+
+          <!-- 播放控制台 -->
+          <div class="player-controls-bar">
+            <div class="controls-left">
+              <button class="btn-circle-action btn-play-main" id="btnPlayPause" title="播放 / 暂停">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" id="playIcon"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              </button>
+
+              <div class="volume-group">
+                <button class="btn-circle-action" id="btnMute" title="静音切换" style="width: 34px; height: 34px;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="volumeIcon"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                </button>
+                <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.05" value="0.8">
+              </div>
+
+              <select id="playbackSpeed" class="speed-select" title="播放倍速">
+                <option value="0.5">0.5x</option>
+                <option value="0.75">0.75x</option>
+                <option value="1.0" selected>1.0x 正常</option>
+                <option value="1.25">1.25x</option>
+                <option value="1.5">1.5x</option>
+                <option value="2.0">2.0x</option>
+              </select>
+            </div>
+
+            <div class="controls-right">
+              <button class="mode-toggle-btn" id="btnToggleDisplay" title="切换音乐频谱舞台与视频画面">
+                📺 切换视频/音乐画面
+              </button>
+              <button class="mode-toggle-btn" id="btnPiP" title="画中画模式">
+                🖼️ 画中画
+              </button>
+              <button class="mode-toggle-btn" id="btnFullscreen" title="全屏视听">
+                ⛶ 全屏
+              </button>
+            </div>
+          </div>
+
+          <!-- 流媒体工程师健康诊断信息板 -->
+          <div class="diagnostics-grid">
+            <div class="diag-card">
+              <span class="diag-label">流媒体连接状态</span>
+              <span class="diag-value" id="diagStatus">
+                <span class="status-dot" id="statusDot"></span>空闲就绪
+              </span>
+            </div>
+            <div class="diag-card">
+              <span class="diag-label">解码驱动引擎</span>
+              <span class="diag-value" id="diagEngine">检测中...</span>
+            </div>
+            <div class="diag-card">
+              <span class="diag-label">当前画质与码率</span>
+              <span class="diag-value" id="diagBitrate">--</span>
+            </div>
+            <div class="diag-card">
+              <span class="diag-label">缓冲延迟 / 类型</span>
+              <span class="diag-value" id="diagBuffer">--</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 科普与常见问题 -->
+      <article class="guide-article">
+        <h2>📖 什么是 HLS 流媒体播放器？技术原理与使用解答</h2>
+        <p>
+          <strong>HLS (HTTP Live Streaming)</strong> 是现代互联网中最广泛应用的流媒体传输协议。它将音频和视频切分为连续的微小片段（<code>.ts</code> 或 <code>.m4s</code>），并通过索引列表文件（<code>.m3u8</code>）动态下发，支持自适应码率（ABR），使播放能够根据网络状况平滑切换高低清晰度。
+        </p>
+
+        <div class="faq-grid">
+          <div class="faq-item">
+            <h4>❓ 这个播放器可以收听网络电台和播放音乐吗？</h4>
+            <p>
+              完全可以。本播放器不仅支持普通的 MP3/AAC/FLAC 音频直链，更是专门针对 HLS 音频流（Audio-only m3u8）进行了优化。播放音频流时会自动开启沉浸式黑胶唱片与实时动态频谱律动仪。
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h4>❓ 遇到跨域报错（CORS Error）怎么办？</h4>
+            <p>
+              因为本工具采用 <strong>100% 浏览器客户端直连</strong> 确保用户的流地址不经过任何第三方服务器中转，若目标音频流的服务器未配置 <code>Access-Control-Allow-Origin: *</code> 响应头，现代浏览器出于安全策略可能会拦截请求。测试流媒体时，请确保提供方开启了 CORS。
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h4>❓ 会不会泄漏我输入的私密或付费测试流地址？</h4>
+            <p>
+              绝对不会。所有流请求均从您的电脑浏览器直接发往流媒体服务器，本站无任何后端服务，没有打点，不上传任何播放历史，确保您的私密流链接安全无虞。
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h4>❓ 支持在手机上播放吗？</h4>
+            <p>
+              全面支持。在 iPhone/iPad/Safari 上会自动唤醒系统原生硬件解码引擎；在 Chrome/Firefox/Edge 上则自动由轻量级 <code>hls.js</code> 核心接管，体验极速流畅。
+            </p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <!-- 统一纯净页脚 -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom" style="justify-content: center; text-align: center;">
+        <div class="footer-desc">
+          &copy; 2026 tools.ucncn.cn · 用着不烧心的免费在线工具箱。免费、免登录、不上传、无广告。
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 本地 HLS 解码引擎与公共交互脚本 -->
+  <script src="assets/js/hls.min.js"></script>
+  <script>
+    (function() {
+      // 节点引用
+      const videoEl = document.getElementById('mediaPlayer');
+      const streamInput = document.getElementById('streamUrl');
+      const btnPlayStream = document.getElementById('btnPlayStream');
+      const btnPlayPause = document.getElementById('btnPlayPause');
+      const playIcon = document.getElementById('playIcon');
+      const btnMute = document.getElementById('btnMute');
+      const volumeIcon = document.getElementById('volumeIcon');
+      const volumeSlider = document.getElementById('volumeSlider');
+      const playbackSpeed = document.getElementById('playbackSpeed');
+      const btnToggleDisplay = document.getElementById('btnToggleDisplay');
+      const btnPiP = document.getElementById('btnPiP');
+      const btnFullscreen = document.getElementById('btnFullscreen');
+      const stageContainer = document.getElementById('stageContainer');
+      const audioStage = document.getElementById('audioStage');
+      const vinylDisc = document.getElementById('vinylDisc');
+      const stageTitle = document.getElementById('stageTitle');
+      const stageSubtitle = document.getElementById('stageSubtitle');
+      const visualizerCanvas = document.getElementById('visualizerCanvas');
+      const canvasCtx = visualizerCanvas.getContext('2d');
+
+      const diagStatus = document.getElementById('diagStatus');
+      const statusDot = document.getElementById('statusDot');
+      const diagEngine = document.getElementById('diagEngine');
+      const diagBitrate = document.getElementById('diagBitrate');
+      const diagBuffer = document.getElementById('diagBuffer');
+
+      let hls = null;
+      let isVideoMode = false;
+      let audioCtx = null;
+      let analyser = null;
+      let animFrameId = null;
+
+      // 检测 HLS 支持能力
+      const isHlsSupported = typeof Hls !== 'undefined' && Hls.isSupported();
+      const isNativeHlsSupported = videoEl.canPlayType('application/vnd.apple.mpegurl');
+
+      if (isHlsSupported) {
+        diagEngine.textContent = 'hls.js 引擎 (自适应ABR)';
+      } else if (isNativeHlsSupported) {
+        diagEngine.textContent = '浏览器原生 HLS 解码';
+      } else {
+        diagEngine.textContent = '标准 HTML5 Media';
+      }
+
+      // 设置状态指示
+      function setStatus(text, type) {
+        statusDot.className = 'status-dot ' + (type || '');
+        diagStatus.innerHTML = `<span class="status-dot ${type || ''}"></span>${text}`;
+      }
+
+      // 初始化 Web Audio API 可视化 (仅在播放时运行，防止空闲CPU占用)
+      function initAudioVisualizer() {
+        if (audioCtx) return;
+        try {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          audioCtx = new AudioContext();
+          analyser = audioCtx.createAnalyser();
+          analyser.fftSize = 128;
+          const source = audioCtx.createMediaElementSource(videoEl);
+          source.connect(analyser);
+          analyser.connect(audioCtx.destination);
+        } catch (e) {
+          console.warn('AudioContext 初始化受限 (CORS或安全上下文限制):', e);
+        }
+      }
+
+      // 频谱绘制循环
+      function drawVisualizer() {
+        if (!analyser || videoEl.paused || isVideoMode) {
+          animFrameId = null;
+          return;
+        }
+
+        const bufferLength = analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+        analyser.getByteFrequencyData(dataArray);
+
+        const width = visualizerCanvas.width;
+        const height = visualizerCanvas.height;
+        canvasCtx.clearRect(0, 0, width, height);
+
+        const barWidth = (width / bufferLength) * 1.5;
+        let x = 0;
+
+        for (let i = 0; i < bufferLength; i++) {
+          const barHeight = (dataArray[i] / 255) * height * 0.85;
+
+          // 渐变莫兰迪森绿
+          const grad = canvasCtx.createLinearGradient(0, height, 0, height - barHeight);
+          grad.addColorStop(0, '#386641');
+          grad.addColorStop(1, '#a7c957');
+
+          canvasCtx.fillStyle = grad;
+          canvasCtx.fillRect(x, height - barHeight, barWidth - 2, barHeight);
+
+          x += barWidth;
+        }
+
+        animFrameId = requestAnimationFrame(drawVisualizer);
+      }
+
+      function startVisualizer() {
+        if (!animFrameId && !isVideoMode) {
+          animFrameId = requestAnimationFrame(drawVisualizer);
+        }
+      }
+
+      function stopVisualizer() {
+        if (animFrameId) {
+          cancelAnimationFrame(animFrameId);
+          animFrameId = null;
+        }
+        if (canvasCtx) {
+          canvasCtx.clearRect(0, 0, visualizerCanvas.width, visualizerCanvas.height);
+        }
+      }
+
+      // 画布大小自适应
+      function resizeCanvas() {
+        visualizerCanvas.width = audioStage.clientWidth || 600;
+        visualizerCanvas.height = 110;
+      }
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+
+      // 切换音乐与视频视听模式
+      function setDisplayMode(toVideo) {
+        isVideoMode = toVideo;
+        if (isVideoMode) {
+          videoEl.style.display = 'block';
+          audioStage.style.display = 'none';
+          btnToggleDisplay.textContent = '🎵 切换至音乐视听舞台';
+          stopVisualizer();
+        } else {
+          videoEl.style.display = 'none';
+          audioStage.style.display = 'flex';
+          btnToggleDisplay.textContent = '📺 切换至视频画面';
+          if (!videoEl.paused) startVisualizer();
+        }
+      }
+
+      btnToggleDisplay.addEventListener('click', () => {
+        setDisplayMode(!isVideoMode);
+      });
+
+      // 载入并播放流媒体
+      function loadAndPlay(url, preferMode) {
+        if (!url || !url.trim()) return;
+        url = url.trim();
+
+        setStatus('正在加载流并握手...', 'loading');
+        stageTitle.textContent = '正在连接流媒体...';
+        stageSubtitle.textContent = url;
+
+        // 停止之前的 HLS 实例
+        if (hls) {
+          hls.destroy();
+          hls = null;
+        }
+
+        const isM3U8 = url.includes('.m3u8') || url.includes('m3u');
+
+        if (preferMode) {
+          setDisplayMode(preferMode === 'video');
+        } else if (url.includes('.mp3') || url.includes('.aac') || url.includes('stream') || url.includes('radio')) {
+          setDisplayMode(false);
+        }
+
+        if (isM3U8 && isHlsSupported) {
+          hls = new Hls({
+            enableWorker: true,
+            lowLatencyMode: true
+          });
+
+          hls.loadSource(url);
+          hls.attachMedia(videoEl);
+
+          hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
+            setStatus('流解析成功，正在缓冲', 'active');
+            stageTitle.textContent = '流媒体已就绪 (HLS)';
+            diagBitrate.textContent = `${data.levels.length} 个自适应码率档位`;
+            videoEl.play().catch(e => {
+              setStatus('等待用户点击播放', '');
+            });
+          });
+
+          hls.on(Hls.Events.LEVEL_SWITCHED, (event, data) => {
+            const level = hls.levels[data.level];
+            if (level) {
+              const res = level.width ? `${level.width}x${level.height}` : '纯音频';
+              const kbps = Math.round(level.bitrate / 1000);
+              diagBitrate.textContent = `${res} (${kbps} kbps)`;
+            }
+          });
+
+          hls.on(Hls.Events.ERROR, (event, data) => {
+            if (data.fatal) {
+              switch (data.type) {
+                case Hls.ErrorTypes.NETWORK_ERROR:
+                  setStatus('网络连接中断或目标存在跨域限制(CORS)', 'error');
+                  stageTitle.textContent = '网络错误 / 跨域拦截 (CORS)';
+                  hls.startLoad();
+                  break;
+                case Hls.ErrorTypes.MEDIA_ERROR:
+                  setStatus('媒体格式解析异常，尝试恢复', 'error');
+                  hls.recoverMediaError();
+                  break;
+                default:
+                  setStatus('致命异常，无法解码此流', 'error');
+                  hls.destroy();
+                  break;
+              }
+            }
+          });
+
+        } else if (videoEl.canPlayType('application/vnd.apple.mpegurl') || !isM3U8) {
+          // 原生播放 (Safari HLS 或常规音频文件)
+          videoEl.src = url;
+          videoEl.load();
+          videoEl.play().catch(e => {
+            setStatus('等待用户触发播放', '');
+          });
+        }
+      }
+
+      // 媒体核心事件监听
+      videoEl.addEventListener('play', () => {
+        setStatus('正在稳定播放', 'active');
+        playIcon.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
+        vinylDisc.classList.add('spinning');
+        stageTitle.textContent = '正在播放流媒体音乐';
+
+        // 激活音频分析
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        } else {
+          initAudioVisualizer();
+        }
+        startVisualizer();
+      });
+
+      videoEl.addEventListener('pause', () => {
+        setStatus('已暂停', '');
+        playIcon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
+        vinylDisc.classList.remove('spinning');
+        stageTitle.textContent = '流媒体已暂停';
+        stopVisualizer();
+      });
+
+      videoEl.addEventListener('timeupdate', () => {
+        if (videoEl.buffered.length > 0) {
+          const bufferedEnd = videoEl.buffered.end(videoEl.buffered.length - 1);
+          const duration = videoEl.duration;
+          if (duration && !isNaN(duration) && duration !== Infinity) {
+            diagBuffer.textContent = `缓冲进度: ${Math.round((bufferedEnd / duration) * 100)}% (点播)`;
+          } else {
+            diagBuffer.textContent = '实时广播流 (Live Stream)';
+          }
+        }
+      });
+
+      videoEl.addEventListener('error', (e) => {
+        setStatus('媒体加载失败，请检查 URL 是否有效或跨域', 'error');
+        stageTitle.textContent = '播放加载失败';
+        stopVisualizer();
+      });
+
+      // 交互控制
+      btnPlayStream.addEventListener('click', () => {
+        loadAndPlay(streamInput.value);
+      });
+
+      btnPlayPause.addEventListener('click', () => {
+        if (videoEl.paused) {
+          if (!videoEl.src && !hls) {
+            loadAndPlay(streamInput.value);
+          } else {
+            videoEl.play();
+          }
+        } else {
+          videoEl.pause();
+        }
+      });
+
+      // 音量与静音
+      volumeSlider.addEventListener('input', () => {
+        videoEl.volume = parseFloat(volumeSlider.value);
+        videoEl.muted = (videoEl.volume === 0);
+        updateVolumeIcon();
+      });
+
+      btnMute.addEventListener('click', () => {
+        videoEl.muted = !videoEl.muted;
+        updateVolumeIcon();
+      });
+
+      function updateVolumeIcon() {
+        if (videoEl.muted || videoEl.volume === 0) {
+          volumeIcon.innerHTML = '<line x1="1" y1="1" x2="23" y2="23"></line><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>';
+        } else {
+          volumeIcon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>';
+        }
+      }
+
+      // 倍速
+      playbackSpeed.addEventListener('change', () => {
+        videoEl.playbackRate = parseFloat(playbackSpeed.value);
+      });
+
+      // 画中画
+      btnPiP.addEventListener('click', async () => {
+        try {
+          if (document.pictureInPictureElement) {
+            await document.exitPictureInPicture();
+          } else if (document.pictureInPictureEnabled && videoEl) {
+            await videoEl.requestPictureInPicture();
+          }
+        } catch (err) {
+          alert('当前浏览器环境不支持画中画');
+        }
+      });
+
+      // 全屏
+      btnFullscreen.addEventListener('click', () => {
+        if (!document.fullscreenElement) {
+          stageContainer.requestFullscreen().catch(err => {
+            alert('全屏请求失败');
+          });
+        } else {
+          document.exitFullscreen();
+        }
+      });
+
+      // 预设点击
+      document.querySelectorAll('.preset-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+          const url = chip.getAttribute('data-url');
+          const mode = chip.getAttribute('data-mode');
+          streamInput.value = url;
+          loadAndPlay(url, mode);
+        });
+      });
+
+      // 初始就绪状态
+      setStatus('等待输入并播放', '');
+    })();
+  </script>
+</body>
+</html>
