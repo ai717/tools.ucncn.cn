@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- Google 代码 (GTM-52RQ295V) -->
+  <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-52RQ295V"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  </script>
+  <!-- End Google 代码 -->
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>工作性价比计算器 — 这b班上得值不值？在线真实时薪与冤种指数测算 | 不烧心免费工具</title>
+  <meta name="description" content="免费在线工作性价比计算器（这b班上得值不值·测算版）。综合考量税后薪资、通勤耗时、带薪摸鱼时长、领导与同事内耗系数、工作环境，精准计算真实打工时薪与性价比指数。纯浏览器本地运算，敏感薪资数据不上云，支持一键生成社交打工诊断报告。">
+  <meta name="keywords" content="工作性价比计算器,这b班上得值不值,真实时薪计算器,打工性价比,时薪测算,职场内耗测试,冤种指数,摸鱼收益">
+  <meta name="author" content="不烧心免费工具 (tools.ucncn.cn)">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="theme-color" content="#386641">
+  <link rel="canonical" href="https://tools.ucncn.cn/job-worth.html">
+
+  <!-- 开放图谱标签 (Open Graph) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="工作性价比计算器 — 这b班上得值不值？在线真实时薪测算">
+  <meta property="og:description" content="免登录、真免费、数据绝不上云。综合薪水、通勤、摸鱼、领导同事傻逼系数，测算你的真实时薪与打工性价比。">
+  <meta property="og:url" content="https://tools.ucncn.cn/job-worth.html">
+  <meta property="og:site_name" content="不烧心免费工具">
+  <meta property="og:locale" content="zh_CN">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23386641'/%3E%3Cpath d='M30 70 C30 42 50 30 70 30 C70 58 50 70 30 70 Z' fill='%23ffffff'/%3E%3Cpath d='M30 70 L52 48' stroke='%23386641' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='68' cy='32' r='5' fill='%23dbebe0'/%3E%3C/svg%3E">
+
+  <!-- 公共样式基座 -->
+  <link rel="stylesheet" href="assets/css/style.css?v=20261125_1">
+
+  <style>
+    .calc-layout {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+    @media (max-width: 900px) {
+      .calc-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+    .panel-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+    .panel-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-regular);
+      margin-bottom: 6px;
+    }
+    .form-hint {
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+    .form-input, .form-select {
+      width: 100%;
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-regular);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      font-size: 0.9rem;
+      color: var(--text-main);
+      transition: all var(--transition-fast);
+    }
+    .form-input:focus, .form-select:focus {
+      background: #ffffff;
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(56, 102, 65, 0.12);
+    }
+    .preset-chips-row {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    /* 测算结果卡片 */
+    .result-badge-card {
+      background: linear-gradient(135deg, #f2f7f3 0%, #e6efe8 100%);
+      border: 1.5px solid var(--primary-subtle);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .worth-level {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin: 8px 0 4px;
+    }
+    .worth-score {
+      font-size: 2.8rem;
+      font-weight: 900;
+      line-height: 1;
+      font-family: Menlo, Monaco, Consolas, monospace;
+      color: var(--primary);
+      margin: 10px 0;
+    }
+    .worth-tagline {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-regular);
+    }
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .metric-box {
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      text-align: center;
+    }
+    .metric-box-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .metric-box-val {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-main);
+      font-family: monospace;
+    }
+    .comment-box {
+      background: #ffffff;
+      border: 1px dashed var(--border-regular);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--text-regular);
+      margin-bottom: 20px;
+    }
+    .poster-canvas {
+      display: none;
+    }
+  </style>
+
+  <!-- 结构化数据 (JSON-LD: WebApplication & FAQPage) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "工作性价比计算器 (Job Worth Calculator)",
+        "url": "https://tools.ucncn.cn/job-worth.html",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "All",
+        "inLanguage": "zh-CN",
+        "description": "纯浏览器本地运算的工作性价比与真实时薪测算工具。综合税后薪资、通勤时间、带薪摸鱼、领导同事内耗系数，测算打工性价比，一键导出诊断报告。",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "我的工资、年终奖等敏感财务数据会被上传吗？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "绝对不会！本工具 100% 在您本地浏览器内计算，不经过任何服务器，刷新页面数据彻底销毁，绝无信息泄露风险。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "工作性价比指数是如何计算出来的？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "该算法综合扣除了因上班被迫支出的通勤与餐饮成本，计算出纯净到手收入，再除以实际付出时间（工时-摸鱼+通勤折算），最后根据领导PUA程度、同事内耗和工作环境进行加权修正。"
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- 顶栏导航 -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="./" class="brand" title="返回不烧心免费工具大厅">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12A10 10 0 0 1 12 2z"></path>
+            <path d="M12 6v6l4 2"></path>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">不烧心免费工具</span>
+          <span class="brand-subtitle">tools.ucncn.cn · 免费、免登录、不上传、无广告</span>
+        </div>
+      </a>
+
+      <div class="header-actions">
+        <div class="header-badge" title="安全沙盒运作中：数据绝不上传服务器">
+          <span class="pulse-dot"></span>
+          <span>纯本地沙盒已就绪</span>
+        </div>
+        <a href="./" class="nav-link">
+          <span>🏠 工具大厅</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主体区域 -->
+  <main class="container">
+    <div class="tool-header">
+      <a href="./" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span>返回工具大厅</span>
+      </a>
+      <h1 class="tool-page-title">
+        <span>💼</span>
+        <span>工作性价比计算器 (这b班上得值不值·测算版)</span>
+      </h1>
+      <p class="tool-page-desc">
+        考量税后薪资、通勤距离、带薪摸鱼、领导同事傻逼系数与职场内耗，算出你的真实时薪与冤种指数。纯本地运算，数据不离设备。
+      </p>
+    </div>
+
+    <!-- 预设模版快速填充 -->
+    <div style="margin-bottom: 12px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+      <span style="font-size: 0.825rem; font-weight: 700; color: var(--text-regular);">🎯 职场典型画像速选：</span>
+      <button type="button" class="preset-chip" onclick="applyPreset('state')">国企摸鱼清闲党</button>
+      <button type="button" class="preset-chip" onclick="applyPreset('bigtech')">大厂高薪高压兵</button>
+      <button type="button" class="preset-chip" onclick="applyPreset('agency')">外包纯血大冤种</button>
+      <button type="button" class="preset-chip" onclick="applyPreset('startup')">初创全能打杂王</button>
+    </div>
+
+    <!-- 测算布局 -->
+    <div class="calc-layout">
+      <!-- 左侧：参数录入表单 -->
+      <div class="panel-card">
+        <div class="panel-title">
+          <span>⚙️ 核心参数录入 (如实填写方显真性情)</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div class="form-group">
+            <label class="form-label" for="salary">
+              <span>税后月到手薪资 (元)</span>
+              <span class="form-hint">实发金额</span>
+            </label>
+            <input type="number" id="salary" class="form-input" value="10000" min="0" step="500">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="bonus">
+              <span>预计年终奖/绩效 (元)</span>
+              <span class="form-hint">无则填 0</span>
+            </label>
+            <input type="number" id="bonus" class="form-input" value="10000" min="0" step="1000">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div class="form-group">
+            <label class="form-label" for="workdays">
+              <span>每周工作天数</span>
+              <span class="form-hint">大小周填5.5</span>
+            </label>
+            <select id="workdays" class="form-select">
+              <option value="5" selected>5 天 (标准双休)</option>
+              <option value="5.5">5.5 天 (大小周)</option>
+              <option value="6">6 天 (单休)</option>
+              <option value="7">7 天 (无休牛马)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="workhours">
+              <span>每日在岗时长 (小时)</span>
+              <span class="form-hint">扣除午休</span>
+            </label>
+            <input type="number" id="workhours" class="form-input" value="8" min="1" max="18" step="0.5">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div class="form-group">
+            <label class="form-label" for="commute">
+              <span>每日往返通勤 (小时)</span>
+              <span class="form-hint">路上总耗时</span>
+            </label>
+            <input type="number" id="commute" class="form-input" value="1.5" min="0" max="8" step="0.2">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="slack">
+              <span>每日带薪摸鱼 (小时)</span>
+              <span class="form-hint">带薪拉屎/划水</span>
+            </label>
+            <input type="number" id="slack" class="form-input" value="2.0" min="0" max="10" step="0.5">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div class="form-group">
+            <label class="form-label" for="forced-cost">
+              <span>因上班产生的开销 (元/月)</span>
+              <span class="form-hint">通勤费+工位外卖咖啡</span>
+            </label>
+            <input type="number" id="forced-cost" class="form-input" value="1200" min="0" step="100">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="degree">
+              <span>学历与期望基准</span>
+              <span class="form-hint">机会成本</span>
+            </label>
+            <select id="degree" class="form-select">
+              <option value="0.9">大专 / 实用技能</option>
+              <option value="1.0" selected>普通本科 (标准线)</option>
+              <option value="1.15">双一流 / 硕士研究生</option>
+              <option value="1.3">博士 / 海外留学生</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+          <div class="form-group">
+            <label class="form-label" for="boss-factor">
+              <span>领导/老板傻逼系数</span>
+              <span class="form-hint">精神折磨度</span>
+            </label>
+            <select id="boss-factor" class="form-select">
+              <option value="0.8">0.8 天使神仙，给足尊重</option>
+              <option value="1.0" selected>1.0 正常人，公事公办</option>
+              <option value="1.25">1.25 偶尔PUA，事逼微操</option>
+              <option value="1.6">1.6 纯傻逼，每天想辞职</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="colleague-factor">
+              <span>同事环境与甩锅系数</span>
+              <span class="form-hint">职场宫斗度</span>
+            </label>
+            <select id="colleague-factor" class="form-select">
+              <option value="0.85">0.85 气氛融洽，互帮互助</option>
+              <option value="1.0" selected>1.0 各忙各的，按时下班</option>
+              <option value="1.2">1.2 互相推诿，甩锅大师</option>
+              <option value="1.45">1.45 宫斗修罗场，天天心累</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="env-factor">
+            <span>办公环境与作息福利</span>
+            <span class="form-hint">肉体舒适度</span>
+          </label>
+          <select id="env-factor" class="form-select">
+            <option value="1.15">豪华工位 + 零食咖啡 + 准点下班</option>
+            <option value="1.0" selected>标准写字楼 + 偶尔加班</option>
+            <option value="0.85">破旧工位 / 经常被抓开无效冗长会议</option>
+            <option value="0.7">常驻户外 / 倒班夜班 / 极端高压</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 右侧：诊断看板与海报 -->
+      <div class="panel-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div class="panel-title">
+            <span>📊 性价比综合体检报告</span>
+          </div>
+
+          <div class="result-badge-card" id="result-card">
+            <div style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted);">打工性价比指数 (JWI)</div>
+            <div class="worth-score" id="worth-score">1.28</div>
+            <div class="worth-level" id="worth-level">【标准合格牛马】</div>
+            <div class="worth-tagline" id="worth-tagline">“不算亏，但也没占大便宜，注意摸鱼保命。”</div>
+          </div>
+
+          <div class="metric-grid">
+            <div class="metric-box">
+              <div class="metric-box-label">真实到手时薪</div>
+              <div class="metric-box-val" id="real-hourly">¥ 62.5 /h</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-box-label">每月净得纯收入</div>
+              <div class="metric-box-val" id="net-monthly">¥ 9,633</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-box-label">月有效付出工时</div>
+              <div class="metric-box-val" id="net-hours">154 h</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-box-label">每日纯打工时长</div>
+              <div class="metric-box-val" id="actual-work-daily">7.2 h</div>
+            </div>
+          </div>
+
+          <div class="comment-box" id="diagnostic-comment">
+            <strong>📋 处方诊断：</strong><br>
+            您的真实有效时薪与同龄人相比处于中等水平。虽然工作中有部分内耗，但好在摸鱼时间有效对冲了精神折磨。建议守住摸鱼防线，下班准点关机！
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+          <button type="button" class="btn primary" style="flex: 1;" onclick="copyReport()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span>复制诊断报告</span>
+          </button>
+          <button type="button" class="btn secondary" style="flex: 1;" onclick="downloadPoster()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>生成分享长图</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 隐藏的海报生成用 Canvas -->
+    <canvas id="poster-canvas" width="640" height="880" style="display: none;"></canvas>
+
+    <!-- 深度科普与算法文章 -->
+    <article class="guide-article" style="background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 32px; margin-bottom: 40px;">
+      <h2>📘 为什么“标称月薪”骗了无数打工人？真实时薪才是一切</h2>
+
+      <h3>一、同样月薪一万，有人时薪 80 有人时薪 25</h3>
+      <p>
+        许多职场人只看招聘软件上的“月薪 15k”，却忽略了通勤、强制加班和无偿待命的沉没成本。<br>
+        <strong>情景 A</strong>：月薪 10,000 元，双休，965 作息，通勤 15 分钟，每日带薪摸鱼 2 小时，其实际时薪高达 <strong>¥ 75/小时</strong>；<br>
+        <strong>情景 B</strong>：月薪 15,000 元，单休，早9晚10，单程通勤 1.5 小时，领导周末微信轰炸，其实际时薪仅为 <strong>¥ 38/小时</strong>。
+      </p>
+
+      <h3>二、工作性价比计算的核心考量模型</h3>
+      <p>
+        本工具依据经典的打工人反内耗模型，综合三项核心维度：
+      </p>
+      <ol>
+        <li><strong>纯净收入净值</strong>：到手工资扣除由于上班不得不产生的外卖溢价、交通费与租房差价；</li>
+        <li><strong>实际有效时间成本</strong>：在岗时长扣减带薪摸鱼时间，但必须加上通勤折算系数（通勤是纯粹的身体与精力消耗）；</li>
+        <li><strong>心理与生理内耗系数</strong>：领导傻逼度与同事宫斗度会以指数级侵蚀寿命与幸福感，必须作为分母打折项计入。</li>
+      </ol>
+
+      <h3>三、为什么坚持纯本地离线计算？</h3>
+      <p>
+        市面上某些类似工具要求扫码登录或甚至收集用户公司名称与薪资，存在严重的隐私和企业法务风险。<br>
+        <strong>『不烧心免费工具』承诺 100% 浏览器前端本地运行</strong>，您的薪资、通勤与老板评价永远停留在您自己的设备内存中，刷新即刻销毁，安全、无顾虑。
+      </p>
+    </article>
+  </main>
+
+  <!-- 底栏 -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom" style="justify-content: center; text-align: center;">
+        <div class="footer-desc">
+          &copy; 2026 tools.ucncn.cn · 用着不烧心的免费在线工具箱。免费、免登录、不上传、无广告。
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 公共交互脚本 -->
+  <script src="assets/js/common.js"></script>
+
+  <!-- 计算与海报渲染算法 -->
+  <script>
+    (function () {
+      const el = (id) => document.getElementById(id);
+
+      const inputs = [
+        'salary', 'bonus', 'workdays', 'workhours', 'commute',
+        'slack', 'forced-cost', 'degree', 'boss-factor', 'colleague-factor', 'env-factor'
+      ];
+
+      function calculate() {
+        const salary = parseFloat(el('salary').value) || 0;
+        const bonus = parseFloat(el('bonus').value) || 0;
+        const workdays = parseFloat(el('workdays').value) || 5;
+        const workhours = parseFloat(el('workhours').value) || 8;
+        const commute = parseFloat(el('commute').value) || 0;
+        const slack = Math.min(parseFloat(el('slack').value) || 0, workhours);
+        const forcedCost = parseFloat(el('forced-cost').value) || 0;
+        const degree = parseFloat(el('degree').value) || 1.0;
+        const bossFactor = parseFloat(el('boss-factor').value) || 1.0;
+        const colleagueFactor = parseFloat(el('colleague-factor').value) || 1.0;
+        const envFactor = parseFloat(el('env-factor').value) || 1.0;
+
+        // 每月平均工作天数 (按年均 52 周计算)
+        const monthlyWorkDays = (workdays * 52) / 12;
+
+        // 每日实际有效消耗工时 = 实际工作时长(在岗-摸鱼) + 通勤有效消耗(折算80%)
+        const dailyEffectiveHours = Math.max(0.5, (workhours - slack) + commute * 0.8);
+        const monthlyEffectiveHours = dailyEffectiveHours * monthlyWorkDays;
+
+        // 每月净收入 = (税后工资 + 年终平摊) - 上班强制支出
+        const monthlyNetIncome = (salary + bonus / 12) - forcedCost;
+
+        // 真实时薪
+        const realHourly = monthlyEffectiveHours > 0 ? (monthlyNetIncome / monthlyEffectiveHours) : 0;
+
+        // 基准时薪标准设定 (以本科学历标准线时薪 40元/h 为基准锚点)
+        const baseHourly = 42 * degree;
+
+        // 最终性价比指数 = (真实时薪 / 基准时薪) * 环境福利 / (领导系数 * 同事系数)
+        const worthIndex = (realHourly / baseHourly) * envFactor / (bossFactor * colleagueFactor);
+
+        // 界面更新
+        el('real-hourly').textContent = `¥ ${Math.max(0, realHourly).toFixed(1)} /h`;
+        el('net-monthly').textContent = `¥ ${Math.round(Math.max(0, monthlyNetIncome)).toLocaleString()}`;
+        el('net-hours').textContent = `${Math.round(monthlyEffectiveHours)} h`;
+        el('actual-work-daily').textContent = `${dailyEffectiveHours.toFixed(1)} h`;
+        el('worth-score').textContent = Math.max(0, worthIndex).toFixed(2);
+
+        // 评级与诊断文案
+        let levelText = '';
+        let taglineText = '';
+        let commentText = '';
+        let cardColor = '';
+
+        if (worthIndex >= 1.8) {
+          levelText = '🏆【神仙天花板·摸鱼养老圣地】';
+          taglineText = '“建议死死焊在工位上，给老板磕头都不亏！”';
+          commentText = '<strong>📋 处方诊断：</strong><br>这不仅是一份工作，简直是菩萨在做慈善。真实时薪傲视全群，精神损耗极低。请务必戒骄戒躁，守住摸鱼宝地，千万别轻易跳槽！';
+          cardColor = 'linear-gradient(135deg, #e6f6ee 0%, #ccecd9 100%)';
+        } else if (worthIndex >= 1.3) {
+          levelText = '✨【高性价比良心工】';
+          taglineText = '“同龄人羡慕哭了，虽然有烦恼但钱给到位了。”';
+          commentText = '<strong>📋 处方诊断：</strong><br>性价比处于中高段位。虽然难免有打工人的日常烦恼，但回报与付出非常匹配。适合沉淀技能，下班好好享受生活。';
+          cardColor = 'linear-gradient(135deg, #edf7ee 0%, #d8eee0 100%)';
+        } else if (worthIndex >= 0.95) {
+          levelText = '⚖️【标准牛马及格线】';
+          taglineText = '“不算亏，但也没占大便宜，注意摸鱼保命。”';
+          commentText = '<strong>📋 处方诊断：</strong><br>典型的当代打工人常态：不好不坏，糊口度日。切忌自我感动式主动加班，建议严守摸鱼防线，下班准点关机，保护身心健康！';
+          cardColor = 'linear-gradient(135deg, #fef8ee 0%, #faecd5 100%)';
+        } else if (worthIndex >= 0.65) {
+          levelText = '⚠️【性价比告急·纯血冤种】';
+          taglineText = '“身心俱疲，钱少事多，纯属给资本家打白工。”';
+          commentText = '<strong>📋 处方诊断：</strong><br>您的生命正在被严重的低性价比和内耗蚕食！通勤和精神折磨消耗了大部分精力，到手收入严重对不起付出。建议立刻更新简历，随时准备换赛道！';
+          cardColor = 'linear-gradient(135deg, #fff3f0 0%, #fde2dc 100%)';
+        } else {
+          levelText = '🚨【惨绝人寰·赶紧提桶跑路】';
+          taglineText = '“再上两天可能倒贴医药费，跑得越快福报越大！”';
+          commentText = '<strong>📋 处方诊断：</strong><br>极端低性价比！领导或同事的内耗可能已经威胁到您的心理健康，真实时薪甚至低于本地最低生活标准。不要留恋，抓紧提桶跑路！';
+          cardColor = 'linear-gradient(135deg, #ffebee 0%, #fed7d7 100%)';
+        }
+
+        el('worth-level').textContent = levelText;
+        el('worth-tagline').textContent = taglineText;
+        el('diagnostic-comment').innerHTML = commentText;
+        el('result-card').style.background = cardColor;
+      }
+
+      // 快速画像
+      window.applyPreset = function (type) {
+        if (type === 'state') {
+          el('salary').value = 7500;
+          el('bonus').value = 25000;
+          el('workdays').value = '5';
+          el('workhours').value = 7;
+          el('commute').value = 0.8;
+          el('slack').value = 3.5;
+          el('forced-cost').value = 600;
+          el('boss-factor').value = '0.8';
+          el('colleague-factor').value = '0.85';
+          el('env-factor').value = '1.15';
+        } else if (type === 'bigtech') {
+          el('salary').value = 28000;
+          el('bonus').value = 60000;
+          el('workdays').value = '5';
+          el('workhours').value = 11;
+          el('commute').value = 2.0;
+          el('slack').value = 1.5;
+          el('forced-cost').value = 2500;
+          el('boss-factor').value = '1.25';
+          el('colleague-factor').value = '1.2';
+          el('env-factor').value = '1.15';
+        } else if (type === 'agency') {
+          el('salary').value = 6500;
+          el('bonus').value = 0;
+          el('workdays').value = '6';
+          el('workhours').value = 9.5;
+          el('commute').value = 2.2;
+          el('slack').value = 0.5;
+          el('forced-cost').value = 1400;
+          el('boss-factor').value = '1.6';
+          el('colleague-factor').value = '1.45';
+          el('env-factor').value = '0.85';
+        } else if (type === 'startup') {
+          el('salary').value = 12000;
+          el('bonus').value = 10000;
+          el('workdays').value = '5.5';
+          el('workhours').value = 10;
+          el('commute').value = 1.5;
+          el('slack').value = 1.0;
+          el('forced-cost').value = 1500;
+          el('boss-factor').value = '1.25';
+          el('colleague-factor').value = '1.0';
+          el('env-factor').value = '1.0';
+        }
+        calculate();
+        CleanTools.showToast('已切换典型职场画像');
+      };
+
+      // 复制报告
+      window.copyReport = function () {
+        const score = el('worth-score').textContent;
+        const level = el('worth-level').textContent;
+        const hourly = el('real-hourly').textContent;
+        const monthly = el('net-monthly').textContent;
+        const tagline = el('worth-tagline').textContent;
+
+        const text = `【不烧心·工作性价比诊断报告】\n` +
+          `我的性价比指数：${score}\n` +
+          `综合评级：${level}\n` +
+          `真实时薪：${hourly} (月净到手 ${monthly})\n` +
+          `一句话锐评：${tagline}\n` +
+          `测算工具：https://tools.ucncn.cn/job-worth.html`;
+
+        CleanTools.copyText(text, '已复制诊断报告到剪贴板，快发给朋友看看！');
+      };
+
+      // 生成海报长图
+      window.downloadPoster = function () {
+        const canvas = el('poster-canvas');
+        const ctx = canvas.getContext('2d');
+        const w = 640;
+        const h = 880;
+
+        // 背景
+        ctx.fillStyle = '#f8faf8';
+        ctx.fillRect(0, 0, w, h);
+
+        // 顶栏卡片
+        ctx.fillStyle = '#386641';
+        ctx.fillRect(0, 0, w, 120);
+
+        // 品牌文字
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 28px -apple-system, sans-serif';
+        ctx.fillText('🌿 不烧心免费工具 · 打工性价比体检', 40, 56);
+        ctx.font = '14px -apple-system, sans-serif';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+        ctx.fillText('免登录 · 纯本地测算 · 敏感薪资不上云', 40, 88);
+
+        // 白色主卡片
+        ctx.fillStyle = '#ffffff';
+        ctx.strokeStyle = '#e4ebe5';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.roundRect(30, 140, w - 60, 640, 20);
+        ctx.fill();
+        ctx.stroke();
+
+        // 评级结果卡片
+        ctx.fillStyle = '#f2f7f3';
+        ctx.beginPath();
+        ctx.roundRect(50, 165, w - 100, 210, 16);
+        ctx.fill();
+
+        ctx.fillStyle = '#798b80';
+        ctx.font = 'bold 15px -apple-system, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('打工性价比指数 (JWI)', w / 2, 205);
+
+        ctx.fillStyle = '#386641';
+        ctx.font = '900 64px Menlo, monospace';
+        ctx.fillText(el('worth-score').textContent, w / 2, 280);
+
+        ctx.fillStyle = '#1d2b22';
+        ctx.font = 'bold 22px -apple-system, sans-serif';
+        ctx.fillText(el('worth-level').textContent, w / 2, 325);
+
+        ctx.fillStyle = '#4a5a50';
+        ctx.font = 'italic 15px -apple-system, sans-serif';
+        ctx.fillText(el('worth-tagline').textContent, w / 2, 355);
+
+        // 四格数据
+        ctx.textAlign = 'left';
+        const drawGrid = (label, val, x, y) => {
+          ctx.fillStyle = '#f8faf8';
+          ctx.beginPath();
+          ctx.roundRect(x, y, 250, 80, 10);
+          ctx.fill();
+          ctx.fillStyle = '#798b80';
+          ctx.font = '13px -apple-system, sans-serif';
+          ctx.fillText(label, x + 16, y + 30);
+          ctx.fillStyle = '#1d2b22';
+          ctx.font = 'bold 22px monospace';
+          ctx.fillText(val, x + 16, y + 62);
+        };
+
+        drawGrid('真实到手时薪', el('real-hourly').textContent, 55, 400);
+        drawGrid('每月净收入', el('net-monthly').textContent, 335, 400);
+        drawGrid('月有效总工时', el('net-hours').textContent, 55, 500);
+        drawGrid('日纯打工时长', el('actual-work-daily').textContent, 335, 500);
+
+        // 诊断建议
+        ctx.fillStyle = '#4a5a50';
+        ctx.font = '14px -apple-system, sans-serif';
+        ctx.fillText('建议：严守摸鱼防线，下班准点关机。身心健康才是第一位！', 55, 620);
+        ctx.fillText('数据安全：所有计算均在客户端内存运行，绝不经过服务器。', 55, 650);
+
+        // 底部小注
+        ctx.fillStyle = '#a4b2a9';
+        ctx.font = '12px -apple-system, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('测算网址：tools.ucncn.cn · 用着不烧心的免费在线工具箱', w / 2, 825);
+        ctx.fillText('© 2026 tools.ucncn.cn · 免费、免登录、不上传、无广告', w / 2, 848);
+
+        // 导出图片并自动下载
+        const link = document.createElement('a');
+        link.download = `打工性价比体检报告_${el('worth-score').textContent}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        CleanTools.showToast('海报已生成并开始下载！');
+      };
+
+      // 绑定所有事件
+      inputs.forEach(id => {
+        const element = el(id);
+        if (element) {
+          element.addEventListener('input', calculate);
+          element.addEventListener('change', calculate);
+        }
+      });
+
+      calculate();
+    })();
+  </script>
+</body>
+</html>
