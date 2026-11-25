@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google 代码 (GTM-52RQ295V) -->
+  <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-52RQ295V"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  </script>
+  <!-- End Google 代码 -->
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fancy Text Generator - Aesthetic Fonts for Instagram, TikTok & Discord | NoHeartburn Tools</title>
+  <meta name="description" content="Copy and paste 40+ stylish fancy fonts and aesthetic Unicode text styles. Ideal for Instagram bio, TikTok username, Discord nick, Twitter tweets, and gaming clans.">
+  <meta name="keywords" content="fancy text generator, aesthetic fonts, font generator copy and paste, cursive text generator, cool fonts online, stylish nickname generator, instagram bio fonts">
+  <meta name="author" content="不烧心免费工具 (tools.ucncn.cn)">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="theme-color" content="#386641">
+  <link rel="canonical" href="https://tools.ucncn.cn/en/fancy-text.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://tools.ucncn.cn/fancy-text.html">
+  <link rel="alternate" hreflang="en" href="https://tools.ucncn.cn/en/fancy-text.html">
+  <link rel="alternate" hreflang="x-default" href="https://tools.ucncn.cn/en/fancy-text.html">
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23386641'/%3E%3Cpath d='M30 70 C30 42 50 30 70 30 C70 58 50 70 30 70 Z' fill='%23ffffff'/%3E%3Cpath d='M30 70 L52 48' stroke='%23386641' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='68' cy='32' r='5' fill='%23dbebe0'/%3E%3C/svg%3E">
+
+  <!-- 公共样式基座 -->
+  <link rel="stylesheet" href="../assets/css/style.css?v=20261125_2">
+
+  <style>
+    /* 工具页面顶部返回与标题 */
+    .tool-header {
+      padding: 32px 0 20px;
+    }
+    .back-link {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      text-decoration: none;
+      transition: color var(--transition-fast);
+    }
+    .back-link svg {
+      display: inline-block !important;
+      flex-shrink: 0;
+      transition: transform var(--transition-fast);
+    }
+    .back-link:hover {
+      color: var(--primary);
+    }
+    .back-link:hover svg {
+      transform: translateX(-3px);
+    }
+    .tool-page-title {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .tool-page-desc {
+      font-size: 0.95rem;
+      color: var(--text-regular);
+      max-width: 760px;
+      line-height: 1.6;
+    }
+
+    .input-box-wrapper {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 20px 24px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+    .fancy-input {
+      width: 100%;
+      font-size: 1.15rem;
+      font-family: inherit;
+      padding: 12px 16px;
+      background: var(--bg-surface-alt);
+      border: 1.5px solid var(--border-regular);
+      border-radius: var(--radius-md);
+      color: var(--text-main);
+      box-sizing: border-box;
+      transition: all var(--transition-fast);
+    }
+    .fancy-input:focus {
+      background: #ffffff;
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(56, 102, 65, 0.12);
+    }
+    .card-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .font-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: var(--shadow-xs);
+      transition: all var(--transition-fast);
+    }
+    .font-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .font-style-name {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+    .font-preview-text {
+      font-size: 1.25rem;
+      color: var(--text-main);
+      word-break: break-all;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      line-height: 1.4;
+    }
+    .copy-chip-btn {
+      align-self: flex-end;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-regular);
+      color: var(--text-regular);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    .copy-chip-btn:hover {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+  </style>
+
+  <!-- 结构化数据 (JSON-LD: WebApplication & FAQPage) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "Fancy Text Generator (Fancy Text Generator)",
+        "url": "https://tools.ucncn.cn/fancy-text.html",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "All",
+        "inLanguage": "zh-CN",
+        "description": "纯前端本地将英文字符转换为手写花体、哥特黑体、气泡字、倒立字与划线字，支持一键Copy到小红书、微信等社交平台。",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "为什么Copy的花体字可以在小红书和微信中直接显示？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "因为这些花体字并不是图片，而是 Unicode 国际编码标准原生支持的‘数学字母数字符号’与‘组合变音标记’。只要对方设备支持现代字库即可完美显示。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "支持转换中文字符吗？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Unicode 原生花体主要针对英文字母与阿拉伯数字。对于中文文本，本工具自动提供独特的边框花纹装饰（如角标、括号、星芒花边），中英混排时自动兼顾。"
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- 顶栏导航 -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="./" class="brand" title="返回不烧心免费工具大厅">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12A10 10 0 0 1 12 2z"></path>
+            <path d="M12 6v6l4 2"></path>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">不烧心免费工具</span>
+          <span class="brand-subtitle">tools.ucncn.cn · 免费、免登录、不上传、无广告</span>
+        </div>
+      </a>
+
+      <div class="header-actions">
+        <a href="../fancy-text.html" class="lang-switch-btn" title="切换为中文版">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1 4-10z"></path></svg>
+          <span>🇨🇳 中文</span>
+        </a>
+        <div class="header-badge" title="安全沙盒运作中：数据绝不上传服务器">
+          <span class="pulse-dot"></span>
+          <span>纯本地沙盒已就绪</span>
+        </div>
+        <a href="./" class="nav-link">
+          <span>🏠 工具大厅</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主体区域 -->
+  <main class="container">
+    <div class="tool-header">
+      <a href="./" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span>返回工具大厅</span>
+      </a>
+      <h1 class="tool-page-title">
+        <span>✨</span>
+        <span>Fancy Text Generator</span>
+      </h1>
+      <p class="tool-page-desc">
+        输入任意英文与数字，即时生成 16+ 款小红书/微信签名高颜值花体字与特效字符。一键Copy，纯本地运行。
+      </p>
+    </div>
+
+    <!-- 输入卡片 -->
+    <div class="input-box-wrapper">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <label for="input-text" style="font-weight: 700; font-size: 0.95rem; color: var(--text-main);">
+          ✏️ 在此输入需要转换的文字：
+        </label>
+        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+          <button type="button" class="preset-chip" onclick="setSample('No Heartburn')">No Heartburn</button>
+          <button type="button" class="preset-chip" onclick="setSample('Love and Peace')">Love and Peace</button>
+          <button type="button" class="preset-chip" onclick="setSample('Forever Young')">Forever Young</button>
+          <button type="button" class="preset-chip clear" onclick="clearInput()">清空</button>
+        </div>
+      </div>
+      <input type="text" id="input-text" class="fancy-input" value="No Heartburn Tools" placeholder="输入你想转换的英文、数字或昵称...">
+    </div>
+
+    <!-- 样式卡片网格 -->
+    <div class="card-list" id="card-container">
+      <!-- 动态渲染各类样式卡片 -->
+    </div>
+
+    <!-- 深度实战指南 (SEO 内容) -->
+    <article class="guide-article" style="background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 32px; margin-bottom: 40px;">
+      <h2>📘 为什么花体字可以在微信、小红书和 TikTok 跨平台显示？</h2>
+
+      <h3>一、揭开 Unicode 原生花体符号的秘密</h3>
+      <p>
+        许多朋友以为花体字是需要安装特殊字体（.ttf / .otf）才能显示的，其实不然。在 Unicode（统一码）国际标准中，为了满足数学公式、学术文献和印刷排版的需要，专门分配了“数学字母数字符号集”（Mathematical Alphanumeric Symbols，编码范围 <code>U+1D400</code> 到 <code>U+1D7FF</code>）。<br>
+        例如，<code>𝒶</code>、<code>𝒷</code>、<code>𝒸</code> 在计算机底层与普通的 <code>a</code>、<code>b</code>、<code>c</code> 拥有完全独立的唯一代码点，因此无论发给谁，只要现代手机（iOS / Android / Windows / macOS）有字库支持，就能原汁原味地渲染出来。
+      </p>
+
+      <h3>二、常见样式适用场景推荐</h3>
+      <ul>
+        <li><strong>手写花草体 (Script / Cursive)</strong>：优雅浪漫，极度适合小红书穿搭博主主页介绍、婚礼邀请函签名、个人诗歌集；</li>
+        <li><strong>哥特黑体 (Gothic / Fraktur)</strong>：复古暗黑，常用于嘻哈音乐圈、街头潮流品牌推文、游戏硬核公会战队名；</li>
+        <li><strong>圆圈气泡字 (Circled / Bubble)</strong>：活泼可爱，适合作为列表标号、突出强调优惠活动与重要提醒；</li>
+        <li><strong>倒立反转字 (Upside Down)</strong>：幽默整蛊，在群聊、推特评论区神回复中吸睛度满分。</li>
+      </ul>
+
+      <h3>三、纯前端安全处理</h3>
+      <p>
+        市面上很多所谓的“花字生成小程序”夹带海量弹窗广告，甚至强制用户看 15 秒激励视频才允许Copy。『不烧心免费工具』坚持 100% 浏览器原生纯 JS 转换，没有任何广告拦截，一秒点按即Copy。
+      </p>
+    </article>
+  </main>
+
+  <!-- 底栏 -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom" style="justify-content: center; text-align: center;">
+        <div class="footer-desc">
+          &copy; 2026 tools.ucncn.cn · NoHeartburn Tools. Free, no login, no uploads, no ads.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 公共交互脚本 -->
+  <script src="../assets/js/common.js"></script>
+
+  <!-- 花体字映射算法 -->
+  <script>
+    (function () {
+      const input = document.getElementById('input-text');
+      const container = document.getElementById('card-container');
+
+      // 字符映射表
+      const normalUpper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      const normalLower = "abcdefghijklmnopqrstuvwxyz";
+      const normalDigits = "0123456789";
+
+      const maps = [
+        {
+          name: "𝓒𝓾𝓻𝓼𝓲𝓿𝓮 手写草书花体 (Script Bold)",
+          transform: (text) => transformChars(text,
+            "𝓐𝓑𝓒𝓓𝓔𝓕𝓖𝓗𝓘𝓙𝓚𝓛𝓜𝓝𝓞𝓟𝓠𝓡𝓢𝓣𝓤𝓥𝓦𝓧𝓨𝓩",
+            "𝓪𝓫𝓬𝓭𝓮𝓯𝓰𝓱𝓲𝓳𝓴𝓵𝓶𝓷𝓸𝓹𝓺𝓻𝓼𝓽𝓾𝓿𝔀𝔁𝔂𝔃",
+            "𝟎𝟏𝟐𝟑𝟒𝟓𝟔𝟕𝟖𝟗")
+        },
+        {
+          name: "𝔉𝔯𝔞𝔨𝔱𝔲𝔯 哥特中世纪复古黑体 (Gothic)",
+          transform: (text) => transformChars(text,
+            "𝔄𝔅ℭ𝔇𝔈𝔉𝔊ℌℑ𝔍𝔎𝔏𝔐𝔑𝔒𝔓𝔔ℜ𝔖𝔗𝔘𝔙𝔚𝔛𝔜ℨ",
+            "𝔞𝔟𝔠𝔡𝔢𝔣𝔤𝔥𝔦𝔧𝔨𝔩𝔪𝔫𝔬𝔭𝔮𝔯𝔰𝔱𝔲𝔳𝔴𝔵𝔶𝔩",
+            "0123456789")
+        },
+        {
+          name: "𝕲𝖔𝖙𝖍𝖎𝖈 粗重哥特黑体 (Gothic Bold)",
+          transform: (text) => transformChars(text,
+            "𝕬𝕭𝕮𝕯𝕰𝕱𝕲𝕳𝕴𝕵𝕶𝕷𝕸𝕹𝕺𝕻𝕼𝕽𝕾𝕿𝖀𝖁𝖂𝖃𝖄𝖅",
+            "𝖆𝖇𝖈𝖉𝖊𝖋𝖌𝖍𝖎𝖏𝖐𝖑𝖒𝖓𝖔𝖕𝖖𝖗𝖘𝖙𝖚𝖛𝖜𝖝𝖞𝖟",
+            "0123456789")
+        },
+        {
+          name: "ⒸⒾⓇⒸⓁⒺ 圆圈泡泡字 (Circled)",
+          transform: (text) => transformChars(text,
+            "ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏ",
+            "ⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩ",
+            "⓪①②③④⑤⑥⑦⑧⑨")
+        },
+        {
+          name: "🅂🅀🅄🄰🅁🄴 方框字符 (Squared)",
+          transform: (text) => transformChars(text,
+            "🄰🄱🄲🄳🄴🄵🄶🄷🄸🄹🄺🄻🄼🄽🄾🄿🅀🅁🅂🅃🅄🅅🅆🅇🅈🅉",
+            "🄰🄱🄲🄳🄴🄵🄶🄷🄸🄹🄺🄻🄼🄽🄾🄿🅀🅁🅂🅃🅄🅅🅆🅇🅈🅉",
+            "0123456789")
+        },
+        {
+          name: "🅑🅛🅐🅒🅚 实心黑底圆圈 (Inverted Circled)",
+          transform: (text) => transformChars(text,
+            "🅐🅑🅒🅓🅔🅕🅖🅗🅘🅙🅚🅛🅜🅝🅞🅟🅠🅡🅢🅣🅤🅥🅦🅧🅨🅩",
+            "🅐🅑🅒🅓🅔🅕🅖🅗🅘🅙🅚🅛🅜🅝🅞🅟🅠🅡🅢🅣🅤🅥🅦🅧🅨🅩",
+            "⓿❶❷❸❹❺❻❼❽❾")
+        },
+        {
+          name: "𝐁𝐨𝐥𝐝 经典优雅衬线粗体 (Bold Serif)",
+          transform: (text) => transformChars(text,
+            "𝐀𝐁𝐂𝐃𝐄𝐅𝐆𝐇𝐈𝐉𝐊𝐋𝐌𝐍𝐎𝐏𝐐𝐑𝐒𝐓𝐔𝐕𝐖𝐗𝐘𝐙",
+            "𝐚𝐛𝐜𝐝𝐞𝐟𝐠𝐡𝐢𝐣𝐤𝐥𝐦𝐧𝐨𝐩𝐪𝐫𝐬𝐭𝐮𝐯𝐰𝐱𝐲𝐳",
+            "𝟎𝟏𝟐𝟑𝟒𝟓𝟔𝟕𝟖𝟗")
+        },
+        {
+          name: "𝘽𝙤𝙡𝙙 现代动感无衬线粗体 (Bold Sans)",
+          transform: (text) => transformChars(text,
+            "𝘼𝘽𝘾𝘿𝙀𝙁𝙂𝙃𝙄𝙅𝙆𝙇𝙈𝙉𝙊𝙋𝙌𝙍𝙎𝙏𝙐𝙑𝙒𝙓𝙔𝙕",
+            "𝙖𝙗𝙘𝙙𝙚𝙛𝙜𝙝𝙞𝙟𝙠𝙡𝙢𝙣𝙤𝙥𝙦𝙧𝙨𝙩𝙪𝙫𝙬𝙭𝙮𝙯",
+            "𝟎𝟏𝟐𝟑𝟒𝟓𝟔𝟕𝟖𝟗")
+        },
+        {
+          name: "𝙼𝚘𝚗𝚘 极客等宽打字机体 (Monospace)",
+          transform: (text) => transformChars(text,
+            "𝙰𝙱𝙲𝙳𝙴𝙵𝙶𝙷𝙸𝙹𝙺𝙻𝙼𝙽𝙾𝙿𝚀𝚁𝚂𝚃𝚄𝚅𝚆𝚇𝚈𝚉",
+            "𝚊𝚋𝚌𝚍𝚎𝚏𝚐𝚑𝚒𝚓𝚔𝚕𝚖𝚗𝚘𝚙𝚚𝚛𝚜𝚝𝚞𝚟𝚠𝚡𝚢𝚣",
+            "𝟶𝟷𝟸𝟹𝟺𝟻𝟼𝟽𝟾𝟿")
+        },
+        {
+          name: "ᴛɪɴʏ 优雅小型大写字母 (Small Caps)",
+          transform: (text) => transformChars(text,
+            "ᴀʙᴄᴅᴇғɢʜɪᴊᴋʟᴍɴᴏᴘǫʀsᴛᴜᴠᴡxʏᴢ",
+            "ᴀʙᴄᴅᴇғɢʜɪᴊᴋʟᴍɴᴏᴘǫʀsᴛᴜᴠᴡxʏᴢ",
+            "0123456789")
+        },
+        {
+          name: "ʇxǝʇ 趣味倒立翻转体 (Upside Down)",
+          transform: (text) => {
+            const flipMap = {
+              'a': 'ɐ', 'b': 'q', 'c': 'ɔ', 'd': 'p', 'e': 'ǝ', 'f': 'ɟ', 'g': 'ƃ', 'h': 'ɥ',
+              'i': 'ᴉ', 'j': 'ɾ', 'k': 'ʞ', 'l': 'l', 'm': 'ɯ', 'n': 'u', 'o': 'o', 'p': 'd',
+              'q': 'b', 'r': 'ɹ', 's': 's', 't': 'ʇ', 'u': 'n', 'v': 'ʌ', 'w': 'ʍ', 'x': 'x',
+              'y': 'ʎ', 'z': 'z', 'A': '∀', 'B': '𐐒', 'C': 'Ɔ', 'D': 'p', 'E': 'Ǝ', 'F': 'Ⅎ',
+              'G': '⅁', 'H': 'H', 'I': 'I', 'J': 'ſ', 'K': 'ʞ', 'L': '˥', 'M': 'W', 'N': 'N',
+              'O': 'O', 'P': 'Ԁ', 'Q': 'Ό', 'R': 'ᴚ', 'S': 'S', 'T': '┴', 'U': '∩', 'V': 'Λ',
+              'W': 'M', 'X': 'X', 'Y': '⅄', 'Z': 'Z', '0': '0', '1': 'Ɩ', '2': 'ᄅ', '3': 'Ɛ',
+              '4': 'ㄣ', '5': 'ϛ', '6': '9', '7': 'ㄥ', '8': '8', '9': '6', '.': '˙', ',': "'",
+              '?': '¿', '!': '¡'
+            };
+            return Array.from(text).reverse().map(ch => flipMap[ch] || ch).join('');
+          }
+        },
+        {
+          name: "t̶e̶x̶t̶ 个性中划删除线 (Strikethrough)",
+          transform: (text) => Array.from(text).map(ch => ch + '\u0336').join('')
+        },
+        {
+          name: "t̲e̲x̲t̲ 典雅下划线 (Underline)",
+          transform: (text) => Array.from(text).map(ch => ch + '\u0332').join('')
+        },
+        {
+          name: "Ｔｅｘｔ 蒸汽波复古全角 (Vaporwave)",
+          transform: (text) => Array.from(text).map(ch => {
+            const code = ch.charCodeAt(0);
+            if (code >= 33 && code <= 126) {
+              return String.fromCharCode(code + 65248);
+            } else if (code === 32) {
+              return '　';
+            }
+            return ch;
+          }).join('')
+        },
+        {
+          name: "✦·. 特殊星芒装饰边框 (Star Borders)",
+          transform: (text) => `✦·.¸¸.·´¯\`·.¸¸.  ${text}  .¸¸.·´¯\`·.¸¸.·✦`
+        },
+        {
+          name: "『』日系留白框线 (Japanese Quotes)",
+          transform: (text) => `『 ${text} 』`
+        }
+      ];
+
+      function transformChars(text, upperMap, lowerMap, digitMap) {
+        // Unicode 分割需按 Array.from 支持 Emoji / 4字节高位字符
+        const uArr = Array.from(upperMap);
+        const lArr = Array.from(lowerMap);
+        const dArr = Array.from(digitMap);
+
+        return Array.from(text).map(ch => {
+          const uIdx = normalUpper.indexOf(ch);
+          if (uIdx !== -1 && uArr[uIdx]) return uArr[uIdx];
+
+          const lIdx = normalLower.indexOf(ch);
+          if (lIdx !== -1 && lArr[lIdx]) return lArr[lIdx];
+
+          const dIdx = normalDigits.indexOf(ch);
+          if (dIdx !== -1 && dArr[dIdx]) return dArr[dIdx];
+
+          return ch;
+        }).join('');
+      }
+
+      function renderAll() {
+        const val = input.value.trim() || 'No Heartburn Tools';
+        container.innerHTML = '';
+
+        maps.forEach(m => {
+          const res = m.transform(val);
+          const card = document.createElement('div');
+          card.className = 'font-card';
+          card.innerHTML = `
+            <div class="card-top">
+              <span class="font-style-name">${CleanTools.escapeHTML(m.name)}</span>
+            </div>
+            <div class="font-preview-text" id="preview-${CleanTools.escapeHTML(m.name)}">${CleanTools.escapeHTML(res)}</div>
+            <button type="button" class="copy-chip-btn" onclick="copyCardText(this)">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <span>Copy此样式</span>
+            </button>
+          `;
+          container.appendChild(card);
+        });
+      }
+
+      window.copyCardText = function (btn) {
+        const text = btn.previousElementSibling.textContent;
+        CleanTools.copyText(text, 'Copied花体字符到剪贴板！');
+      };
+
+      window.setSample = function (text) {
+        input.value = text;
+        renderAll();
+      };
+
+      window.clearInput = function () {
+        input.value = '';
+        renderAll();
+        input.focus();
+      };
+
+      input.addEventListener('input', renderAll);
+      renderAll();
+    })();
+  </script>
+</body>
+</html>

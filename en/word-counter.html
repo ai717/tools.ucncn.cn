@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google 代码 (GTM-52RQ295V) -->
+  <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-52RQ295V"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  </script>
+  <!-- End Google 代码 -->
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Word Counter & Text Analyzer - Character, Word, Paragraph & Reading Time | NoHeartburn Tools</title>
+  <meta name="description" content="Accurate online word count and text statistics tool. Analyzes characters (with and without spaces), words, sentences, paragraphs, reading speed, and speaking duration in real time.">
+  <meta name="keywords" content="word counter, character counter, word count online, letter counter, text length checker, reading time calculator, essay word counter">
+  <meta name="author" content="不烧心免费工具 (tools.ucncn.cn)">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="theme-color" content="#386641">
+  <link rel="canonical" href="https://tools.ucncn.cn/en/word-counter.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://tools.ucncn.cn/word-counter.html">
+  <link rel="alternate" hreflang="en" href="https://tools.ucncn.cn/en/word-counter.html">
+  <link rel="alternate" hreflang="x-default" href="https://tools.ucncn.cn/en/word-counter.html">
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23386641'/%3E%3Cpath d='M30 70 C30 42 50 30 70 30 C70 58 50 70 30 70 Z' fill='%23ffffff'/%3E%3Cpath d='M30 70 L52 48' stroke='%23386641' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='68' cy='32' r='5' fill='%23dbebe0'/%3E%3C/svg%3E">
+
+  <!-- 公共样式基座 -->
+  <link rel="stylesheet" href="../assets/css/style.css?v=20261125_2">
+
+  <style>
+    /* 局部页面布局 */
+    .tool-header {
+      padding: 32px 0 20px;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      transition: color var(--transition-fast);
+    }
+    .back-link:hover {
+      color: var(--primary);
+    }
+    .tool-page-title {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .tool-page-desc {
+      font-size: 0.95rem;
+      color: var(--text-regular);
+      max-width: 760px;
+      line-height: 1.6;
+    }
+
+    /* 统计大盘仪表盘 */
+    .counter-workbench {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: 32px;
+      margin-bottom: 36px;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .metric-card {
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      transition: all var(--transition-fast);
+    }
+    .metric-card.featured {
+      background: linear-gradient(145deg, #f0f7f2 0%, #e8f4ec 100%);
+      border-color: var(--primary-subtle);
+    }
+    .metric-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-xs);
+    }
+    .metric-label {
+      font-size: 0.825rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .metric-value {
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.1;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    .metric-card.featured .metric-value {
+      color: var(--primary);
+    }
+
+    /* 语音配音预估时长卡片 */
+    .duration-banner {
+      background: var(--wood-light);
+      border: 1px solid var(--wood-border);
+      border-radius: var(--radius-md);
+      padding: 18px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .duration-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .duration-title {
+      font-size: 0.8rem;
+      color: var(--wood);
+      font-weight: 600;
+    }
+    .duration-val {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #634327;
+    }
+
+    /* 文本输入区 */
+    .counter-textarea {
+      width: 100%;
+      min-height: 280px;
+      padding: 18px;
+      font-size: 1rem;
+      line-height: 1.7;
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-regular);
+      border-radius: var(--radius-md);
+      color: var(--text-main);
+      resize: vertical;
+      transition: all var(--transition-fast);
+      margin-bottom: 16px;
+    }
+    .counter-textarea:focus {
+      outline: none;
+      background: #ffffff;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(56, 102, 65, 0.12);
+    }
+
+    .counter-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    /* 底部 SEO 文章 */
+    .guide-article {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      margin-bottom: 40px;
+    }
+    .guide-article h2 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .guide-article h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 20px 0 10px;
+    }
+    .guide-article p {
+      font-size: 0.9rem;
+      color: var(--text-regular);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .guide-article ul, .guide-article ol {
+      padding-left: 20px;
+      margin-bottom: 16px;
+      font-size: 0.9rem;
+      color: var(--text-regular);
+      line-height: 1.7;
+    }
+    .guide-article li {
+      margin-bottom: 6px;
+    }
+
+    @media (max-width: 900px) {
+      .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 540px) {
+      .metrics-grid {
+        grid-template-columns: 1fr;
+      }
+      .duration-banner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+
+  <!-- 结构化数据 (JSON-LD: WebApplication & FAQPage) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "Chinese Characters统计与朗读时长预估 (Chinese Word Counter)",
+        "url": "https://tools.ucncn.cn/word-counter.html",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "All",
+        "inLanguage": "zh-CN",
+        "description": "专为中文公文、演讲与视频配音优化的在线字数计算器。准确统计汉字数、英文单词、标点符号与不计空格字符，智能预估正常、快读、慢速演讲配音时长。",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "中文演讲或短视频解说配音时，一分钟通常读多少字？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "中文标准普通话演讲语速通常为每分钟 240~280 汉字；短视频（抖音/快手/B站）快节奏科普解说通常为每分钟 300~350 汉字；深情诗歌朗诵或广播剧通常为每分钟 180~220 汉字。本工具已内置三种语速模型，助您精准把控脚本节奏。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "“汉字总数”与“总字符数”有什么区别？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "‘汉字总数’仅匹配 Unicode 范围内的中文汉字；而‘总字符数’包含了汉字、英文单字母、数字、标点符号及换行符，更适合用于微博或短信息 140 字字数限制核算。"
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- 顶栏导航 -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="./" class="brand" title="返回不烧心免费工具大厅">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12A10 10 0 0 1 12 2z"></path>
+            <path d="M12 6v6l4 2"></path>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">不烧心免费工具</span>
+          <span class="brand-subtitle">tools.ucncn.cn · 免费、免登录、不上传、无广告</span>
+        </div>
+      </a>
+
+            <div class="header-actions">
+        <a href="../word-counter.html" class="lang-switch-btn" title="切换为中文版">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1 4-10z"></path></svg>
+          <span>🇨🇳 中文</span>
+        </a>
+        <div class="header-badge" title="安全沙盒运作中：数据绝不上传服务器">
+          <span class="pulse-dot"></span>
+          <span>纯本地沙盒已就绪</span>
+        </div>
+        <a href="./" class="nav-link">
+          <span>🏠 工具大厅</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主体区域 -->
+  <main class="container">
+    <div class="tool-header">
+      <a href="./" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span>返回工具大厅</span>
+      </a>
+      <h1 class="tool-page-title">
+        <span>⏱️</span>
+        <span>Chinese Characters统计与朗读时长预估 (演讲·配音·公文)</span>
+      </h1>
+      <p class="tool-page-desc">
+        准确统计汉字数、英文单词、标点符号与Paragraphs。依据中文广播播音标准智能计算演讲与配音时长，纯本地计算不上云。
+      </p>
+    </div>
+
+    <!-- 工作台卡片 -->
+    <section class="counter-workbench">
+      <!-- 核心指标网格 -->
+      <div class="metrics-grid">
+        <div class="metric-card featured">
+          <span class="metric-label">🇨🇳 汉字总数</span>
+          <span class="metric-value" id="val-chinese">0</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">🔤 Words</span>
+          <span class="metric-value" id="val-words">0</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">📊 不计空格字符</span>
+          <span class="metric-value" id="val-no-space">0</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">📝 字符总数 (含空格)</span>
+          <span class="metric-value" id="val-total-chars">0</span>
+        </div>
+      </div>
+
+      <!-- 配音与演讲时长横幅 -->
+      <div class="duration-banner">
+        <div class="duration-item">
+          <span class="duration-title">🎙️ 标准演讲语速 (260字/分)</span>
+          <span class="duration-val" id="time-normal">约 0 秒</span>
+        </div>
+        <div class="duration-item">
+          <span class="duration-title">⚡ 快速解说语速 (340字/分)</span>
+          <span class="duration-val" id="time-fast">约 0 秒</span>
+        </div>
+        <div class="duration-item">
+          <span class="duration-title">📻 深情朗诵语速 (190字/分)</span>
+          <span class="duration-val" id="time-slow">约 0 秒</span>
+        </div>
+        <div class="duration-item">
+          <span class="duration-title">📑 结构统计</span>
+          <span class="duration-val" id="text-structure" style="font-size: 1rem; color: var(--wood-hover);">0 段落 · 0 标点</span>
+        </div>
+      </div>
+
+      <!-- 输入文本框 -->
+      <textarea id="text-input" class="counter-textarea" placeholder="在此粘贴或输入需要统计字数的文章、演讲稿或配音脚本..." spellcheck="false" autofocus></textarea>
+
+      <!-- 快捷操作栏 -->
+      <div class="counter-actions">
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button type="button" class="chip-btn" onclick="loadSampleText()">载入示例文本</button>
+          <button type="button" class="chip-btn" style="color: var(--color-danger);" onclick="clearText()">清空输入</button>
+        </div>
+
+        <button type="button" class="batch-btn" onclick="copyCleanText()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          <span>复制当前文本</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- 深度实战指南 (SEO 内容) -->
+    <article class="guide-article">
+      <h2>📘 中文公文发言与短视频脚本配音字数把控全指南</h2>
+
+      <h3>一、为什么普通字数计算器在统计中文时不够准确？</h3>
+      <p>
+        多数传统的 Word 或英文统计工具将“Hello World”算作两个词，但如果中英文混排（如“使用 Python 脚本进行自动化测试”），传统工具往往会将一个汉字粗暴地当成一个字符或若干个字节，无法真实反映汉字数量，也无法准确指导演讲者控制时间。
+      </p>
+
+      <h3>二、常见场景下的黄金语速参考</h3>
+      <ul>
+        <li><strong>工作汇报与正式公文演讲：</strong>正常语速在 <strong>250~280 汉字/分钟</strong>。5 分钟汇报建议准备 1300 字左右，预留 30 秒至 1 分钟用于翻页与停顿强调；</li>
+        <li><strong>短视频（抖音/小红书/B站）解说：</strong>现代短视频观众注意力短暂，配音语速通常需要拉到 <strong>320~350 汉字/分钟</strong>，1 分钟短视频脚本约 300 字最为紧凑饱满；</li>
+        <li><strong>纪录片与夜间电台：</strong>语速需降至 <strong>180~200 汉字/分钟</strong>，留出丰富的配乐与沉浸呼吸感。</li>
+      </ul>
+    </article>
+  </main>
+  <!-- 底栏 -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom" style="justify-content: center; text-align: center;">
+        <div class="footer-desc">
+          &copy; 2026 tools.ucncn.cn · NoHeartburn Tools. Free, no login, no uploads, no ads.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+
+  <!-- 公共交互脚本 -->
+  <script src="../assets/js/common.js"></script>
+
+  <!-- 字数统计与时间换算算法 -->
+  <script>
+    (function () {
+      const textInput = document.getElementById('text-input');
+      const valChinese = document.getElementById('val-chinese');
+      const valWords = document.getElementById('val-words');
+      const valNoSpace = document.getElementById('val-no-space');
+      const valTotalChars = document.getElementById('val-total-chars');
+      const timeNormal = document.getElementById('time-normal');
+      const timeFast = document.getElementById('time-fast');
+      const timeSlow = document.getElementById('time-slow');
+      const textStructure = document.getElementById('text-structure');
+
+      function formatDuration(seconds) {
+        if (seconds < 60) return `约 ${seconds} 秒`;
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return secs > 0 ? `约 ${mins} 分 ${secs} 秒` : `约 ${mins} 分钟`;
+      }
+
+      function compute() {
+        const text = textInput.value;
+        localStorage.setItem('cleantools_wordcount_draft', text);
+
+        if (!text) {
+          valChinese.textContent = '0';
+          valWords.textContent = '0';
+          valNoSpace.textContent = '0';
+          valTotalChars.textContent = '0';
+          timeNormal.textContent = '约 0 秒';
+          timeFast.textContent = '约 0 秒';
+          timeSlow.textContent = '约 0 秒';
+          textStructure.textContent = '0 段落 · 0 标点';
+          return;
+        }
+
+        // 汉字匹配 Unicode [\u4e00-\u9fa5]
+        const chineseMatches = text.match(/[\u4e00-\u9fa5]/g) || [];
+        const chineseCount = chineseMatches.length;
+
+        // 英文单词匹配
+        const wordMatches = text.match(/[a-zA-Z0-9_-]+/g) || [];
+        const wordCount = wordMatches.length;
+
+        // 总字符与去空格字符
+        const totalChars = text.length;
+        const noSpaceChars = text.replace(/\s+/g, '').length;
+
+        // 标点符号匹配
+        const punctMatches = text.match(/[，。！？、；：“”‘’（）《》【】…—,.\!?\-:;'"\(\)\[\]]/g) || [];
+        const punctCount = punctMatches.length;
+
+        // 非空段落
+        const paragraphs = text.split('\n').filter(p => p.trim() !== '').length;
+
+        valChinese.textContent = chineseCount.toLocaleString();
+        valWords.textContent = wordCount.toLocaleString();
+        valNoSpace.textContent = noSpaceChars.toLocaleString();
+        valTotalChars.textContent = totalChars.toLocaleString();
+
+        textStructure.textContent = `${paragraphs} 段落 · ${punctCount} 标点`;
+
+        // 综合有效读数单元：汉字 + 英文词
+        const readingUnits = chineseCount + wordCount;
+
+        const secNormal = Math.round((readingUnits / 260) * 60);
+        const secFast = Math.round((readingUnits / 340) * 60);
+        const secSlow = Math.round((readingUnits / 190) * 60);
+
+        timeNormal.textContent = formatDuration(secNormal);
+        timeFast.textContent = formatDuration(secFast);
+        timeSlow.textContent = formatDuration(secSlow);
+      }
+
+      textInput.addEventListener('input', compute);
+
+      window.clearText = function () {
+        textInput.value = '';
+        compute();
+        textInput.focus();
+        CleanTools.showToast('文本已清空');
+      };
+
+      window.copyCleanText = function () {
+        const text = textInput.value;
+        CleanTools.copyText(text, '已复制当前统计文本！');
+      };
+
+      window.loadSampleText = function () {
+        textInput.value = `尊敬的各位评委、同事们：
+
+大家好！今天我非常荣幸能够站在这里，与大家分享关于“极简产品主义与用户信任”的思考。
+
+在过去的几年中，我们见证了互联网工具生态的巨大繁荣，但同时也伴随着前所未有的焦虑。很多原本小巧实用的工具，在资本与商业化的裹挟下，逐渐变成了强制扫码关注的迷宫、到处闪烁着假下载按钮的雷区，甚至动辄要求用户充值高昂月卡。
+
+天下打工人苦流氓工具站久矣。我们始终坚信，一个真正的好工具应当是“用着不烧心”的：免登录、真免费、数据不上云，让每一次点击都充满安全与确定性。
+
+感谢大家的聆听，谢谢！`;
+        compute();
+        CleanTools.showToast('已载入 3 分钟演讲稿范例');
+      };
+
+      // 载入本地暂存草稿
+      const saved = localStorage.getItem('cleantools_wordcount_draft');
+      if (saved) {
+        textInput.value = saved;
+      } else {
+        loadSampleText();
+      }
+      compute();
+    })();
+  </script>
+</body>
+</html>

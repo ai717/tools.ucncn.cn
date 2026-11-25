@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google 代码 (GTM-52RQ295V) -->
+  <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-52RQ295V"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  </script>
+  <!-- End Google 代码 -->
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Printer Test Page - CMYK Color Calibration & Nozzle Alignment | NoHeartburn Tools</title>
+  <meta name="description" content="Download or print standard printer test pages online. Includes CMYK color blocks, grayscale gradients, fine text sharpness tests, and printhead unclogging patterns.">
+  <meta name="keywords" content="printer test page, print test page pdf, cmyk test page, color printer test page, printhead nozzle check, printer alignment test page">
+  <meta name="author" content="不烧心免费工具 (tools.ucncn.cn)">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="theme-color" content="#386641">
+  <link rel="canonical" href="https://tools.ucncn.cn/en/print-test-page.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://tools.ucncn.cn/print-test-page.html">
+  <link rel="alternate" hreflang="en" href="https://tools.ucncn.cn/en/print-test-page.html">
+  <link rel="alternate" hreflang="x-default" href="https://tools.ucncn.cn/en/print-test-page.html">
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23386641'/%3E%3Cpath d='M30 70 C30 42 50 30 70 30 C70 58 50 70 30 70 Z' fill='%23ffffff'/%3E%3Cpath d='M30 70 L52 48' stroke='%23386641' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='68' cy='32' r='5' fill='%23dbebe0'/%3E%3C/svg%3E">
+
+  <!-- 公共样式基座 -->
+  <link rel="stylesheet" href="../assets/css/style.css?v=20261125_2">
+
+  <style>
+    /* 工具页面顶部返回与标题 */
+    .tool-header {
+      padding: 32px 0 20px;
+    }
+    .back-link {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      text-decoration: none;
+      transition: color var(--transition-fast);
+    }
+    .back-link svg {
+      display: inline-block !important;
+      flex-shrink: 0;
+      transition: transform var(--transition-fast);
+    }
+    .back-link:hover {
+      color: var(--primary);
+    }
+    .back-link:hover svg {
+      transform: translateX(-3px);
+    }
+    .tool-page-title {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .tool-page-desc {
+      font-size: 0.95rem;
+      color: var(--text-regular);
+      max-width: 760px;
+      line-height: 1.6;
+    }
+
+    .test-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 16px 20px;
+      box-shadow: var(--shadow-sm);
+    }
+    .preview-stage {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 32px;
+    }
+    /* 模拟真实的 A4 比例画布 (1 : 1.414) */
+    .a4-sheet {
+      width: 100%;
+      max-width: 680px;
+      aspect-ratio: 1 / 1.414;
+      background: #ffffff;
+      border: 1px solid var(--border-regular);
+      border-radius: var(--radius-xs);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-sizing: border-box;
+      user-select: none;
+    }
+    .sheet-header {
+      border-bottom: 2px solid #000;
+      padding-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .sheet-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #000;
+    }
+    .sheet-meta {
+      font-size: 0.75rem;
+      color: #555;
+      font-family: monospace;
+    }
+
+    /* CMYK 色块测试行 */
+    .cmyk-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin: 12px 0;
+    }
+    .cmyk-block {
+      height: 48px;
+      border-radius: 3px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    }
+
+    /* 灰阶色阶梯 */
+    .gradient-bar {
+      height: 24px;
+      background: linear-gradient(to right, #000000 0%, #ffffff 100%);
+      border: 1px solid #ccc;
+      margin-bottom: 6px;
+    }
+    .steps-row {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      height: 20px;
+      border: 1px solid #ccc;
+      margin-bottom: 12px;
+    }
+
+    /* 对齐标尺与线段 */
+    .lines-test-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 12px 0;
+    }
+    .line-box {
+      border: 1px solid #eee;
+      padding: 8px;
+    }
+
+    /* 打印专用媒体查询：打印时全屏铺满纸张，隐去所有网站框架 */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      .a4-sheet, .a4-sheet * {
+        visibility: visible;
+      }
+      .a4-sheet {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        max-width: none;
+        border: none;
+        box-shadow: none;
+        padding: 10mm;
+      }
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+    }
+  </style>
+
+  <!-- 结构化数据 (JSON-LD: WebApplication & FAQPage) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "打印机测试页生成器 (Print Test Page)",
+        "url": "https://tools.ucncn.cn/print-test-page.html",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "All",
+        "inLanguage": "zh-CN",
+        "description": "纯前端本地生成高精度 A4 打印机测试页，提供 CMYK 四色校准条、灰阶梯度、网格对齐与极细文字测试，一键无水印打印。",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "为什么打印测试页可以排查喷头堵头故障？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "测试页分别调用青色(C)、品红(M)、黄色(Y)和黑色(K)的单色块打印。若某一种颜色出现横向白线或整块缺失，即可准确锁定是哪个颜色的喷头发生堵塞或墨盒耗尽。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "打印出来的页面会带有网站的水印或网址吗？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "完全不会！本站内置了打印专用样式表 (@media print)，点击“立即开始打印”后，浏览器会自动隐去所有网站顶栏、底栏与背景，仅输出标准洁净的 A4 校准图。"
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- 顶栏导航 -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="./" class="brand" title="返回不烧心免费工具大厅">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12A10 10 0 0 1 12 2z"></path>
+            <path d="M12 6v6l4 2"></path>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">不烧心免费工具</span>
+          <span class="brand-subtitle">tools.ucncn.cn · 免费、免登录、不上传、无广告</span>
+        </div>
+      </a>
+
+      <div class="header-actions">
+        <a href="../print-test-page.html" class="lang-switch-btn" title="切换为中文版">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1 4-10z"></path></svg>
+          <span>🇨🇳 中文</span>
+        </a>
+        <div class="header-badge" title="安全沙盒运作中：数据绝不上传服务器">
+          <span class="pulse-dot"></span>
+          <span>纯本地沙盒已就绪</span>
+        </div>
+        <a href="./" class="nav-link">
+          <span>🏠 工具大厅</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主体区域 -->
+  <main class="container">
+    <div class="tool-header">
+      <a href="./" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span>返回工具大厅</span>
+      </a>
+      <h1 class="tool-page-title">
+        <span>🖨️</span>
+        <span>打印机专业测试页生成器</span>
+      </h1>
+      <p class="tool-page-desc">
+        快速检验喷墨/激光打印机喷头断线、颜色失真、双面对齐与文字清晰度。点击直接唤醒系统打印，洁净无水印。
+      </p>
+    </div>
+
+    <!-- 控制面板 -->
+    <div class="test-toolbar">
+      <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+        <span style="font-weight: 700; font-size: 0.875rem; color: var(--text-main);">📑 测试卡类型：</span>
+        <button type="button" class="preset-chip active" id="btn-mode-standard" onclick="setMode('standard')">综合标准校准卡</button>
+        <button type="button" class="preset-chip" id="btn-mode-cmyk" onclick="setMode('cmyk')">CMYK 四色深层排堵</button>
+        <button type="button" class="preset-chip" id="btn-mode-mono" onclick="setMode('mono')">黑白灰阶阶调卡</button>
+      </div>
+
+      <div style="display: flex; gap: 10px;">
+        <button type="button" class="btn primary" onclick="triggerPrint()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
+          </svg>
+          <span>立即调起打印 (Ctrl+P)</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- A4 纸张模拟预览舞台 -->
+    <div class="preview-stage">
+      <div class="a4-sheet" id="print-sheet">
+        <!-- 纸张顶栏 -->
+        <div class="sheet-header">
+          <div>
+            <div class="sheet-title" id="sheet-title-text">PRINTER DIAGNOSTIC & CALIBRATION TEST PAGE</div>
+            <div style="font-size: 0.8rem; color: #333; margin-top: 2px;">打印机喷头状态与高精度色彩校准测试页</div>
+          </div>
+          <div class="sheet-meta">
+            <span>A4 · 100% SCALE</span><br>
+            <span id="print-timestamp">2026-11-25</span>
+          </div>
+        </div>
+
+        <!-- CMYK 四色块区 -->
+        <div>
+          <div style="font-size: 0.75rem; font-weight: 700; color: #444; margin-bottom: 4px;">CMYK PRIMARY COLOR JETS (四色喷头检测)</div>
+          <div class="cmyk-row">
+            <div class="cmyk-block" style="background: #00ffff; color: #000;">
+              <span>CYAN (青)</span>
+              <span style="font-size: 0.65rem;">C: 100%</span>
+            </div>
+            <div class="cmyk-block" style="background: #ff00ff;">
+              <span>MAGENTA (品红)</span>
+              <span style="font-size: 0.65rem;">M: 100%</span>
+            </div>
+            <div class="cmyk-block" style="background: #ffff00; color: #000;">
+              <span>YELLOW (黄)</span>
+              <span style="font-size: 0.65rem;">Y: 100%</span>
+            </div>
+            <div class="cmyk-block" style="background: #000000;">
+              <span>BLACK (黑)</span>
+              <span style="font-size: 0.65rem;">K: 100%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 灰度阶梯与渐变过渡 -->
+        <div>
+          <div style="font-size: 0.75rem; font-weight: 700; color: #444; margin-bottom: 4px;">GRAYSCALE & HALFTONE GRADIENT (灰阶与阶调连续性)</div>
+          <div class="gradient-bar"></div>
+          <div class="steps-row" id="steps-container">
+            <!-- 动态生成 10 个灰阶格 -->
+          </div>
+        </div>
+
+        <!-- 细线与几何对准 -->
+        <div class="lines-test-grid">
+          <div class="line-box">
+            <div style="font-size: 0.7rem; font-weight: 700; margin-bottom: 4px;">RESOLUTION & LINE WIDTH (线宽解析度)</div>
+            <div style="border-top: 0.5px solid #000; margin: 4px 0;"></div>
+            <div style="border-top: 1px solid #000; margin: 4px 0;"></div>
+            <div style="border-top: 2px solid #000; margin: 4px 0;"></div>
+            <div style="border-top: 3px solid #000; margin: 4px 0;"></div>
+            <div style="font-size: 0.65rem; color: #666;">Lines: 0.5pt / 1pt / 2pt / 3pt 无毛刺断裂即为合格</div>
+          </div>
+
+          <div class="line-box">
+            <div style="font-size: 0.7rem; font-weight: 700; margin-bottom: 4px;">TEXT LEGIBILITY (字体锐度极限)</div>
+            <div style="font-size: 6pt; line-height: 1.2;">6pt: The quick brown fox jumps over the lazy dog. 敏捷的棕狐跨过懒狗。</div>
+            <div style="font-size: 8pt; line-height: 1.2;">8pt: 打印机微米级进纸平稳度测试文本。</div>
+            <div style="font-size: 10pt; font-weight: bold; line-height: 1.2;">10pt: Standard Document Text (标准公文宋体)</div>
+          </div>
+        </div>
+
+        <!-- 纸张底栏标尺说明 -->
+        <div style="border-top: 1px solid #ccc; padding-top: 6px; display: flex; justify-content: space-between; font-size: 0.7rem; color: #666;">
+          <span>NOZZLE CHECK: 若色块中出现水平细白纹，请执行打印机喷头清洗程序。</span>
+          <span>tools.ucncn.cn · 不烧心纯净测试卡</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 深度实战指南 (SEO 内容) -->
+    <article class="guide-article" style="background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 32px; margin-bottom: 40px;">
+      <h2>📘 打印机出现横纹、偏色或字迹模糊如何排查？</h2>
+
+      <h3>一、常见打印故障的诊断口诀</h3>
+      <ul>
+        <li><strong>连续横向白线</strong>：典型喷墨喷头轻微堵墨，某个微小喷嘴未出墨，打印测试页后在设置中执行 1~2 次“清洗喷头”即可恢复；</li>
+        <li><strong>严重偏色（如全篇泛红或泛蓝）</strong>：某种基础色（多为黄色或青色）供墨中断或墨盒耗尽；</li>
+        <li><strong>字迹左右重影或锯齿对不齐</strong>：打印头物理光栅条脏污或双向打印对齐偏差，需执行“打印头校准”；</li>
+        <li><strong>纵向固定周期的黑斑或白条</strong>：多见于激光打印机，通常是感光鼓划伤或定影辊粘粉所致。</li>
+      </ul>
+
+      <h3>二、为什么不建议直接打印一张普通彩色图片做测试？</h3>
+      <p>
+        常规彩色照片是由系统自动通过半色调算法将 CMYK 混合计算生成的，很难一眼看清究竟是哪个单独通道发生了断线。而本测试页严格输出了 <strong>100% 饱和度的纯青、纯品红、纯黄与纯黑标准块</strong>，能一秒定位问题喷嘴。
+      </p>
+
+      <h3>三、纯前端打印的优势</h3>
+      <p>
+        市面上很多所谓的测试卡下载站点需要下载 PDF 并安装带有广告的看图软件，甚至带有巨大的第三方推广水印，浪费打工人纸张和墨水。本工具直接在浏览器调用硬件级打印驱动，无水印、不收费、随开随用。
+      </p>
+    </article>
+  </main>
+
+  <!-- 底栏 -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom" style="justify-content: center; text-align: center;">
+        <div class="footer-desc">
+          &copy; 2026 tools.ucncn.cn · NoHeartburn Tools. Free, no login, no uploads, no ads.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 公共交互脚本 -->
+  <script src="../assets/js/common.js"></script>
+
+  <!-- 测试页逻辑脚本 -->
+  <script>
+    (function () {
+      const stepsContainer = document.getElementById('steps-container');
+      const timestamp = document.getElementById('print-timestamp');
+
+      // 设置当前时间戳
+      const now = new Date();
+      timestamp.textContent = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+
+      // 渲染 10 阶灰阶
+      for (let i = 0; i < 10; i++) {
+        const div = document.createElement('div');
+        const gray = Math.round(255 * (i / 9));
+        div.style.backgroundColor = `rgb(${gray}, ${gray}, ${gray})`;
+        div.title = `${Math.round((i / 9) * 100)}% 灰度`;
+        stepsContainer.appendChild(div);
+      }
+
+      window.setMode = function (mode) {
+        document.querySelectorAll('.test-toolbar .preset-chip').forEach(btn => btn.classList.remove('active'));
+        const activeBtn = document.getElementById(`btn-mode-${mode}`);
+        if (activeBtn) activeBtn.classList.add('active');
+
+        const titleText = document.getElementById('sheet-title-text');
+        if (mode === 'cmyk') {
+          titleText.textContent = 'CMYK COLOR RECOVERY & NOZZLE FLUSH PAGE';
+          CleanTools.showToast('已切换至 CMYK 四色排堵高密度模式');
+        } else if (mode === 'mono') {
+          titleText.textContent = 'MONOCHROME LASER & HALFTONE CALIBRATION';
+          CleanTools.showToast('已切换至黑白灰阶阶调卡模式');
+        } else {
+          titleText.textContent = 'PRINTER DIAGNOSTIC & CALIBRATION TEST PAGE';
+          CleanTools.showToast('已切换至综合标准测试卡');
+        }
+      };
+
+      window.triggerPrint = function () {
+        window.print();
+      };
+    })();
+  </script>
+</body>
+</html>

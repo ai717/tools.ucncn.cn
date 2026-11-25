@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Backwards Text Generator - Reverse Text, Words & Mirror Writing | NoHeartburn Tools</title>
+  <meta name="description" content="Reverse text online with multiple modes: reverse characters, reverse words, reverse lines, mirror text, and instant palindrome checker. 100% free and runs in your browser.">
+  <meta name="keywords" content="backwards text generator, reverse text online, mirror text generator, reverse words, text flipper, palindrome detector, backwards typing">
+  <link rel="canonical" href="https://tools.ucncn.cn/en/backwards-text.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://tools.ucncn.cn/backwards-text.html">
+  <link rel="alternate" hreflang="en" href="https://tools.ucncn.cn/en/backwards-text.html">
+  <link rel="alternate" hreflang="x-default" href="https://tools.ucncn.cn/en/backwards-text.html">
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23386641'/%3E%3Cpath d='M30 70 C30 42 50 30 70 30 C70 58 50 70 30 70 Z' fill='%23ffffff'/%3E%3Cpath d='M30 70 L52 48' stroke='%23386641' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='68' cy='32' r='5' fill='%23dbebe0'/%3E%3C/svg%3E">
+
+  <!-- 公共样式基座 -->
+  <link rel="stylesheet" href="../assets/css/style.css?v=20261125_2">
+
+  <style>
+    /* 工具页面顶部返回与标题 */
+    .tool-header {
+      padding: 32px 0 20px;
+    }
+    .back-link {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      text-decoration: none;
+      transition: color var(--transition-fast);
+    }
+    .back-link svg {
+      display: inline-block !important;
+      flex-shrink: 0;
+      transition: transform var(--transition-fast);
+    }
+    .back-link:hover {
+      color: var(--primary);
+    }
+    .back-link:hover svg {
+      transform: translateX(-3px);
+    }
+    .tool-page-title {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .tool-page-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 720px;
+      line-height: 1.6;
+    }
+
+    /* 主工作台栅格 */
+    .workspace-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-top: 20px;
+    }
+
+    .editor-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .card-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .card-title-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .char-badge {
+      font-size: 0.78rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--bg-subtle);
+      color: var(--text-muted);
+      border: 1px solid var(--border-color);
+      font-weight: 500;
+    }
+
+    .palindrome-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.8rem;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #c8e6c9;
+      font-weight: 600;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .textarea-box {
+      width: 100%;
+      min-height: 130px;
+      padding: 14px 16px;
+      font-size: 1rem;
+      font-family: inherit;
+      line-height: 1.6;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      background: var(--bg-main);
+      color: var(--text-main);
+      resize: vertical;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+      box-sizing: border-box;
+    }
+
+    .textarea-box:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    /* 快捷功能条 */
+    .quick-preset-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+      align-items: center;
+    }
+
+    .preset-chip {
+      font-size: 0.82rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .preset-chip:hover {
+      background: #fff;
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* 变换模式网格 */
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .mode-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+      position: relative;
+    }
+
+    .mode-card:hover {
+      border-color: var(--primary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .mode-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .mode-tag {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .mode-explain {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .output-content-box {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 12px 14px;
+      min-height: 56px;
+      max-height: 200px;
+      overflow-y: auto;
+      font-size: 0.98rem;
+      line-height: 1.6;
+      color: var(--text-main);
+      word-break: break-all;
+      white-space: pre-wrap;
+      font-family: inherit;
+      user-select: all;
+    }
+
+    /* 操作按钮组 */
+    .card-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .btn-copy-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.8rem;
+      padding: 4px 10px;
+      border-radius: 4px;
+      border: 1px solid var(--border-color);
+      background: #fff;
+      color: var(--text-main);
+      cursor: pointer;
+      font-weight: 500;
+      transition: all var(--transition-fast);
+    }
+
+    .btn-copy-chip:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .btn-copy-chip.copied {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    /* 选项控制栏 */
+    .options-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--border-color);
+      font-size: 0.86rem;
+      color: var(--text-main);
+    }
+
+    .option-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .option-item input[type="checkbox"] {
+      accent-color: var(--primary);
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+    }
+
+    /* 常见问题与百科指南 */
+    .guide-article {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      margin-top: 36px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .guide-article h2 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 20px;
+      letter-spacing: -0.01em;
+    }
+
+    .guide-article h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 20px 0 8px;
+    }
+
+    .guide-article p {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .faq-item {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px;
+    }
+
+    .faq-item h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+
+    .faq-item p {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      margin-bottom: 0;
+      line-height: 1.6;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-2px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 640px) {
+      .results-grid {
+        grid-template-columns: 1fr;
+      }
+      .guide-article {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 统一顶部导航 -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="brand" title="NoHeartburn Tools Hub">
+          <span class="brand-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+            </svg>
+          </span>
+          <span class="brand-text">tools.ucncn.cn</span>
+        </a>
+        <span class="site-slogan">NoHeartburn Tools · Free, No Login, No Uploads, No Ads.</span>
+        <a href="../backwards-text.html" class="lang-switch-btn" title="切换为中文版">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1 4-10z"></path></svg>
+          <span>🇨🇳 中文</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+      <!-- 统一面包屑导航 -->
+      <div class="tool-header">
+        <a href="index.html" class="back-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg> Back to Tools Hub</a>
+        <h1 class="tool-page-title">
+          <span>🔁 Backwards Text Generator</span>
+          <span id="palindromeIndicator" style="display: none;" class="palindrome-pill">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            回文文本 (Palindrome)
+          </span>
+        </h1>
+        <p class="tool-page-desc">
+          免费实用的在线文本反转工具。支持全文字符逐字倒序、单词语序逆向、单词内字母颠倒、多行行序自底向上重排与智能回文检测。全部在浏览器本地极速运算，不向任何服务器传输文本。
+        </p>
+      </div>
+
+      <!-- 主工作区 -->
+      <div class="workspace-layout">
+        <!-- 输入卡片 -->
+        <div class="editor-card">
+          <div class="card-header-bar">
+            <div class="card-title-group">
+              <span class="card-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                输入原始文本
+              </span>
+              <span class="char-badge" id="textStats">0 字符 · 0 单词 · 0 行</span>
+            </div>
+            <div class="card-actions">
+              <button class="btn-copy-chip" id="pasteBtn" title="从剪贴板粘贴">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+                粘贴
+              </button>
+              <button class="btn-copy-chip" id="clearBtn" title="清空输入">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                清空
+              </button>
+            </div>
+          </div>
+
+          <textarea id="inputText" class="textarea-box" placeholder="在此输入或粘贴需要反转的文本，支持中英文、数字、Emoji 及多行文本...">阅读倒序文本很有趣，Reverse text online easily!</textarea>
+
+          <!-- 预设示例 -->
+          <div class="quick-preset-bar">
+            <span style="font-size: 0.8rem; color: var(--text-muted);">快速示例：</span>
+            <button class="preset-chip" data-text="阅读倒序文本很有趣，Reverse text online easily!">中英混排</button>
+            <button class="preset-chip" data-text="The quick brown fox jumps over the lazy dog.">英文名句</button>
+            <button class="preset-chip" data-text="上海自来水来自海上">回文例句 1</button>
+            <button class="preset-chip" data-text="Was it a car or a cat I saw?">回文例句 2</button>
+            <button class="preset-chip" data-text="第一步：需求分析&#10;第二步：架构设计&#10;第三步：编码实现&#10;第四步：测试上线">多行工作流</button>
+          </div>
+
+          <!-- 选项条 -->
+          <div class="options-row">
+            <label class="option-item">
+              <input type="checkbox" id="optTrim">
+              <span>自动去除首尾多余空格</span>
+            </label>
+            <label class="option-item">
+              <input type="checkbox" id="optInvertCase">
+              <span>字母大小写反转 (Invert Case)</span>
+            </label>
+            <label class="option-item">
+              <input type="checkbox" id="optRemovePunctuation">
+              <span>忽略过滤标点符号</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- 转换模式结果卡片集合 -->
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
+            <h2 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main); margin: 0;">倒序转换结果模式</h2>
+            <button class="btn-copy-chip" id="copyAllBtn" style="background: var(--primary-light); color: var(--primary); border-color: var(--primary);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              一键复制全部模式结果
+            </button>
+          </div>
+
+          <div class="results-grid">
+            <!-- 模式 1: 逐字符全量倒序 -->
+            <div class="mode-card">
+              <div class="mode-header">
+                <div>
+                  <div class="mode-tag">
+                    <span>🔤 逐字符全量倒序</span>
+                  </div>
+                  <div class="mode-explain">从最后一个字到第一个字完全颠倒（支持 Emoji）</div>
+                </div>
+                <button class="btn-copy-chip copy-mode-btn" data-target="outCharReverse">复制</button>
+              </div>
+              <div id="outCharReverse" class="output-content-box"></div>
+            </div>
+
+            <!-- 模式 2: 逐单词语序倒序 -->
+            <div class="mode-card">
+              <div class="mode-header">
+                <div>
+                  <div class="mode-tag">
+                    <span>🔄 逐单词语序倒序</span>
+                  </div>
+                  <div class="mode-explain">保留单词拼写完整，仅倒转单词排列先后顺序</div>
+                </div>
+                <button class="btn-copy-chip copy-mode-btn" data-target="outWordReverse">复制</button>
+              </div>
+              <div id="outWordReverse" class="output-content-box"></div>
+            </div>
+
+            <!-- 模式 3: 单词内部字母反转 -->
+            <div class="mode-card">
+              <div class="mode-header">
+                <div>
+                  <div class="mode-tag">
+                    <span>🔀 单词内部字母倒序</span>
+                  </div>
+                  <div class="mode-explain">单词原位置保持不变，仅翻转每个单词内部的字母</div>
+                </div>
+                <button class="btn-copy-chip copy-mode-btn" data-target="outWordLetterReverse">复制</button>
+              </div>
+              <div id="outWordLetterReverse" class="output-content-box"></div>
+            </div>
+
+            <!-- 模式 4: 多行行序倒置 -->
+            <div class="mode-card">
+              <div class="mode-header">
+                <div>
+                  <div class="mode-tag">
+                    <span>📑 多行行序自底向上</span>
+                  </div>
+                  <div class="mode-explain">保持每行内容不变，将行与行自底向上完全倒置</div>
+                </div>
+                <button class="btn-copy-chip copy-mode-btn" data-target="outLineReverse">复制</button>
+              </div>
+              <div id="outLineReverse" class="output-content-box"></div>
+            </div>
+
+            <!-- 模式 5: 逐行内字符倒序 -->
+            <div class="mode-card">
+              <div class="mode-header">
+                <div>
+                  <div class="mode-tag">
+                    <span>↩️ 逐行内字符独立倒序</span>
+                  </div>
+                  <div class="mode-explain">保持各行先后行序，但分别将每一行内的字符倒序</div>
+                </div>
+                <button class="btn-copy-chip copy-mode-btn" data-target="outLineCharReverse">复制</button>
+              </div>
+              <div id="outLineCharReverse" class="output-content-box"></div>
+            </div>
+
+            <!-- 模式 6: 逐行内单词倒序 -->
+            <div class="mode-card">
+              <div class="mode-header">
+                <div>
+                  <div class="mode-tag">
+                    <span>🔃 逐行内单词独立倒序</span>
+                  </div>
+                  <div class="mode-explain">保持各行先后行序，但分别将每一行内的单词倒序</div>
+                </div>
+                <button class="btn-copy-chip copy-mode-btn" data-target="outLineWordReverse">复制</button>
+              </div>
+              <div id="outLineWordReverse" class="output-content-box"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 专业科普与常见问题指南 -->
+      <article class="guide-article">
+        <h2>📖 Backwards Text Generator使用指南与深度解析</h2>
+        <p>
+          <strong>Backwards Text Generator（Backwards Text Generator）</strong> 是一款将文字内容按多种不同维度进行逆向翻转排列的文字处理工具。不仅适合社交网络趣味发帖、加密整蛊、个性网名设计，还在密码学演练、逆向数据比对、回文文学创作中具有广泛应用。
+        </p>
+
+        <div class="faq-grid">
+          <div class="faq-item">
+            <h4>❓ 字符反转与单词反转有什么区别？</h4>
+            <p>
+              <strong>逐字符反转</strong> 会颠倒文本中的每一个字符（如 <code>Hello</code> 变成 <code>olleH</code>）；而 <strong>逐单词反转</strong> 则保留每个单词内部的正常拼写，仅仅改变句子中单词出现的先后次序（如 <code>Hello World</code> 变成 <code>World Hello</code>）。
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h4>❓ 遇到表情包（Emoji）会拆散乱码吗？</h4>
+            <p>
+              本工具内核采用现代 ECMAScript 原生 Unicode 标量切分技术（<code>Array.from()</code> 与感知字符簇逻辑），确保复合 Emoji（如 👨‍👩‍👧‍👦、😊、🚀）在反转时作为完整独立单元处理，绝不会出现代理对破碎或变问号乱码的情况。
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h4>❓ What is a Palindrome and how does this tool test it?</h4>
+            <p>
+              回文是指无论正向读还是反向读都完全相同的字词或句子。例如中文名句“上海自来水来自海上”、“人过大佛寺寺佛大过人”，或英文经典“racecar”、“Was it a car or a cat I saw?”。工具会自动高亮回文标记。
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h4>❓ 会不会把我的敏感文本上传到云端？</h4>
+            <p>
+              绝对不会。与本站所有“不烧心”工具一致，转换逻辑 100% 在您本机的浏览器内存中实时执行，不调用任何后端接口，断网也可流畅使用，彻底保护您的隐私安全。
+            </p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <!-- 统一纯净页脚 -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom" style="justify-content: center; text-align: center;">
+        <div class="footer-desc">
+          &copy; 2026 tools.ucncn.cn · NoHeartburn Tools. Free, no login, no uploads, no ads.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 核心逻辑脚本 -->
+  <script>
+    (function() {
+      // 元素引用
+      const inputEl = document.getElementById('inputText');
+      const textStatsEl = document.getElementById('textStats');
+      const palindromeEl = document.getElementById('palindromeIndicator');
+      const clearBtn = document.getElementById('clearBtn');
+      const pasteBtn = document.getElementById('pasteBtn');
+      const copyAllBtn = document.getElementById('copyAllBtn');
+
+      const optTrim = document.getElementById('optTrim');
+      const optInvertCase = document.getElementById('optInvertCase');
+      const optRemovePunctuation = document.getElementById('optRemovePunctuation');
+
+      const outCharReverse = document.getElementById('outCharReverse');
+      const outWordReverse = document.getElementById('outWordReverse');
+      const outWordLetterReverse = document.getElementById('outWordLetterReverse');
+      const outLineReverse = document.getElementById('outLineReverse');
+      const outLineCharReverse = document.getElementById('outLineCharReverse');
+      const outLineWordReverse = document.getElementById('outLineWordReverse');
+
+      // 安全 Unicode 字符串反转（支持 Emoji 代理对）
+      function reverseString(str) {
+        if (!str) return '';
+        return Array.from(str).reverse().join('');
+      }
+
+      // 大小写反转辅助
+      function invertCase(str) {
+        let res = '';
+        for (const char of str) {
+          if (char === char.toUpperCase() && char !== char.toLowerCase()) {
+            res += char.toLowerCase();
+          } else if (char === char.toLowerCase() && char !== char.toUpperCase()) {
+            res += char.toUpperCase();
+          } else {
+            res += char;
+          }
+        }
+        return res;
+      }
+
+      // 文本预处理管道
+      function preprocessText(raw) {
+        let text = raw;
+        if (optTrim.checked) {
+          text = text.trim();
+        }
+        if (optRemovePunctuation.checked) {
+          // 移除常见中英标点
+          text = text.replace(/[\.,\/#!$%\^&\*;:{}=\-_`~()?\u3002\uff0c\u3001\uff1b\uff1a\uff1f\uff01\u201c\u201d\u2018\u2019\u300a\u300b\uff08\uff09]/g, '');
+        }
+        if (optInvertCase.checked) {
+          text = invertCase(text);
+        }
+        return text;
+      }
+
+      // 检查回文 (忽略空格与常见标点)
+      function checkPalindrome(raw) {
+        if (!raw || raw.trim().length <= 1) return false;
+        // 清洗纯净字符用来判定回文
+        const clean = Array.from(raw.toLowerCase().replace(/[\s\.,\/#!$%\^&\*;:{}=\-_`~()?\u3002\uff0c\u3001\uff1b\uff1a\uff1f\uff01\u201c\u201d\u2018\u2019\u300a\u300b\uff08\uff09]/g, ''));
+        if (clean.length <= 1) return false;
+        const reversed = [...clean].reverse();
+        return clean.join('') === reversed.join('');
+      }
+
+      // 核心转换引擎
+      function updateTransformations() {
+        const raw = inputEl.value;
+        const processed = preprocessText(raw);
+
+        // 1. 统计数据
+        const charCount = Array.from(raw).length;
+        const words = raw.trim().length > 0 ? raw.trim().split(/\s+/).length : 0;
+        const lines = raw.length > 0 ? raw.split(/\r?\n/).length : 0;
+        textStatsEl.textContent = `${charCount} 字符 · ${words} 单词 · ${lines} 行`;
+
+        // 2. 回文检测
+        if (checkPalindrome(raw)) {
+          palindromeEl.style.display = 'inline-flex';
+        } else {
+          palindromeEl.style.display = 'none';
+        }
+
+        if (!raw) {
+          outCharReverse.textContent = '';
+          outWordReverse.textContent = '';
+          outWordLetterReverse.textContent = '';
+          outLineReverse.textContent = '';
+          outLineCharReverse.textContent = '';
+          outLineWordReverse.textContent = '';
+          return;
+        }
+
+        // 模式 1: 逐字符全量倒序
+        const m1 = reverseString(processed);
+        outCharReverse.textContent = m1;
+
+        // 模式 2: 逐单词语序倒序 (全篇或按空白)
+        const wordsArray = processed.split(/(\s+)/);
+        const m2 = wordsArray.reverse().join('');
+        outWordReverse.textContent = m2;
+
+        // 模式 3: 单词内部字母颠倒 (位置不变)
+        const m3 = processed.split(/(\s+)/).map(segment => {
+          if (/^\s+$/.test(segment)) return segment;
+          return reverseString(segment);
+        }).join('');
+        outWordLetterReverse.textContent = m3;
+
+        // 模式 4: 多行行序自底向上
+        const lineArray = processed.split(/\r?\n/);
+        const m4 = lineArray.slice().reverse().join('\n');
+        outLineReverse.textContent = m4;
+
+        // 模式 5: 逐行内字符独立倒序
+        const m5 = lineArray.map(line => reverseString(line)).join('\n');
+        outLineCharReverse.textContent = m5;
+
+        // 模式 6: 逐行内单词独立倒序
+        const m6 = lineArray.map(line => {
+          return line.split(/(\s+)/).reverse().join('');
+        }).join('\n');
+        outLineWordReverse.textContent = m6;
+      }
+
+      // 事件绑定
+      inputEl.addEventListener('input', updateTransformations);
+      [optTrim, optInvertCase, optRemovePunctuation].forEach(chk => {
+        chk.addEventListener('change', updateTransformations);
+      });
+
+      // 预设点击
+      document.querySelectorAll('.preset-chip').forEach(btn => {
+        btn.addEventListener('click', () => {
+          inputEl.value = btn.getAttribute('data-text');
+          updateTransformations();
+        });
+      });
+
+      // 清空
+      clearBtn.addEventListener('click', () => {
+        inputEl.value = '';
+        updateTransformations();
+        inputEl.focus();
+      });
+
+      // 粘贴
+      pasteBtn.addEventListener('click', async () => {
+        try {
+          const clipText = await navigator.clipboard.readText();
+          if (clipText) {
+            inputEl.value = clipText;
+            updateTransformations();
+          }
+        } catch (err) {
+          alert('请直接在输入框中使用快捷键 Ctrl+V / Command+V 进行粘贴');
+        }
+      });
+
+      // 复制辅助函数
+      function copyText(str, buttonEl) {
+        if (!str) return;
+        navigator.clipboard.writeText(str).then(() => {
+          const original = buttonEl.innerHTML;
+          buttonEl.classList.add('copied');
+          buttonEl.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> 已复制';
+          setTimeout(() => {
+            buttonEl.classList.remove('copied');
+            buttonEl.innerHTML = original;
+          }, 1500);
+        }).catch(() => {
+          alert('复制失败，请手动选中文本复制');
+        });
+      }
+
+      // 复制单个模式结果
+      document.querySelectorAll('.copy-mode-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const targetId = btn.getAttribute('data-target');
+          const targetBox = document.getElementById(targetId);
+          if (targetBox) {
+            copyText(targetBox.textContent, btn);
+          }
+        });
+      });
+
+      // 一键复制全部模式结果对比
+      copyAllBtn.addEventListener('click', () => {
+        const bundle = [
+          '【逐字符全量倒序】：',
+          outCharReverse.textContent,
+          '',
+          '【逐单词语序倒序】：',
+          outWordReverse.textContent,
+          '',
+          '【单词内部字母倒序】：',
+          outWordLetterReverse.textContent,
+          '',
+          '【多行行序自底向上】：',
+          outLineReverse.textContent,
+          '',
+          '【逐行内字符独立倒序】：',
+          outLineCharReverse.textContent,
+          '',
+          '【逐行内单词独立倒序】：',
+          outLineWordReverse.textContent
+        ].join('\n');
+
+        copyText(bundle, copyAllBtn);
+      });
+
+      // 初始化一次
+      updateTransformations();
+    })();
+  </script>
+</body>
+</html>

@@ -600,6 +600,40 @@ button:focus-visible {
   background-color: var(--bg-surface-alt);
 }
 
+/* 国际化语言切换按钮 (Language Switcher) */
+.lang-switch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  padding: 6px 13px;
+  border-radius: var(--radius-full);
+  background: var(--bg-surface-alt);
+  border: 1px solid var(--border-regular);
+  color: var(--text-main);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.lang-switch-btn svg {
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.lang-switch-btn:hover {
+  background: var(--primary-light);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.lang-switch-btn:active {
+  transform: scale(0.97);
+}
+
 /* ==========================================================================
    工具子页面通用框架规范 (Tool Subpage Header & Base Layout)
    ========================================================================== */
@@ -1459,6 +1493,55 @@ button:focus-visible {
 }
 
 @media (max-width: 640px) {
+  /* 防止 iOS Safari 在 input/textarea/select 聚焦时自动放大画面 */
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+
+  /* 顶栏紧凑排布与防挤压 */
+  .site-header {
+    padding: 0;
+  }
+  .header-inner {
+    height: auto;
+    min-height: 54px;
+    padding: 8px 0;
+    gap: 8px;
+  }
+  .brand-subtitle,
+  .site-slogan {
+    display: none !important;
+  }
+  .brand-title {
+    font-size: 1.05rem !important;
+  }
+  .header-badge {
+    display: none !important;
+  }
+  .lang-switch-btn {
+    padding: 4px 10px;
+    font-size: 0.75rem;
+  }
+
+  /* 移动端操作按钮最小触摸热区 */
+  .btn-primary, .btn-secondary, .btn-action-primary, .btn-play-trigger, .btn-primary-action {
+    min-height: 44px;
+    padding: 0 16px;
+  }
+
+  /* 移动端卡片内边距优化 */
+  .tool-card, .editor-card, .player-card, .guide-article {
+    padding: 16px !important;
+    border-radius: var(--radius-md) !important;
+  }
+
+  .tool-header {
+    padding: 20px 0 14px !important;
+  }
+  .tool-page-title {
+    font-size: 1.45rem !important;
+  }
+
   .hero-title {
     font-size: 1.85rem;
   }

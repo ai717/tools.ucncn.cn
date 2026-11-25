@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google 代码 (GTM-52RQ295V) -->
+  <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-52RQ295V"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  </script>
+  <!-- End Google 代码 -->
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free PDF Merger & Splitter - 100% Client-Side Private PDF Utility | NoHeartburn Tools</title>
+  <meta name="description" content="Merge multiple PDF files into one or split PDF pages securely in your browser. Powered by local WebAssembly/JavaScript; confidential documents never leave your computer.">
+  <meta name="keywords" content="merge pdf online free, split pdf pages, combine pdf files, client side pdf merge, private pdf tool, no upload pdf splitter">
+  <meta name="author" content="不烧心免费工具 (tools.ucncn.cn)">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="theme-color" content="#386641">
+  <link rel="canonical" href="https://tools.ucncn.cn/en/pdf-tool.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://tools.ucncn.cn/pdf-tool.html">
+  <link rel="alternate" hreflang="en" href="https://tools.ucncn.cn/en/pdf-tool.html">
+  <link rel="alternate" hreflang="x-default" href="https://tools.ucncn.cn/en/pdf-tool.html">
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23386641'/%3E%3Cpath d='M30 70 C30 42 50 30 70 30 C70 58 50 70 30 70 Z' fill='%23ffffff'/%3E%3Cpath d='M30 70 L52 48' stroke='%23386641' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='68' cy='32' r='5' fill='%23dbebe0'/%3E%3C/svg%3E">
+
+  <!-- 公共样式基座 -->
+  <link rel="stylesheet" href="../assets/css/style.css?v=20261125_2">
+
+  <style>
+    /* 局部页面布局 */
+    .tool-header {
+      padding: 32px 0 20px;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      transition: color var(--transition-fast);
+    }
+    .back-link:hover {
+      color: var(--primary);
+    }
+    .tool-page-title {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .tool-page-desc {
+      font-size: 0.95rem;
+      color: var(--text-regular);
+      max-width: 760px;
+      line-height: 1.6;
+    }
+
+    /* 模式切换卡 */
+    .mode-nav {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .mode-tab {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      padding: 10px 20px;
+      border-radius: var(--radius-md);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-regular);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all var(--transition-fast);
+    }
+    .mode-tab:hover {
+      background: var(--bg-surface-alt);
+      color: var(--text-main);
+    }
+    .mode-tab.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      box-shadow: var(--shadow-xs);
+    }
+
+    /* 工作台主容器 */
+    .pdf-workbench {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: 32px;
+      margin-bottom: 36px;
+    }
+
+    /* 拖拽上传区 */
+    .drop-zone {
+      border: 2px dashed var(--border-regular);
+      border-radius: var(--radius-lg);
+      padding: 40px 24px;
+      text-align: center;
+      background: var(--bg-surface-alt);
+      cursor: pointer;
+      transition: all var(--transition-normal);
+      position: relative;
+    }
+    .drop-zone:hover, .drop-zone.dragover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      transform: translateY(-1px);
+    }
+    .drop-zone-icon {
+      font-size: 2.6rem;
+      margin-bottom: 10px;
+      line-height: 1;
+    }
+    .drop-zone-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+    .drop-zone-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .file-input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* 合并文件列表 */
+    .pdf-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 20px 0;
+    }
+    .pdf-item {
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: var(--shadow-xs);
+    }
+    .pdf-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+    .pdf-icon-badge {
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-sm);
+      background: #fff5f5;
+      color: #c53030;
+      font-size: 1.1rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .pdf-meta {
+      min-width: 0;
+    }
+    .pdf-name {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .pdf-details {
+      font-size: 0.775rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .pdf-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .order-btn {
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-light);
+      color: var(--text-regular);
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      transition: all var(--transition-fast);
+    }
+    .order-btn:hover {
+      background: #ffffff;
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    .remove-pdf-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 6px;
+      font-size: 1.1rem;
+    }
+    .remove-pdf-btn:hover {
+      color: var(--color-danger);
+    }
+
+    /* 拆分配置卡片 */
+    .split-config-card {
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      margin: 20px 0;
+    }
+    .split-range-input {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 1.1rem;
+      font-family: monospace, -apple-system;
+      background: #ffffff;
+      border: 1px solid var(--border-regular);
+      border-radius: var(--radius-sm);
+      color: var(--text-main);
+      margin-top: 8px;
+    }
+    .split-range-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(56, 102, 65, 0.12);
+    }
+
+    /* 底部 SEO 文章 */
+    .guide-article {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      margin-bottom: 40px;
+    }
+    .guide-article h2 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .guide-article h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 20px 0 10px;
+    }
+    .guide-article p {
+      font-size: 0.9rem;
+      color: var(--text-regular);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .guide-article ul, .guide-article ol {
+      padding-left: 20px;
+      margin-bottom: 16px;
+      font-size: 0.9rem;
+      color: var(--text-regular);
+      line-height: 1.7;
+    }
+    .guide-article li {
+      margin-bottom: 6px;
+    }
+
+    @media (max-width: 640px) {
+      .pdf-workbench {
+        padding: 20px 16px;
+      }
+      .pdf-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .pdf-actions {
+        width: 100%;
+        justify-content: flex-end;
+        border-top: 1px dashed var(--border-light);
+        padding-top: 8px;
+      }
+    }
+  </style>
+
+  <!-- 结构化数据 (JSON-LD: WebApplication & FAQPage) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "PDF 纯前端合并与页面拆分 (Local PDF Tool)",
+        "url": "https://tools.ucncn.cn/pdf-tool.html",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "All",
+        "inLanguage": "zh-CN",
+        "description": "基于 pdf-lib 纯本地浏览器运行的 Merge PDFs与页面提取工具。支持多份 PDF 合同拖拽合并、按指定页面范围自由拆分，不用装 WPS 会员、零水印、无页数限制，合同文件绝不上云。",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "为什么商业合同与敏感文件绝不能在一般在线 PDF 网站中处理？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "大多数在线 PDF 工具站需要将文件完整上传至对方远程云服务器进行拆解重组，您的合同印章、法定代表人签名与商业条款面临巨大的被盗取或数据勒索风险。而本工具 100% 依托浏览器端底层 WebAssembly 与 pdf-lib 库在您的设备本地内存中处理，刷新即焚，数据绝不出电脑。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "合并或拆分多页大型 PDF 是否有页数限制或需要充值？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "完全无限制！由于计算压力由您的本地 CPU 承担，本站不存在服务器成本转嫁问题，支持几十页、上百页文件任意合并与提取，完全免费零水印。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "页面提取范围（如 1-3, 5, 8-10）语法如何使用？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "语法极为简单：支持逗号分隔单个页码（如‘1, 3, 5’），支持连字符表示连续区间（如‘2-6’），支持混合组合（如‘1-3, 5, 7-10’）。系统会自动校验页码合法性并导出全新 PDF。"
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- 顶栏导航 -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="./" class="brand" title="返回不烧心免费工具大厅">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12A10 10 0 0 1 12 2z"></path>
+            <path d="M12 6v6l4 2"></path>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">不烧心免费工具</span>
+          <span class="brand-subtitle">tools.ucncn.cn · 免费、免登录、不上传、无广告</span>
+        </div>
+      </a>
+
+            <div class="header-actions">
+        <a href="../pdf-tool.html" class="lang-switch-btn" title="切换为中文版">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1 4-10z"></path></svg>
+          <span>🇨🇳 中文</span>
+        </a>
+        <div class="header-badge" title="安全沙盒运作中：数据绝不上传服务器">
+          <span class="pulse-dot"></span>
+          <span>纯本地沙盒已就绪</span>
+        </div>
+        <a href="./" class="nav-link">
+          <span>🏠 工具大厅</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主体区域 -->
+  <main class="container">
+    <div class="tool-header">
+      <a href="./" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span>返回工具大厅</span>
+      </a>
+      <h1 class="tool-page-title">
+        <span>📑</span>
+        <span>PDF 纯前端合并与页面拆分 (免会员·无水印·不上云)</span>
+      </h1>
+      <p class="tool-page-desc">
+        基于 pdf-lib 纯本地运行。不用安装 WPS，绝不强制开月卡，无导出水印与页数限制。合同与账单数据不离设备，刷新即焚。
+      </p>
+    </div>
+
+    <!-- 模式切换卡 -->
+    <div class="mode-nav">
+      <button type="button" class="mode-tab active" id="tab-merge" onclick="switchPdfMode('merge')">
+        <span>📑 多份 Merge PDFs为一个文件</span>
+      </button>
+      <button type="button" class="mode-tab" id="tab-split" onclick="switchPdfMode('split')">
+        <span>✂️ 单份 PDF 页面拆分与提取</span>
+      </button>
+    </div>
+
+    <!-- 工作台卡片 -->
+    <section class="pdf-workbench">
+
+      <!-- ================= 模式 1：Merge PDFs ================= -->
+      <div id="view-merge">
+        <div class="drop-zone" id="merge-drop-zone">
+          <input type="file" id="merge-file-input" class="file-input" accept="application/pdf" multiple>
+          <div class="drop-zone-icon">📥</div>
+          <div class="drop-zone-title">拖拽多份 PDF 合同到这里，或点击选择</div>
+          <div class="drop-zone-subtitle">支持批量多选，上传后可上下调整合并先后顺序</div>
+        </div>
+
+        <div id="merge-list-container" style="display: none;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 24px; padding-bottom: 8px; border-bottom: 1px solid var(--border-light);">
+            <span style="font-weight: 700; color: var(--text-main); font-size: 0.95rem;">待合并 PDF 列表（可按需求上下调序）</span>
+            <button type="button" class="chip-btn" style="color: var(--color-danger);" onclick="clearMergeList()">清空列表</button>
+          </div>
+
+          <div class="pdf-list" id="merge-list">
+            <!-- 动态渲染 -->
+          </div>
+
+          <div style="text-align: center; margin-top: 24px;">
+            <button type="button" class="action-btn primary" style="max-width: 320px; margin: 0 auto;" onclick="executeMerge()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>立即合并并下载新 PDF</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 模式 2：PDF 拆分与提取 ================= -->
+      <div id="view-split" style="display: none;">
+        <div class="drop-zone" id="split-drop-zone">
+          <input type="file" id="split-file-input" class="file-input" accept="application/pdf">
+          <div class="drop-zone-icon">✂️</div>
+          <div class="drop-zone-title">选择需要拆分或提取页面的单份 PDF 文件</div>
+          <div class="drop-zone-subtitle">纯本地解析，不上传任何数据</div>
+        </div>
+
+        <div id="split-config-container" style="display: none;">
+          <div class="split-config-card">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+              <span id="split-file-name" style="font-weight: 700; color: var(--text-main); font-size: 1rem;">文档加载中...</span>
+              <span id="split-total-pages" class="header-badge">共 0 页</span>
+            </div>
+
+            <label for="page-range-input" style="font-size: 0.85rem; font-weight: 700; color: var(--text-main);">
+              指定提取的页面范围 (Page Range)
+            </label>
+            <input type="text" id="page-range-input" class="split-range-input" placeholder="例如：1-3, 5, 8-10" value="1">
+            <div style="font-size: 0.775rem; color: var(--text-muted); margin-top: 6px; line-height: 1.5;">
+              支持逗号分隔单个页码（如：1, 3, 5），支持连字符表示范围（如：2-6），组合如：<code>1-3, 5, 8</code>
+            </div>
+
+            <div style="display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap;">
+              <button type="button" class="preset-chip" onclick="setRangeAll()">全选所有页</button>
+              <button type="button" class="preset-chip" onclick="setRangeFirst()">仅第 1 页 (封面)</button>
+              <button type="button" class="preset-chip" onclick="setRangeOdd()">仅所有奇数页</button>
+              <button type="button" class="preset-chip" onclick="setRangeEven()">仅所有偶数页</button>
+            </div>
+          </div>
+
+          <div style="text-align: center; margin-top: 24px;">
+            <button type="button" class="action-btn primary" style="max-width: 320px; margin: 0 auto;" onclick="executeSplit()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>提取指定页面并下载</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- 深度实战指南 (SEO 内容) -->
+    <article class="guide-article">
+      <h2>📘 为什么商业合同与财务报表绝对不能在云端工具中处理？</h2>
+
+      <h3>一、传统云端 PDF 工具的严重合规与安全漏洞</h3>
+      <p>
+        日常工作中，行政与财务经常需要把多份扫描合同拼成一份归档，或者把几十页的财报中抽取出几页发票报销。传统在线工具声称“免费”，但会将您的 PDF 完整上传至远程服务器。
+      </p>
+      <ul>
+        <li><strong>法律保密协议违约：</strong>多数企业保密协议（NDA）严禁将公司合同交给第三方未授权云端；</li>
+        <li><strong>水印与强制扣费陷阱：</strong>导出时偷偷在合同正中央加“试用版”灰色大水印，或者强制要求充值 19.9 元月卡才能下载；</li>
+        <li><strong>个人身份隐私泄露：</strong>身份证扫描件、带有公章与签字的文件一旦被不良服务商缓存，后果不堪设想。</li>
+      </ul>
+
+      <h3>二、“不烧心”纯本地 PDF 工具的四大原则</h3>
+      <ul>
+        <li><strong>pdf-lib 纯浏览器本地渲染：</strong>所有的 PDF 二进制字节重构，直接在您当前电脑的内存沙盒中完成，刷新即焚；</li>
+        <li><strong>零网络传输：</strong>处理 50MB 的大型 PDF 无需等待上传，秒级完成；</li>
+        <li><strong>零水印、不限页数：</strong>导出文件完全干净，原汁原味。</li>
+      </ul>
+    </article>
+  </main>
+  <!-- 底栏 -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom" style="justify-content: center; text-align: center;">
+        <div class="footer-desc">
+          &copy; 2026 tools.ucncn.cn · NoHeartburn Tools. Free, no login, no uploads, no ads.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+
+  <!-- 公共交互脚本 -->
+  <script src="../assets/js/common.js"></script>
+  <!-- 纯前端 PDF 引擎 -->
+  <script src="../assets/js/pdf-lib.min.js"></script>
+
+  <!-- PDF 处理业务逻辑 -->
+  <script>
+    (function () {
+      const { PDFDocument } = PDFLib;
+
+      // 模式切换
+      window.switchPdfMode = function (mode) {
+        const tabMerge = document.getElementById('tab-merge');
+        const tabSplit = document.getElementById('tab-split');
+        const viewMerge = document.getElementById('view-merge');
+        const viewSplit = document.getElementById('view-split');
+
+        if (mode === 'merge') {
+          tabMerge.classList.add('active');
+          tabSplit.classList.remove('active');
+          viewMerge.style.display = 'block';
+          viewSplit.style.display = 'none';
+        } else {
+          tabSplit.classList.add('active');
+          tabMerge.classList.remove('active');
+          viewSplit.style.display = 'block';
+          viewMerge.style.display = 'none';
+        }
+      };
+
+      function formatSize(bytes) {
+        if (!bytes || bytes === 0) return '0 B';
+        const k = 1024;
+        const sizes = ['B', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+      }
+
+      // ========================================================
+      // 模块 1：PDF 多文件合并逻辑
+      // ========================================================
+      let mergeFiles = []; // [{ id, name, size, pageCount, bytes }]
+      const mergeDropZone = document.getElementById('merge-drop-zone');
+      const mergeFileInput = document.getElementById('merge-file-input');
+      const mergeListContainer = document.getElementById('merge-list-container');
+      const mergeList = document.getElementById('merge-list');
+
+      mergeFileInput.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files.length > 0) {
+          handleMergeFiles(e.target.files);
+        }
+      });
+
+      ['dragenter', 'dragover'].forEach(name => {
+        mergeDropZone.addEventListener(name, (e) => {
+          e.preventDefault();
+          mergeDropZone.classList.add('dragover');
+        });
+      });
+
+      ['dragleave', 'drop'].forEach(name => {
+        mergeDropZone.addEventListener(name, (e) => {
+          e.preventDefault();
+          mergeDropZone.classList.remove('dragover');
+        });
+      });
+
+      mergeDropZone.addEventListener('drop', (e) => {
+        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+          handleMergeFiles(e.dataTransfer.files);
+        }
+      });
+
+      async function handleMergeFiles(files) {
+        const pdfs = Array.from(files).filter(f => f.name.toLowerCase().endsWith('.pdf') || f.type === 'application/pdf');
+        if (pdfs.length === 0) {
+          CleanTools.showToast('请选择有效的 PDF 文件');
+          return;
+        }
+
+        for (let file of pdfs) {
+          try {
+            const arrayBuffer = await file.arrayBuffer();
+            const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+            const pageCount = pdfDoc.getPageCount();
+
+            mergeFiles.push({
+              id: 'pdf_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+              name: file.name,
+              size: file.size,
+              pageCount: pageCount,
+              bytes: arrayBuffer
+            });
+          } catch (err) {
+            console.error('PDF 解析失败:', err);
+            CleanTools.showToast(`文件 ${file.name} 解析失败（可能受密码保护）`);
+          }
+        }
+
+        renderMergeList();
+      }
+
+      function renderMergeList() {
+        if (mergeFiles.length === 0) {
+          mergeListContainer.style.display = 'none';
+          return;
+        }
+        mergeListContainer.style.display = 'block';
+        mergeList.innerHTML = '';
+
+        mergeFiles.forEach((item, index) => {
+          const div = document.createElement('div');
+          div.className = 'pdf-item';
+          div.innerHTML = `
+            <div class="pdf-info">
+              <div class="pdf-icon-badge">PDF</div>
+              <div class="pdf-meta">
+                <div class="pdf-name" title="${CleanTools.escapeHTML(item.name)}">${CleanTools.escapeHTML(item.name)}</div>
+                <div class="pdf-details">
+                  <span>第 ${index + 1} 序位</span> · 
+                  <span>共 ${item.pageCount} 页</span> · 
+                  <span>${formatSize(item.size)}</span>
+                </div>
+              </div>
+            </div>
+            <div class="pdf-actions">
+              <button type="button" class="order-btn" title="上移" onclick="moveMergeItem(${index}, -1)" ${index === 0 ? 'disabled style="opacity:0.4;"' : ''}>▲</button>
+              <button type="button" class="order-btn" title="下移" onclick="moveMergeItem(${index}, 1)" ${index === mergeFiles.length - 1 ? 'disabled style="opacity:0.4;"' : ''}>▼</button>
+              <button type="button" class="remove-pdf-btn" title="移除" onclick="removeMergeItem(${index})">&times;</button>
+            </div>
+          `;
+          mergeList.appendChild(div);
+        });
+      }
+
+      window.moveMergeItem = function (index, delta) {
+        const newIndex = index + delta;
+        if (newIndex < 0 || newIndex >= mergeFiles.length) return;
+        const temp = mergeFiles[index];
+        mergeFiles[index] = mergeFiles[newIndex];
+        mergeFiles[newIndex] = temp;
+        renderMergeList();
+      };
+
+      window.removeMergeItem = function (index) {
+        mergeFiles.splice(index, 1);
+        renderMergeList();
+        CleanTools.showToast('已移除该文件');
+      };
+
+      window.clearMergeList = function () {
+        mergeFiles = [];
+        renderMergeList();
+        CleanTools.showToast('列表已清空');
+      };
+
+      window.executeMerge = async function () {
+        if (mergeFiles.length < 2) {
+          CleanTools.showToast('请至少添加 2 份 PDF 文件进行合并');
+          return;
+        }
+
+        CleanTools.showToast('正在本地极速合并 PDF，请稍候...');
+        try {
+          const mergedPdf = await PDFDocument.create();
+
+          for (let item of mergeFiles) {
+            const doc = await PDFDocument.load(item.bytes);
+            const copiedPages = await mergedPdf.copyPages(doc, doc.getPageIndices());
+            copiedPages.forEach(page => mergedPdf.addPage(page));
+          }
+
+          const mergedBytes = await mergedPdf.save();
+          const blob = new Blob([mergedBytes], { type: 'application/pdf' });
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = `merged_${Date.now()}.pdf`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+
+          CleanTools.showToast('已成功合并并下载新 PDF！');
+        } catch (err) {
+          console.error('合并失败:', err);
+          CleanTools.showToast('合并失败，请检查文件是否完整');
+        }
+      };
+
+      // ========================================================
+      // 模块 2：单份 PDF 拆分与页面提取
+      // ========================================================
+      let splitFileObj = null; // { name, size, pageCount, bytes }
+      const splitDropZone = document.getElementById('split-drop-zone');
+      const splitFileInput = document.getElementById('split-file-input');
+      const splitConfigContainer = document.getElementById('split-config-container');
+      const splitFileName = document.getElementById('split-file-name');
+      const splitTotalPages = document.getElementById('split-total-pages');
+      const pageRangeInput = document.getElementById('page-range-input');
+
+      splitFileInput.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files.length > 0) {
+          handleSplitFile(e.target.files[0]);
+        }
+      });
+
+      ['dragenter', 'dragover'].forEach(name => {
+        splitDropZone.addEventListener(name, (e) => {
+          e.preventDefault();
+          splitDropZone.classList.add('dragover');
+        });
+      });
+
+      ['dragleave', 'drop'].forEach(name => {
+        splitDropZone.addEventListener(name, (e) => {
+          e.preventDefault();
+          splitDropZone.classList.remove('dragover');
+        });
+      });
+
+      splitDropZone.addEventListener('drop', (e) => {
+        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+          handleSplitFile(e.dataTransfer.files[0]);
+        }
+      });
+
+      async function handleSplitFile(file) {
+        if (!file.name.toLowerCase().endsWith('.pdf') && file.type !== 'application/pdf') {
+          CleanTools.showToast('请选择 PDF 格式文件');
+          return;
+        }
+
+        try {
+          const arrayBuffer = await file.arrayBuffer();
+          const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+          const pageCount = pdfDoc.getPageCount();
+
+          splitFileObj = {
+            name: file.name,
+            size: file.size,
+            pageCount: pageCount,
+            bytes: arrayBuffer
+          };
+
+          splitFileName.textContent = file.name;
+          splitTotalPages.textContent = `共 ${pageCount} 页 (${formatSize(file.size)})`;
+          pageRangeInput.value = pageCount > 1 ? `1-${Math.min(3, pageCount)}` : '1';
+          splitConfigContainer.style.display = 'block';
+
+          CleanTools.showToast(`已成功载入：${file.name}`);
+        } catch (err) {
+          console.error('加载 PDF 失败:', err);
+          CleanTools.showToast('加载失败，文件可能受损坏或有密码保护');
+        }
+      }
+
+      window.setRangeAll = function () {
+        if (!splitFileObj) return;
+        pageRangeInput.value = `1-${splitFileObj.pageCount}`;
+      };
+
+      window.setRangeFirst = function () {
+        pageRangeInput.value = '1';
+      };
+
+      window.setRangeOdd = function () {
+        if (!splitFileObj) return;
+        let odds = [];
+        for (let i = 1; i <= splitFileObj.pageCount; i += 2) odds.push(i);
+        pageRangeInput.value = odds.join(', ');
+      };
+
+      window.setRangeEven = function () {
+        if (!splitFileObj) return;
+        let evens = [];
+        for (let i = 2; i <= splitFileObj.pageCount; i += 2) evens.push(i);
+        pageRangeInput.value = evens.join(', ');
+      };
+
+      function parsePageRange(rangeStr, maxPage) {
+        const indices = new Set();
+        const parts = rangeStr.split(/[,，]/);
+
+        for (let part of parts) {
+          part = part.trim();
+          if (!part) continue;
+          if (part.includes('-')) {
+            const [startStr, endStr] = part.split('-');
+            const start = parseInt(startStr, 10);
+            const end = parseInt(endStr, 10);
+            if (!isNaN(start) && !isNaN(end)) {
+              const min = Math.max(1, Math.min(start, end));
+              const max = Math.min(maxPage, Math.max(start, end));
+              for (let p = min; p <= max; p++) {
+                indices.add(p - 1); // 0-based
+              }
+            }
+          } else {
+            const p = parseInt(part, 10);
+            if (!isNaN(p) && p >= 1 && p <= maxPage) {
+              indices.add(p - 1);
+            }
+          }
+        }
+        return Array.from(indices).sort((a, b) => a - b);
+      }
+
+      window.executeSplit = async function () {
+        if (!splitFileObj) {
+          CleanTools.showToast('请先选择 PDF 文件');
+          return;
+        }
+
+        const rangeStr = pageRangeInput.value.trim();
+        const pageIndices = parsePageRange(rangeStr, splitFileObj.pageCount);
+
+        if (pageIndices.length === 0) {
+          CleanTools.showToast('无效的页面范围，请输入例如 1-3, 5 等格式');
+          return;
+        }
+
+        CleanTools.showToast(`正在提取选定的 ${pageIndices.length} 页...`);
+        try {
+          const srcDoc = await PDFDocument.load(splitFileObj.bytes);
+          const newDoc = await PDFDocument.create();
+
+          const copiedPages = await newDoc.copyPages(srcDoc, pageIndices);
+          copiedPages.forEach(p => newDoc.addPage(p));
+
+          const newBytes = await newDoc.save();
+          const blob = new Blob([newBytes], { type: 'application/pdf' });
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          const dot = splitFileObj.name.lastIndexOf('.');
+          const baseName = dot !== -1 ? splitFileObj.name.substring(0, dot) : splitFileObj.name;
+          a.download = `${baseName}_extracted.pdf`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+
+          CleanTools.showToast('已提取完成并开始下载！');
+        } catch (err) {
+          console.error('提取失败:', err);
+          CleanTools.showToast('提取失败，请检查范围是否合法');
+        }
+      };
+    })();
+  </script>
+</body>
+</html>
