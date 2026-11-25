@@ -240,18 +240,154 @@
       pointer-events: none;
     }
 
-    /* 播放器控制条 */
-    .player-controls-bar {
+    /* 播放器控制控制台与进度条 */
+    .player-controls-container {
       margin-top: 18px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* 进度条交互区域 */
+    .progress-bar-area {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      user-select: none;
+    }
+
+    .time-label {
+      font-size: 0.82rem;
+      font-variant-numeric: tabular-nums;
+      color: var(--text-muted);
+      font-weight: 500;
+      min-width: 44px;
+      text-align: center;
+    }
+
+    .progress-track-wrapper {
+      position: relative;
+      flex: 1;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .progress-track {
+      position: relative;
+      width: 100%;
+      height: 6px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: visible;
+      transition: height var(--transition-fast);
+    }
+
+    .progress-track-wrapper:hover .progress-track,
+    .progress-track-wrapper.dragging .progress-track {
+      height: 8px;
+    }
+
+    .progress-fill-buffered {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 0%;
+      background: #cbd5e1;
+      border-radius: 999px;
+      pointer-events: none;
+      transition: width 0.2s ease;
+    }
+
+    .progress-fill-current {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #386641, #588157);
+      border-radius: 999px;
+      pointer-events: none;
+    }
+
+    .progress-thumb {
+      position: absolute;
+      top: 50%;
+      left: 0%;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 2.5px solid #386641;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+      transform: translate(-50%, -50%) scale(0);
+      transition: transform var(--transition-fast);
+      pointer-events: none;
+    }
+
+    .progress-track-wrapper:hover .progress-thumb,
+    .progress-track-wrapper.dragging .progress-thumb {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .progress-tooltip {
+      position: absolute;
+      bottom: 28px;
+      left: 0;
+      transform: translateX(-50%);
+      background: #0f172a;
+      color: #ffffff;
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity var(--transition-fast);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      z-index: 10;
+    }
+
+    .progress-track-wrapper:hover .progress-tooltip {
+      opacity: 1;
+    }
+
+    /* 实时直播徽标 */
+    .live-indicator-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 12px;
+      border-radius: 999px;
+      background: rgba(220, 38, 38, 0.1);
+      border: 1px solid rgba(220, 38, 38, 0.25);
+      color: #dc2626;
+      font-size: 0.8rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .live-dot-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #dc2626;
+    }
+
+    /* 播放器按键操作行 */
+    .player-controls-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 14px;
-      padding: 14px 18px;
-      background: var(--bg-subtle);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
     }
 
     .controls-left, .controls-right {
@@ -388,6 +524,22 @@
 
     .status-dot.error {
       background: #ef4444;
+    }
+
+    @media (max-width: 640px) {
+      .player-controls-container {
+        padding: 12px 14px;
+      }
+      .progress-bar-area {
+        gap: 8px;
+      }
+      .player-controls-bar {
+        justify-content: center;
+      }
+      .controls-left, .controls-right {
+        justify-content: center;
+        width: 100%;
+      }
     }
 
     /* 常见指南 */
@@ -541,40 +693,78 @@
             </div>
           </div>
 
-          <!-- 播放控制台 -->
-          <div class="player-controls-bar">
-            <div class="controls-left">
-              <button class="btn-circle-action btn-play-main" id="btnPlayPause" title="播放 / 暂停">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" id="playIcon"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-              </button>
-
-              <div class="volume-group">
-                <button class="btn-circle-action" id="btnMute" title="静音切换" style="width: 34px; height: 34px;">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="volumeIcon"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
-                </button>
-                <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.05" value="0.8">
+          <!-- 播放控制台与进度条 -->
+          <div class="player-controls-container">
+            <!-- 播放进度条 -->
+            <div class="progress-bar-area" id="progressBarArea">
+              <span class="time-label current-time" id="currentTimeLabel">00:00</span>
+              
+              <div class="progress-track-wrapper" id="progressTrackWrapper">
+                <div class="progress-track" id="progressTrack">
+                  <div class="progress-fill-buffered" id="progressBuffered"></div>
+                  <div class="progress-fill-current" id="progressCurrent"></div>
+                  <div class="progress-thumb" id="progressThumb"></div>
+                </div>
+                <div class="progress-tooltip" id="progressTooltip">00:00</div>
               </div>
 
-              <select id="playbackSpeed" class="speed-select" title="播放倍速">
-                <option value="0.5">0.5x</option>
-                <option value="0.75">0.75x</option>
-                <option value="1.0" selected>1.0x 正常</option>
-                <option value="1.25">1.25x</option>
-                <option value="1.5">1.5x</option>
-                <option value="2.0">2.0x</option>
-              </select>
+              <span class="time-label total-time" id="totalTimeLabel">00:00</span>
+              
+              <div class="live-indicator-badge" id="liveBadge" style="display: none;">
+                <span class="live-dot-indicator"></span>
+                <span>实时广播 (LIVE)</span>
+              </div>
             </div>
 
-            <div class="controls-right">
-              <button class="mode-toggle-btn" id="btnToggleDisplay" title="切换音乐频谱舞台与视频画面">
-                📺 切换视频/音乐画面
-              </button>
-              <button class="mode-toggle-btn" id="btnPiP" title="画中画模式">
-                🖼️ 画中画
-              </button>
-              <button class="mode-toggle-btn" id="btnFullscreen" title="全屏视听">
-                ⛶ 全屏
-              </button>
+            <!-- 控制按钮行 -->
+            <div class="player-controls-bar">
+              <div class="controls-left">
+                <!-- 快退 10 秒 -->
+                <button class="btn-circle-action" id="btnRewind" title="快退 10 秒">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 17l-5-5 5-5M18 17l-5-5 5-5"/>
+                  </svg>
+                </button>
+
+                <button class="btn-circle-action btn-play-main" id="btnPlayPause" title="播放 / 暂停">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" id="playIcon"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                </button>
+
+                <!-- 快进 10 秒 -->
+                <button class="btn-circle-action" id="btnFastForward" title="快进 10 秒">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M13 17l5-5-5-5M6 17l5-5-5-5"/>
+                  </svg>
+                </button>
+
+                <div class="volume-group">
+                  <button class="btn-circle-action" id="btnMute" title="静音切换" style="width: 34px; height: 34px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="volumeIcon"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                  </button>
+                  <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.05" value="0.8">
+                </div>
+
+                <select id="playbackSpeed" class="speed-select" title="播放倍速">
+                  <option value="0.5">0.5x</option>
+                  <option value="0.75">0.75x</option>
+                  <option value="1.0" selected>1.0x 正常</option>
+                  <option value="1.25">1.25x</option>
+                  <option value="1.5">1.5x</option>
+                  <option value="2.0">2.0x</option>
+                </select>
+              </div>
+
+              <div class="controls-right">
+                <button class="mode-toggle-btn" id="btnToggleDisplay" title="切换音乐频谱舞台与视频画面">
+                  📺 切换视频/音乐画面
+                </button>
+                <button class="mode-toggle-btn" id="btnPiP" title="画中画模式">
+                  🖼️ 画中画
+                </button>
+                <button class="mode-toggle-btn" id="btnFullscreen" title="全屏视听">
+                  ⛶ 全屏
+                </button>
+              </div>
             </div>
           </div>
 
@@ -678,6 +868,19 @@
       const visualizerCanvas = document.getElementById('visualizerCanvas');
       const canvasCtx = visualizerCanvas.getContext('2d');
 
+      // 进度条与播放控制相关节点
+      const progressTrackWrapper = document.getElementById('progressTrackWrapper');
+      const progressTrack = document.getElementById('progressTrack');
+      const progressBuffered = document.getElementById('progressBuffered');
+      const progressCurrent = document.getElementById('progressCurrent');
+      const progressThumb = document.getElementById('progressThumb');
+      const progressTooltip = document.getElementById('progressTooltip');
+      const currentTimeLabel = document.getElementById('currentTimeLabel');
+      const totalTimeLabel = document.getElementById('totalTimeLabel');
+      const liveBadge = document.getElementById('liveBadge');
+      const btnRewind = document.getElementById('btnRewind');
+      const btnFastForward = document.getElementById('btnFastForward');
+
       const diagStatus = document.getElementById('diagStatus');
       const statusDot = document.getElementById('statusDot');
       const diagEngine = document.getElementById('diagEngine');
@@ -689,6 +892,47 @@
       let audioCtx = null;
       let analyser = null;
       let animFrameId = null;
+
+      // 进度条控制状态
+      let isDraggingProgress = false;
+      let isLiveStream = false;
+
+      // 时间格式化辅助函数 (秒 -> mm:ss 或 hh:mm:ss)
+      function formatTime(sec) {
+        if (!sec || isNaN(sec) || sec < 0 || sec === Infinity) return '00:00';
+        sec = Math.floor(sec);
+        const h = Math.floor(sec / 3600);
+        const m = Math.floor((sec % 3600) / 60);
+        const s = sec % 60;
+        const mm = String(m).padStart(2, '0');
+        const ss = String(s).padStart(2, '0');
+        if (h > 0) {
+          return `${h}:${mm}:${ss}`;
+        }
+        return `${mm}:${ss}`;
+      }
+
+      // 检测流媒体是点播 (VOD) 还是实时广播 (Live)
+      function updateDurationMode() {
+        const d = videoEl.duration;
+        isLiveStream = (!d || isNaN(d) || d === Infinity || d <= 0);
+        if (isLiveStream) {
+          currentTimeLabel.style.display = 'none';
+          totalTimeLabel.style.display = 'none';
+          liveBadge.style.display = 'inline-flex';
+          progressCurrent.style.width = '100%';
+          progressBuffered.style.width = '100%';
+          progressThumb.style.display = 'none';
+          progressTrackWrapper.style.cursor = 'default';
+        } else {
+          currentTimeLabel.style.display = 'inline';
+          totalTimeLabel.style.display = 'inline';
+          liveBadge.style.display = 'none';
+          progressThumb.style.display = 'block';
+          progressTrackWrapper.style.cursor = 'pointer';
+          totalTimeLabel.textContent = formatTime(d);
+        }
+      }
 
       // 检测 HLS 支持能力
       const isHlsSupported = typeof Hls !== 'undefined' && Hls.isSupported();
@@ -884,11 +1128,15 @@
       }
 
       // 媒体核心事件监听
+      videoEl.addEventListener('loadedmetadata', updateDurationMode);
+      videoEl.addEventListener('durationchange', updateDurationMode);
+
       videoEl.addEventListener('play', () => {
         setStatus('正在稳定播放', 'active');
         playIcon.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
         vinylDisc.classList.add('spinning');
         stageTitle.textContent = '正在播放流媒体音乐';
+        updateDurationMode();
 
         // 激活音频分析
         if (audioCtx && audioCtx.state === 'suspended') {
@@ -907,15 +1155,39 @@
         stopVisualizer();
       });
 
+      // 实时播放进度更新与缓冲计算
       videoEl.addEventListener('timeupdate', () => {
+        const d = videoEl.duration;
+        const cur = videoEl.currentTime;
+
+        if (d && !isNaN(d) && d !== Infinity && d > 0) {
+          currentTimeLabel.textContent = formatTime(cur);
+          if (!isDraggingProgress) {
+            const pct = Math.min(100, Math.max(0, (cur / d) * 100));
+            progressCurrent.style.width = `${pct}%`;
+            progressThumb.style.left = `${pct}%`;
+          }
+        }
+
+        // 缓冲进度计算
         if (videoEl.buffered.length > 0) {
           const bufferedEnd = videoEl.buffered.end(videoEl.buffered.length - 1);
-          const duration = videoEl.duration;
-          if (duration && !isNaN(duration) && duration !== Infinity) {
-            diagBuffer.textContent = `缓冲进度: ${Math.round((bufferedEnd / duration) * 100)}% (点播)`;
+          if (d && !isNaN(d) && d !== Infinity) {
+            const bufPct = Math.min(100, (bufferedEnd / d) * 100);
+            progressBuffered.style.width = `${bufPct}%`;
+            diagBuffer.textContent = `缓冲进度: ${Math.round(bufPct)}% (点播)`;
           } else {
             diagBuffer.textContent = '实时广播流 (Live Stream)';
           }
+        }
+      });
+
+      videoEl.addEventListener('progress', () => {
+        const d = videoEl.duration;
+        if (d && !isNaN(d) && d !== Infinity && videoEl.buffered.length > 0) {
+          const bufferedEnd = videoEl.buffered.end(videoEl.buffered.length - 1);
+          const bufPct = Math.min(100, (bufferedEnd / d) * 100);
+          progressBuffered.style.width = `${bufPct}%`;
         }
       });
 
@@ -923,6 +1195,89 @@
         setStatus('媒体加载失败，请检查 URL 是否有效或跨域', 'error');
         stageTitle.textContent = '播放加载失败';
         stopVisualizer();
+      });
+
+      // 进度条精准拖拽与点击寻道
+      function getTrackRatio(e) {
+        const rect = progressTrack.getBoundingClientRect();
+        const clientX = (e.touches && e.touches.length > 0) ? e.touches[0].clientX : e.clientX;
+        return Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+      }
+
+      function seekToRatio(ratio) {
+        const d = videoEl.duration;
+        if (isLiveStream || !d || isNaN(d) || d === Infinity) return;
+        const target = ratio * d;
+        videoEl.currentTime = target;
+        currentTimeLabel.textContent = formatTime(target);
+        const pct = ratio * 100;
+        progressCurrent.style.width = `${pct}%`;
+        progressThumb.style.left = `${pct}%`;
+      }
+
+      progressTrackWrapper.addEventListener('click', (e) => {
+        if (isLiveStream) return;
+        const ratio = getTrackRatio(e);
+        seekToRatio(ratio);
+      });
+
+      progressTrackWrapper.addEventListener('mousemove', (e) => {
+        const d = videoEl.duration;
+        if (isLiveStream || !d || isNaN(d) || d === Infinity) {
+          progressTooltip.style.opacity = '0';
+          return;
+        }
+        const ratio = getTrackRatio(e);
+        const hoverTime = ratio * d;
+        progressTooltip.textContent = formatTime(hoverTime);
+        progressTooltip.style.left = `${ratio * 100}%`;
+        progressTooltip.style.opacity = '1';
+      });
+
+      progressTrackWrapper.addEventListener('mouseleave', () => {
+        progressTooltip.style.opacity = '0';
+      });
+
+      // 拖拽进度条交互
+      const startDrag = (e) => {
+        const d = videoEl.duration;
+        if (isLiveStream || !d || isNaN(d) || d === Infinity) return;
+        isDraggingProgress = true;
+        progressTrackWrapper.classList.add('dragging');
+        const ratio = getTrackRatio(e);
+        seekToRatio(ratio);
+      };
+
+      const moveDrag = (e) => {
+        if (!isDraggingProgress) return;
+        const ratio = getTrackRatio(e);
+        seekToRatio(ratio);
+      };
+
+      const stopDrag = () => {
+        if (isDraggingProgress) {
+          isDraggingProgress = false;
+          progressTrackWrapper.classList.remove('dragging');
+        }
+      };
+
+      progressTrackWrapper.addEventListener('mousedown', startDrag);
+      window.addEventListener('mousemove', moveDrag);
+      window.addEventListener('mouseup', stopDrag);
+
+      progressTrackWrapper.addEventListener('touchstart', startDrag, { passive: true });
+      window.addEventListener('touchmove', moveDrag, { passive: true });
+      window.addEventListener('touchend', stopDrag);
+
+      // 快退 10 秒 / 快进 10 秒
+      btnRewind.addEventListener('click', () => {
+        if (isLiveStream || !videoEl.duration) return;
+        videoEl.currentTime = Math.max(0, videoEl.currentTime - 10);
+      });
+
+      btnFastForward.addEventListener('click', () => {
+        if (isLiveStream || !videoEl.duration) return;
+        videoEl.currentTime = Math.min(videoEl.duration, videoEl.currentTime + 10);
       });
 
       // 交互控制
@@ -999,6 +1354,35 @@
           streamInput.value = url;
           loadAndPlay(url, mode);
         });
+      });
+
+      // 全局快捷键支持 (未聚焦输入框时生效)
+      window.addEventListener('keydown', (e) => {
+        if (document.activeElement === streamInput) return;
+        if (e.code === 'Space') {
+          e.preventDefault();
+          btnPlayPause.click();
+        } else if (e.code === 'ArrowLeft') {
+          e.preventDefault();
+          btnRewind.click();
+        } else if (e.code === 'ArrowRight') {
+          e.preventDefault();
+          btnFastForward.click();
+        } else if (e.code === 'ArrowUp') {
+          e.preventDefault();
+          videoEl.volume = Math.min(1, Math.round((videoEl.volume + 0.05) * 100) / 100);
+          volumeSlider.value = videoEl.volume;
+          updateVolumeIcon();
+        } else if (e.code === 'ArrowDown') {
+          e.preventDefault();
+          videoEl.volume = Math.max(0, Math.round((videoEl.volume - 0.05) * 100) / 100);
+          volumeSlider.value = videoEl.volume;
+          updateVolumeIcon();
+        } else if (e.key === 'm' || e.key === 'M') {
+          btnMute.click();
+        } else if (e.key === 'f' || e.key === 'F') {
+          btnFullscreen.click();
+        }
       });
 
       // 初始就绪状态
