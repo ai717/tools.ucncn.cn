@@ -103,6 +103,385 @@ button, input, select, textarea {
   color: inherit;
 }
 
+/* ==========================================================================
+   通用按钮体系规范 (Button & Chip System)
+   品牌风格：清爽原木 / 极简莫兰迪绿 / 高质感微动效
+   ========================================================================== */
+
+/* 全局按钮基础属性重置 */
+button {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: all var(--transition-fast);
+}
+
+button:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* 1. 标准通用按钮 (.btn) */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 18px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.btn.primary {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+  box-shadow: var(--shadow-xs);
+}
+
+.btn.primary:hover {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+.btn.primary:active {
+  background: var(--primary-active);
+  transform: translateY(0);
+}
+
+.btn.ghost, .btn.secondary {
+  background: #ffffff;
+  color: var(--text-main);
+  border-color: var(--border-regular);
+}
+
+.btn.ghost:hover, .btn.secondary:hover {
+  background: var(--bg-surface-alt);
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.btn.ghost:active, .btn.secondary:active {
+  background: var(--primary-light);
+  transform: translateY(0);
+}
+
+/* 2. 批量操作与主要功能按钮 (.batch-btn & .action-btn) */
+.batch-btn, .action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--primary);
+  background: var(--primary);
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow: var(--shadow-xs);
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.batch-btn:hover, .action-btn:hover {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+.batch-btn:active, .action-btn:active {
+  background: var(--primary-active);
+  transform: translateY(0);
+}
+
+.batch-btn.ghost, .action-btn.secondary {
+  background: #ffffff;
+  color: var(--text-main);
+  border-color: var(--border-regular);
+  box-shadow: none;
+}
+
+.batch-btn.ghost:hover, .action-btn.secondary:hover {
+  background: var(--bg-surface-alt);
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: translateY(-1px);
+}
+
+/* 3. 标签式轻量操作按钮 (.chip-btn) */
+.chip-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: #ffffff;
+  border: 1px solid var(--border-regular);
+  border-radius: var(--radius-sm);
+  padding: 6px 14px;
+  font-size: 0.825rem;
+  font-weight: 500;
+  color: var(--text-regular);
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(26, 46, 32, 0.04);
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.chip-btn:hover {
+  background: var(--primary-light);
+  border-color: var(--primary-subtle);
+  color: var(--primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-xs);
+}
+
+.chip-btn:active {
+  transform: translateY(0);
+  background: var(--primary-subtle);
+}
+
+.chip-btn.active {
+  background: var(--primary-light);
+  border-color: var(--primary);
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.chip-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* 4. 快捷预设小芯片 (.preset-chip, .quick-chip, .preset-btn) */
+.preset-chip, .quick-chip, .preset-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: #ffffff;
+  border: 1px solid var(--border-regular);
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-regular);
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(26, 46, 32, 0.03);
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.preset-chip:hover, .quick-chip:hover, .preset-btn:hover {
+  background: var(--primary-light);
+  color: var(--primary);
+  border-color: var(--primary-subtle);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-xs);
+}
+
+.preset-chip.active, .quick-chip.active, .preset-btn.active {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+  font-weight: 600;
+}
+
+.preset-chip.clear, .quick-chip.clear {
+  color: var(--color-danger);
+  border-color: #fed7d7;
+}
+
+.preset-chip.clear:hover, .quick-chip.clear:hover {
+  background: var(--color-danger-bg);
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+/* 5. 复制专用按钮 (.copy-btn) */
+.copy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: var(--primary);
+  color: #ffffff;
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-sm);
+  padding: 7px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-xs);
+  transition: all var(--transition-fast);
+}
+
+.copy-btn:hover {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+.copy-btn:active {
+  background: var(--primary-active);
+  transform: translateY(0);
+}
+
+/* 6. 图标交互按钮 (.icon-action-btn) */
+.icon-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: #ffffff;
+  border: 1px solid var(--border-regular);
+  color: var(--text-main);
+  border-radius: var(--radius-sm);
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-xs);
+  transition: all var(--transition-fast);
+}
+
+.icon-action-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--bg-surface-alt);
+  transform: translateY(-1px);
+}
+
+.icon-action-btn.primary {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+}
+
+.icon-action-btn.primary:hover {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+  box-shadow: var(--shadow-sm);
+}
+
+/* 7. 表格与列表操作微按钮 (.download-single-btn, .remove-btn, .order-btn) */
+.download-single-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--bg-surface-alt);
+  border: 1px solid var(--border-regular);
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 0.8rem;
+  padding: 5px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.download-single-btn:hover {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.remove-btn, .remove-pdf-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 1.15rem;
+  line-height: 1;
+  transition: all var(--transition-fast);
+}
+
+.remove-btn:hover, .remove-pdf-btn:hover {
+  color: var(--color-danger);
+  background: var(--color-danger-bg);
+}
+
+.order-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-surface-alt);
+  border: 1px solid var(--border-light);
+  color: var(--text-regular);
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all var(--transition-fast);
+}
+
+.order-btn:hover:not(:disabled) {
+  background: #ffffff;
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* 8. 模式切换选项卡 (.mode-tab) */
+.mode-nav {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.mode-tab {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-regular);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all var(--transition-fast);
+}
+
+.mode-tab:hover {
+  background: var(--bg-surface-alt);
+  color: var(--text-main);
+}
+
+.mode-tab.active {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+  box-shadow: var(--shadow-xs);
+}
+
 /* 容器 */
 .container {
   width: 100%;
