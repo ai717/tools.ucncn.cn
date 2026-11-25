@@ -32,7 +32,7 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23386641'/%3E%3Cpath d='M30 70 C30 42 50 30 70 30 C70 58 50 70 30 70 Z' fill='%23ffffff'/%3E%3Cpath d='M30 70 L52 48' stroke='%23386641' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='68' cy='32' r='5' fill='%23dbebe0'/%3E%3C/svg%3E">
 
   <!-- 公共样式基座 -->
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261125_1">
 
   <style>
     /* 局部页面布局 */
@@ -286,11 +286,11 @@
         </div>
         <div class="brand-text">
           <span class="brand-title">不烧心免费工具</span>
-          <span class="brand-subtitle">tools.ucncn.cn · 纯本地极速运行</span>
+          <span class="brand-subtitle">tools.ucncn.cn · 免费、免登录、不上传、无广告</span>
         </div>
       </a>
 
-      <div class="header-actions">
+            <div class="header-actions">
         <div class="header-badge" title="安全沙盒运作中：数据绝不上传服务器">
           <span class="pulse-dot"></span>
           <span>纯本地沙盒已就绪</span>
@@ -401,62 +401,28 @@
     </article>
   </main>
 
-  <!-- 底栏 -->
+    <!-- 底栏 -->
+    <!-- 底栏 -->
   <footer class="site-footer">
     <div class="container">
-      <div class="footer-top">
-        <div class="footer-brand">
-          <div class="footer-brand-title">
-            <span>🌿</span>
-            <span>不烧心免费工具 (NoHeartburn Tools)</span>
-          </div>
-          <p class="footer-brand-desc">
-            用着不烧心的免费在线工具箱。免登录、真免费、数据不上云、无伪装广告。
-          </p>
-        </div>
-
-        <div>
-          <button type="button" class="footer-support-btn" onclick="CleanTools.openModal('tea-modal')">
-            <span>☕</span>
-            <span>请站长喝杯清茶</span>
-          </button>
-        </div>
-      </div>
-
       <div class="footer-bottom">
-        <div>&copy; 2026 tools.ucncn.cn · 保留所有权利</div>
+        <div class="footer-desc">
+          &copy; 2026 tools.ucncn.cn · 用着不烧心的免费在线工具箱。免费、免登录、不上传、无广告。
+        </div>
         <div class="footer-links">
           <a href="./" class="footer-link">工具大厅</a>
+          <span class="footer-sep">·</span>
           <a href="https://ucncn.cn/" class="footer-link" target="_blank" rel="noopener">菜鸟笔记</a>
+          <span class="footer-sep">·</span>
           <a href="https://md.ucncn.cn/" class="footer-link" target="_blank" rel="noopener">MD2Post</a>
+          <span class="footer-sep">·</span>
           <a href="https://beian.miit.gov.cn/" class="footer-icp" target="_blank" rel="noopener nofollow">苏ICP备2024150485号-5</a>
         </div>
       </div>
     </div>
   </footer>
 
-  <!-- 赞助弹窗 -->
-  <div id="tea-modal" class="modal-overlay" role="dialog" aria-modal="true">
-    <div class="modal-box">
-      <button type="button" class="modal-close">&times;</button>
-      <div class="modal-title">
-        <span>🍵</span>
-        <span>请站长喝杯清茶</span>
-      </div>
-      <p class="modal-desc">
-        天下打工人懂打工人。如果您觉得“字数统计与配音时长”帮您把控住了演讲与脚本节奏，欢迎随意支持！
-      </p>
-      <div style="background: var(--bg-surface-alt); border: 1px dashed var(--border-regular); border-radius: var(--radius-md); padding: 20px; text-align: center; margin-bottom: 16px;">
-        <div style="font-weight: 700; color: var(--text-main); margin-bottom: 6px;">真诚开源 · 纯粹为打工人减负</div>
-        <div style="font-size: 0.85rem; color: var(--text-muted);">
-          100% 浏览器客户端离线统计，文稿绝不上云。
-        </div>
-      </div>
-      <button type="button" class="btn" style="width: 100%; text-align: center; background: var(--primary); border: 1px solid var(--primary); color: #fff; padding: 10px 16px; border-radius: var(--radius-sm); font-size: 0.875rem; font-weight: 600; cursor: pointer;" onclick="CleanTools.copyText('https://tools.ucncn.cn/word-counter.html', '已复制本工具链接，感谢分享！'); CleanTools.closeModal('tea-modal');">
-        🔗 复制并分享本工具
-      </button>
-    </div>
-  </div>
+
 
   <!-- 公共交互脚本 -->
   <script src="assets/js/common.js"></script>
