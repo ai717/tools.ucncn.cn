@@ -597,46 +597,46 @@
           <div id="mainScreen" class="output-screen"></div>
         </div>
 
-        <!-- 5 大风格变体对比矩阵 -->
+        <!-- 4 大风格变体对比矩阵 -->
         <div>
           <h2 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main); margin: 0 0 12px 0;">
-            多重诅咒风格变体推荐
+            多重诅咒风格变体推荐 (全平台中英零乱码)
           </h2>
           <div class="styles-grid">
-            <!-- 风格 1: 幽灵雾气向上 -->
+            <!-- 风格 1: 赛博数码断裂 -->
             <div class="style-variant-card">
               <div class="variant-header">
-                <span class="variant-title">👻 幽灵微醺 (仅向上蔓延)</span>
-                <button class="btn-copy-chip copy-variant-btn" data-target="boxGhost">复制</button>
-              </div>
-              <div id="boxGhost" class="variant-preview-box"></div>
-            </div>
-
-            <!-- 风格 2: 深渊滴落向下 -->
-            <div class="style-variant-card">
-              <div class="variant-header">
-                <span class="variant-title">🩸 深渊重度坠落 (仅向下滴落)</span>
-                <button class="btn-copy-chip copy-variant-btn" data-target="boxAbyss">复制</button>
-              </div>
-              <div id="boxAbyss" class="variant-preview-box"></div>
-            </div>
-
-            <!-- 风格 3: 赛博横向击穿 -->
-            <div class="style-variant-card">
-              <div class="variant-header">
-                <span class="variant-title">⚡ 赛博横向击穿 (密集穿透划线)</span>
+                <span class="variant-title">⚡ 赛博数码断裂 (Cyber Noise)</span>
                 <button class="btn-copy-chip copy-variant-btn" data-target="boxCyber">复制</button>
               </div>
               <div id="boxCyber" class="variant-preview-box"></div>
             </div>
 
-            <!-- 风格 4: 烈焰爆炸起火符 (中文爆款) -->
+            <!-- 风格 2: 克苏鲁深渊符印 -->
             <div class="style-variant-card">
               <div class="variant-header">
-                <span class="variant-title">🔥 烈焰爆炸起火符 (火花炸裂)</span>
-                <button class="btn-copy-chip copy-variant-btn" data-target="boxSparks">复制</button>
+                <span class="variant-title">🩸 克苏鲁深渊符印 (Eldritch Runes)</span>
+                <button class="btn-copy-chip copy-variant-btn" data-target="boxAbyss">复制</button>
               </div>
-              <div id="boxSparks" class="variant-preview-box"></div>
+              <div id="boxAbyss" class="variant-preview-box"></div>
+            </div>
+
+            <!-- 风格 3: 虚空裂纹斩断 -->
+            <div class="style-variant-card">
+              <div class="variant-header">
+                <span class="variant-title">🗡️ 虚空裂纹斩断 (Void Slashes)</span>
+                <button class="btn-copy-chip copy-variant-btn" data-target="boxSlash">复制</button>
+              </div>
+              <div id="boxSlash" class="variant-preview-box"></div>
+            </div>
+
+            <!-- 风格 4: 异次元矩阵隔离 -->
+            <div class="style-variant-card">
+              <div class="variant-header">
+                <span class="variant-title">⟦ 异次元维度隔离 (Dimensional) ⟧</span>
+                <button class="btn-copy-chip copy-variant-btn" data-target="boxDimension">复制</button>
+              </div>
+              <div id="boxDimension" class="variant-preview-box"></div>
             </div>
           </div>
         </div>
@@ -713,12 +713,12 @@
       const mainScreen = document.getElementById('mainScreen');
       const outputStats = document.getElementById('outputStats');
 
-      const boxGhost = document.getElementById('boxGhost');
-      const boxAbyss = document.getElementById('boxAbyss');
       const boxCyber = document.getElementById('boxCyber');
-      const boxSparks = document.getElementById('boxSparks');
+      const boxAbyss = document.getElementById('boxAbyss');
+      const boxSlash = document.getElementById('boxSlash');
+      const boxDimension = document.getElementById('boxDimension');
 
-      // 通用 Unicode 组合变音符号库 (针对英文字符/ASCII/符号)
+      // 通用 Unicode 组合变音符号库 (专门针对英文字母/ASCII/数字，呈现地道 Zalgo 触手蔓延)
       const ZALGO_UP = [
         '\u030d', '\u030e', '\u0304', '\u0305', '\u033f', '\u0311', '\u0306', '\u0310',
         '\u0352', '\u0357', '\u0351', '\u0307', '\u0308', '\u030a', '\u0342', '\u0343',
@@ -730,7 +730,7 @@
       const ZALGO_MID = [
         '\u0315', '\u031b', '\u0340', '\u0358', '\u0334', '\u0335', '\u0336', '\u034f',
         '\u035c', '\u035d', '\u035e', '\u035f', '\u0360', '\u0362', '\u0338', '\u0337',
-        '\u0361', '\u0489'
+        '\u0361'
       ];
 
       const ZALGO_DOWN = [
@@ -741,22 +741,10 @@
         '\u035a', '\u0323'
       ];
 
-      // 专为中文字符 (CJK) 精选的最佳变音符号库（100% 具备汉字基准锚点，绝不产生虚线圆圈 ◌ 或排版错位）
-      const CJK_UP = [
-        '\u030d', '\u030e', '\u0304', '\u0305', '\u033f', '\u0311', '\u0306', '\u0310',
-        '\u0300', '\u0301', '\u0302', '\u0303', '\u030a', '\u033d', '\u030b', '\u030c'
-      ];
-
-      const CJK_MID = [
-        '\u0336', '\u0335', '\u0334', '\u0337', '\u0338', '\u0489', '\u035c', '\u035d'
-      ];
-
-      const CJK_DOWN = [
-        '\u0316', '\u0317', '\u0320', '\u0324', '\u0325', '\u0326', '\u0330', '\u0331',
-        '\u0332', '\u0333', '\u0323'
-      ];
-
-      const NOISE_SYMBOLS = ['░', '▒', '▓', '█', '▄', '▀', '▌', '▐', '■', '⚔', '☠', '⚡'];
+      // 专为中文汉字与全角字符设计的安全故障艺术符号集 (100% 杜绝 DirectWrite 缺失字形豆腐块 [?] 或 ▯)
+      const CJK_CYBER = ['░', '▒', '▓', '█', '▌', '▀', '■', '▄'];
+      const CJK_ABYSS = ['†', '‡', '☠', 'ψ', '⚡', '☬', '⚠', '⚔', '☽', '⛾'];
+      const CJK_SLASH = ['╱', '⫽', '✕', '◢', '◣', '•'];
 
       function randomChoice(arr) {
         return arr[Math.floor(Math.random() * arr.length)];
@@ -767,16 +755,17 @@
         return /[\u4e00-\u9fa5\u3040-\u30ff\uac00-\ud7af]/.test(ch);
       }
 
-      // 生成指定强度与方向的 Zalgo 文本 (中英双自适应引擎)
+      // 生成主视窗故障文本 (中英自适应双核引擎)
       function generateZalgo(text, intensity, allowUp, allowMid, allowDown, addNoise) {
         if (!text) return '';
         let result = '';
 
-        // 字符切分（保留 Emoji）
         const chars = Array.from(text);
 
+        // 针对中文概率换算
+        const cjkChance = Math.min(0.25 + intensity * 0.06, 0.95);
+
         for (const ch of chars) {
-          // 跳过换行符本身
           if (ch === '\n' || ch === '\r') {
             result += ch;
             continue;
@@ -784,52 +773,80 @@
 
           result += ch;
 
-          // 空格不堆叠
           if (/\s/.test(ch)) {
             continue;
           }
 
-          const isCJK = isCJKChar(ch);
+          if (isCJKChar(ch)) {
+            // 中文字符：采用高保真故障符，严禁追加拉丁变音符避免变成豆腐块方格
+            if (Math.random() < cjkChance) {
+              const pool = [...CJK_CYBER, ...CJK_ABYSS];
+              result += randomChoice(pool);
+              if (intensity >= 9 && Math.random() < 0.4) {
+                result += randomChoice(pool);
+              }
+            }
+          } else {
+            // 英文字符/数字：正常叠加 Zalgo 触手
+            const numUp = allowUp ? Math.floor(Math.random() * (intensity + 1)) : 0;
+            const numMid = allowMid ? Math.floor(Math.random() * (Math.floor(intensity / 2) + 1)) : 0;
+            const numDown = allowDown ? Math.floor(Math.random() * (intensity + 1)) : 0;
 
-          // 中文字符采用专用高兼容符号库，并合理控量避免溢出或断层
-          const upLib = isCJK ? CJK_UP : ZALGO_UP;
-          const midLib = isCJK ? CJK_MID : ZALGO_MID;
-          const downLib = isCJK ? CJK_DOWN : ZALGO_DOWN;
+            for (let i = 0; i < numUp; i++) result += randomChoice(ZALGO_UP);
+            for (let i = 0; i < numMid; i++) result += randomChoice(ZALGO_MID);
+            for (let i = 0; i < numDown; i++) result += randomChoice(ZALGO_DOWN);
 
-          // 中文字形是全角大方块，叠加上限适度控制在 1~3 个效果最震撼且最整洁
-          const maxLevel = isCJK ? Math.min(intensity, 3) : intensity;
-
-          const numUp = allowUp ? Math.floor(Math.random() * (maxLevel + 1)) : 0;
-          const numMid = allowMid ? Math.floor(Math.random() * (Math.floor(maxLevel / 2) + 1)) : 0;
-          const numDown = allowDown ? Math.floor(Math.random() * (maxLevel + 1)) : 0;
-
-          for (let i = 0; i < numUp; i++) {
-            result += randomChoice(upLib);
-          }
-          for (let i = 0; i < numMid; i++) {
-            result += randomChoice(midLib);
-          }
-          for (let i = 0; i < numDown; i++) {
-            result += randomChoice(downLib);
-          }
-
-          if (addNoise && Math.random() < 0.1) {
-            result += randomChoice(NOISE_SYMBOLS);
+            if (addNoise && Math.random() < 0.15) {
+              result += randomChoice(CJK_CYBER);
+            }
           }
         }
         return result;
       }
 
-      // 烈焰起火爆炸符 (专为中文打造的经典爆炸火花效果)
-      function generateSparks(text) {
+      // 变体 1: 赛博数码断裂
+      function buildCyber(text) {
         if (!text) return '';
         let res = '';
         for (const ch of Array.from(text)) {
+          if (/\s/.test(ch)) { res += ch; continue; }
           res += ch;
-          if (!/\s/.test(ch)) {
-            res += '\u0489'; // 西里尔百万连字符，产生火花放射效果
-            if (Math.random() < 0.5) res += '\u0336'; // 贯穿划线
-          }
+          if (Math.random() < 0.8) res += randomChoice(CJK_CYBER);
+        }
+        return res;
+      }
+
+      // 变体 2: 克苏鲁深渊符印
+      function buildAbyss(text) {
+        if (!text) return '';
+        let res = '';
+        for (const ch of Array.from(text)) {
+          if (/\s/.test(ch)) { res += ch; continue; }
+          res += ch;
+          if (Math.random() < 0.8) res += randomChoice(CJK_ABYSS);
+        }
+        return res;
+      }
+
+      // 变体 3: 虚空裂纹斩断
+      function buildSlash(text) {
+        if (!text) return '';
+        let res = '';
+        for (const ch of Array.from(text)) {
+          if (/\s/.test(ch)) { res += ch; continue; }
+          res += ch;
+          if (Math.random() < 0.8) res += randomChoice(CJK_SLASH);
+        }
+        return res;
+      }
+
+      // 变体 4: 异次元维度隔离
+      function buildDimension(text) {
+        if (!text) return '';
+        let res = '';
+        for (const ch of Array.from(text)) {
+          if (/\s/.test(ch)) { res += ch; continue; }
+          res += `⟦${ch}⟧`;
         }
         return res;
       }
@@ -855,29 +872,29 @@
         if (!raw.trim()) {
           mainScreen.textContent = '在此视窗将呈现毁灭性的混沌故障文字...';
           outputStats.textContent = '等待输入';
-          boxGhost.textContent = '';
-          boxAbyss.textContent = '';
           boxCyber.textContent = '';
-          boxSparks.textContent = '';
+          boxAbyss.textContent = '';
+          boxSlash.textContent = '';
+          boxDimension.textContent = '';
           return;
         }
 
         // 1. 主视窗渲染
         const mainResult = generateZalgo(raw, val, chkUp.checked, chkMid.checked, chkDown.checked, chkNoise.checked);
         mainScreen.textContent = mainResult;
-        outputStats.textContent = `${Array.from(raw).length} 字符 ➔ 膨胀为 ${mainResult.length} 符号 (中文原生兼容已就绪)`;
+        outputStats.textContent = `${Array.from(raw).length} 字符 ➔ 膨胀为 ${mainResult.length} 符号 (中文零乱码已就绪)`;
 
-        // 2. 变体 1: 幽灵微醺 (仅向上)
-        boxGhost.textContent = generateZalgo(raw, Math.min(val, 4), true, false, false, false);
+        // 2. 变体 1: 赛博数码断裂
+        boxCyber.textContent = buildCyber(raw);
 
-        // 3. 变体 2: 深渊坠落 (仅向下)
-        boxAbyss.textContent = generateZalgo(raw, Math.max(val, 3), false, false, true, false);
+        // 3. 变体 2: 克苏鲁深渊符印
+        boxAbyss.textContent = buildAbyss(raw);
 
-        // 4. 变体 3: 赛博横向击穿 (中间密集穿透)
-        boxCyber.textContent = generateZalgo(raw, 2, false, true, false, true);
+        // 4. 变体 3: 虚空裂纹斩断
+        boxSlash.textContent = buildSlash(raw);
 
-        // 5. 变体 4: 烈焰爆炸起火符
-        boxSparks.textContent = generateSparks(raw);
+        // 5. 变体 4: 异次元维度隔离
+        boxDimension.textContent = buildDimension(raw);
       }
 
       // 事件监听

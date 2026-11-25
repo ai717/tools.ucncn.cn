@@ -689,10 +689,10 @@
         '\u032d', '\u032e', '\u032f', '\u0330', '\u0331', '\u0332', '\u0333', '\u0339'
       ];
 
-      // 专为中文字符精选的基准附着符号库（绝不产生虚线圆圈 ◌）
-      const CJK_UP = ['\u030d', '\u030e', '\u0304', '\u0305', '\u033f', '\u0311', '\u0306', '\u0310', '\u0300', '\u0301', '\u0302', '\u0303', '\u030a', '\u033d'];
-      const CJK_MID = ['\u0336', '\u0335', '\u0334', '\u0337', '\u0338', '\u0489'];
-      const CJK_DOWN = ['\u0316', '\u0317', '\u0320', '\u0324', '\u0325', '\u0326', '\u0330', '\u0331', '\u0332', '\u0333', '\u0323'];
+      // 专为中文字符精选的无方框乱码独立故障符与符印库
+      const CJK_CYBER = ['░', '▒', '▓', '█', '▌', '▀', '■', '▄'];
+      const CJK_ABYSS = ['†', '‡', '☠', 'ψ', '⚡', '☬', '⚠', '⚔', '☽', '⛾'];
+      const CJK_SLASH = ['╱', '⫽', '✕', '◢', '◣'];
 
       const LIGHTNING_MARKS = ['\u035b', '\u0311', '\u0334', '\u0338', '\u0361'];
 
@@ -715,23 +715,27 @@
           res += ch;
           if (/\s/.test(ch)) continue;
 
-          const isCJK = isCJKChar(ch);
-          const upLib = isCJK ? CJK_UP : ZALGO_UP;
-          const midLib = isCJK ? CJK_MID : ZALGO_MID;
-          const downLib = isCJK ? CJK_DOWN : ZALGO_DOWN;
+          if (isCJKChar(ch)) {
+            // 中文字符：使用无方框乱码的独立故障符/符印，绝不附加拉丁组合变音符（避免Windows DirectWrite产生豆腐块）
+            const totalIntensity = intensityUp + intensityMid + intensityDown;
+            const cjkChance = Math.min(0.2 + totalIntensity * 0.04, 0.9);
+            if (Math.random() < cjkChance) {
+              const pool = [...CJK_CYBER, ...CJK_ABYSS];
+              res += pick(pool);
+              if (totalIntensity >= 15 && Math.random() < 0.4) {
+                res += pick(pool);
+              }
+            }
+          } else {
+            // 英文/数字/符号：使用经典纵向蔓延的 Zalgo 触手
+            const upCount = Math.floor(Math.random() * (intensityUp + 1));
+            const midCount = Math.floor(Math.random() * (intensityMid + 1));
+            const downCount = Math.floor(Math.random() * (intensityDown + 1));
 
-          // 中文字符上限合理平滑控量
-          const maxUp = isCJK ? Math.min(intensityUp, 3) : intensityUp;
-          const maxMid = isCJK ? Math.min(intensityMid, 2) : intensityMid;
-          const maxDown = isCJK ? Math.min(intensityDown, 3) : intensityDown;
-
-          const upCount = Math.floor(Math.random() * (maxUp + 1));
-          const midCount = Math.floor(Math.random() * (maxMid + 1));
-          const downCount = Math.floor(Math.random() * (maxDown + 1));
-
-          for (let i = 0; i < upCount; i++) res += pick(upLib);
-          for (let i = 0; i < midCount; i++) res += pick(midLib);
-          for (let i = 0; i < downCount; i++) res += pick(downLib);
+            for (let i = 0; i < upCount; i++) res += pick(ZALGO_UP);
+            for (let i = 0; i < midCount; i++) res += pick(ZALGO_MID);
+            for (let i = 0; i < downCount; i++) res += pick(ZALGO_DOWN);
+          }
         }
         return res;
       }
@@ -740,8 +744,15 @@
         if (!text) return '';
         let res = '';
         for (const ch of Array.from(text)) {
+          if (ch === '\n' || ch === '\r') {
+            res += ch;
+            continue;
+          }
           res += ch;
-          if (!/\s/.test(ch)) {
+          if (/\s/.test(ch)) continue;
+          if (isCJKChar(ch)) {
+            if (Math.random() < 0.65) res += pick(['⚡', '╱', '⫽', '⚡', 'ϟ']);
+          } else {
             res += pick(LIGHTNING_MARKS);
             if (Math.random() < 0.4) res += '⚡';
           }
@@ -752,12 +763,24 @@
       function buildCensor(text) {
         if (!text) return '';
         let res = '';
-        const blocks = ['█', '▓', '▒'];
+        const blocks = ['█', '▓', '▒', '░'];
         for (const ch of Array.from(text)) {
-          if (Math.random() < 0.22 && !/\s/.test(ch)) {
+          if (ch === '\n' || ch === '\r') {
+            res += ch;
+            continue;
+          }
+          if (/\s/.test(ch)) {
+            res += ch;
+            continue;
+          }
+          if (Math.random() < 0.22) {
             res += pick(blocks);
           } else {
-            res += ch + '\u0336'; // 涂划
+            if (isCJKChar(ch)) {
+              res += ch + (Math.random() < 0.5 ? '░' : '■');
+            } else {
+              res += ch + '\u0336'; // 拉丁字母使用涂划线
+            }
           }
         }
         return res;
@@ -765,7 +788,11 @@
 
       function buildDoubleStrike(text) {
         if (!text) return '';
-        return Array.from(text).map(ch => /\s/.test(ch) ? ch : ch + '\u0336\u0335').join('');
+        return Array.from(text).map(ch => {
+          if (/\s/.test(ch)) return ch;
+          if (isCJKChar(ch)) return ch + pick(CJK_SLASH);
+          return ch + '\u0336\u0335';
+        }).join('');
       }
 
       function render() {
