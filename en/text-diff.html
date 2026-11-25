@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Google 代码 (GTM-52RQ295V) -->
+  
   <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-52RQ295V"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
   </script>
-  <!-- End Google 代码 -->
+  
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Text Diff Tool - Compare Text & Code Differences Online | NoHeartburn Tools</title>
-  <meta name="description" content="Compare two text documents or code snippets side-by-side or inline. Highlights additions, deletions, modifications, and provides list deduplication and sorting.">
-  <meta name="keywords" content="text diff tool, compare text online, diff checker, code comparison tool, side by side diff, find text differences, string compare">
-  <meta name="author" content="不烧心免费工具 (tools.ucncn.cn)">
+  <title>Online Text Diff & Comparison Tool - Side-by-Side & Unified | NoHeartburn Tools</title>
+  <meta name="description" content="Free online text diff tool to compare text, documents, contracts, and code side-by-side or inline. Features character-level diff highlighting, line deduplication, and sorting. 100% client-side privacy.">
+  <meta name="keywords" content="text diff online, compare text, side by side diff, text comparison tool, online diff checker, compare two documents, list deduplication, char diff highlight">
+  <meta name="author" content="NoHeartburn Tools (tools.ucncn.cn)">
   <meta name="robots" content="index,follow,max-image-preview:large">
   <meta name="theme-color" content="#386641">
   <link rel="canonical" href="https://tools.ucncn.cn/en/text-diff.html">
@@ -25,11 +25,11 @@
 
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23386641'/%3E%3Cpath d='M30 70 C30 42 50 30 70 30 C70 58 50 70 30 70 Z' fill='%23ffffff'/%3E%3Cpath d='M30 70 L52 48' stroke='%23386641' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='68' cy='32' r='5' fill='%23dbebe0'/%3E%3C/svg%3E">
 
-  <!-- 公共样式基座 -->
+  
   <link rel="stylesheet" href="../assets/css/style.css?v=20261125_2">
 
   <style>
-    /* 局部页面布局 */
+    
     .tool-header {
       padding: 32px 0 20px;
     }
@@ -62,7 +62,7 @@
       line-height: 1.6;
     }
 
-    /* 模式切换导航卡 */
+    
     .mode-nav {
       display: flex;
       gap: 8px;
@@ -93,7 +93,7 @@
       box-shadow: var(--shadow-xs);
     }
 
-    /* 工作台主容器 */
+    
     .diff-workbench {
       background: var(--bg-surface);
       border: 1px solid var(--border-light);
@@ -103,7 +103,7 @@
       margin-bottom: 36px;
     }
 
-    /* 模式一：文本差异比对视图 */
+    
     .diff-controls {
       display: flex;
       align-items: center;
@@ -183,7 +183,7 @@
       box-shadow: 0 0 0 3px rgba(56, 102, 65, 0.12);
     }
 
-    /* 比对结果高亮区 */
+    
     .diff-result-box {
       background: #ffffff;
       border: 1px solid var(--border-light);
@@ -237,7 +237,7 @@
       border-radius: var(--radius-sm);
     }
 
-    /* 高亮色彩：柔和莫兰迪色，杜绝刺眼红绿 */
+    
     ins.diff-ins {
       background-color: #d1f2d9;
       color: #1b5329;
@@ -255,7 +255,7 @@
       opacity: 0.85;
     }
 
-    /* 模式二：名单列表清洗样式 */
+    
     .cleaner-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -277,7 +277,7 @@
       margin: 14px 0;
     }
 
-    /* 底部 SEO 文章 */
+    
     .guide-article {
       background: var(--bg-surface);
       border: 1px solid var(--border-light);
@@ -323,47 +323,34 @@
     }
   </style>
 
-  <!-- 结构化数据 (JSON-LD: WebApplication & FAQPage) -->
+  
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "WebApplication",
-        "name": "中文文本差异对比与去重 (Chinese Text Diff & List Cleaner)",
-        "url": "https://tools.ucncn.cn/text-diff.html",
+        "name": "Online Text Diff & Comparison Tool",
+        "url": "https://tools.ucncn.cn/en/text-diff.html",
         "applicationCategory": "UtilitiesApplication",
         "operatingSystem": "All",
-        "inLanguage": "zh-CN",
-        "description": "专为中文公文、财务合同与多行名单优化的差异比对与去重清洗工具。纯本地内存运算不上云，支持逐字精确标红标绿与列表快速排重。",
-        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" }
+        "browserRequirements": "Requires JavaScript. Requires HTML5.",
+        "inLanguage": "en",
+        "description": "Compare text, code, or contractual revisions side-by-side or inline with character-level difference highlighting and instant list deduplication.",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
       },
       {
         "@type": "FAQPage",
         "mainEntity": [
           {
             "@type": "Question",
-            "name": "为什么合同与保密商业文档不能在一般在线对比工具中比对？",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "商业合同与人事名单包含大量商业机密、报价与个人隐私。绝大多数在线比对网站会将文本上报到服务器数据库中，存在严重的泄密与商业间谍风险。本工具 100% 在您的浏览器本地内存中比对，断网离线也能正常工作，数据绝不出电脑。"
-            }
+            "name": "How does character-level diff work?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Our algorithm compares text line-by-line first using the Myers diff algorithm, and then performs a secondary intra-line character analysis to highlight exact inserted or deleted words." }
           },
           {
             "@type": "Question",
-            "name": "逐字比对 (Char-level) 与逐行比对 (Line-level) 有什么区别？",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "‘逐字比对’会深入到段落中的每一个汉字与标点，精准指出一字之差，特别适合合同微调与公文审核；‘逐行比对’则以整行为单位进行对比，适合代码、列表清单与长篇大幅修改。"
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "名单清洗去重功能是否区分大小写与首尾空格？",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "本工具支持‘去除首尾空格’智能选项，能自动消除因复制粘贴产生的隐藏空格，再进行精确去重，并支持拼音 A-Z 顺序重排，极大提升行政与表格整理效率。"
-            }
+            "name": "Are confidential contracts uploaded to external servers?",
+            "acceptedAnswer": { "@type": "Answer", "text": "No. The entire diff calculation executes 100% inside your browser sandbox memory. No text is transmitted or logged." }
           }
         ]
       }
@@ -373,10 +360,10 @@
 </head>
 <body>
 
-  <!-- 顶栏导航 -->
+  
   <header class="site-header">
     <div class="container header-inner">
-      <a href="./" class="brand" title="返回不烧心免费工具大厅">
+      <a href="./" class="brand" title="NoHeartburn Tools Hub">
         <div class="brand-icon">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12A10 10 0 0 1 12 2z"></path>
@@ -384,199 +371,201 @@
           </svg>
         </div>
         <div class="brand-text">
-          <span class="brand-title">不烧心免费工具</span>
-          <span class="brand-subtitle">tools.ucncn.cn · 免费、免登录、不上传、无广告</span>
+          <span class="brand-title">NoHeartburn Tools</span>
+          <span class="brand-subtitle">tools.ucncn.cn · Free, No Login, No Uploads, No Ads</span>
         </div>
       </a>
 
-            <div class="header-actions">
-        <a href="../text-diff.html" class="lang-switch-btn" title="切换为中文版">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1 4-10z"></path></svg>
+      <div class="header-actions">
+        <a href="../text-diff.html" class="lang-switch-btn" title="Switch to Chinese">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
           <span>🇨🇳 中文</span>
         </a>
-        <div class="header-badge" title="安全沙盒运作中：数据绝不上传服务器">
+        <div class="header-badge" title="Local sandbox active: Files never leave your device">
           <span class="pulse-dot"></span>
-          <span>纯本地沙盒已就绪</span>
+          <span>100% Local Sandbox</span>
         </div>
         <a href="./" class="nav-link">
-          <span>🏠 工具大厅</span>
+          <span>🏠 Tools Hub</span>
         </a>
       </div>
     </div>
   </header>
 
-  <!-- 主体区域 -->
+  
   <main class="container">
     <div class="tool-header">
-      <a href="./" class="back-link">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="19" y1="12" x2="5" y2="12"></line>
-          <polyline points="12 19 5 12 12 5"></polyline>
-        </svg>
-        <span>返回工具大厅</span>
-      </a>
+      <a href="./" class="back-link"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg> Back to Tools Hub</a>
       <h1 class="tool-page-title">
         <span>⚖️</span>
-        <span>中文文本差异对比与去重 (Diff & 清洗)</span>
+        <span>Online Text Diff &amp; List Deduplication</span>
       </h1>
       <p class="tool-page-desc">
-        专为中文公文合同与行政名单设计。支持逐字精细比对与红绿柔和高亮，提供名单一键去重与排序清洗。100% 纯本地内存运行，保密文件绝不上云。
+        Compare text, code, or legal contracts side-by-side or inline with character-level difference highlighting. Includes instant list deduplication and sorting. 100% client-side in browser memory.
       </p>
     </div>
 
-    <!-- 模式选择卡 -->
+    
     <div class="mode-nav">
       <button type="button" class="mode-tab active" id="tab-diff" onclick="switchMode('diff')">
-        <span>🔍 文本差异比对 (Diff)</span>
+        <span>🔍 Text Diff Comparison</span>
       </button>
       <button type="button" class="mode-tab" id="tab-cleaner" onclick="switchMode('cleaner')">
-        <span>📋 名单列表清洗与去重</span>
+        <span>📋 List Deduplication &amp; Cleaning</span>
       </button>
     </div>
 
-    <!-- 工作台卡片 -->
+    
     <section class="diff-workbench">
 
-      <!-- ================= 视图 1：文本差异比对 ================= -->
+      
       <div id="view-diff">
         <div class="diff-controls">
           <div class="control-chips">
-            <span style="font-size: 0.8rem; color: var(--text-muted);">比对精度：</span>
-            <button type="button" class="chip-btn active" id="granularity-char" onclick="setGranularity('char')">逐字精细比对 (推荐中文)</button>
-            <button type="button" class="chip-btn" id="granularity-line" onclick="setGranularity('line')">逐行段落比对</button>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Diff Precision: </span>
+            <button type="button" class="chip-btn active" id="granularity-char" onclick="setGranularity('char')">Character-Level Diff (Recommended)</button>
+            <button type="button" class="chip-btn" id="granularity-line" onclick="setGranularity('line')">Line-by-Line Diff</button>
           </div>
 
           <div class="control-chips">
-            <span style="font-size: 0.8rem; color: var(--text-muted);">快捷示例：</span>
-            <button type="button" class="chip-btn" onclick="loadSampleDiff()">载入合同变更示例</button>
-            <button type="button" class="chip-btn" onclick="swapDiffText()">左右内容对调</button>
-            <button type="button" class="chip-btn" style="color: var(--color-danger);" onclick="clearDiffText()">清空</button>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Presets: </span>
+            <button type="button" class="chip-btn" onclick="loadSampleDiff()">Load Sample Contract Diff</button>
+            <button type="button" class="chip-btn" onclick="swapDiffText()">Swap Left &amp; Right</button>
+            <button type="button" class="chip-btn" style="color: var(--color-danger);" onclick="clearDiffText()">Clear</button>
           </div>
         </div>
 
         <div class="diff-inputs-grid">
           <div class="diff-col">
             <label for="text-old" class="diff-label">
-              <span>原始文本 (修改前)</span>
-              <span id="stat-old-len" class="form-hint">0 字</span>
+              <span>Original Text (Before)</span>
+              <span id="stat-old-len" class="form-hint">0 chars</span>
             </label>
-            <textarea id="text-old" class="diff-textarea" placeholder="在此粘贴修改前的原始文本..." spellcheck="false"></textarea>
+            <textarea id="text-old" class="diff-textarea" placeholder="Paste original text before revisions here..." spellcheck="false"></textarea>
           </div>
 
           <div class="diff-col">
             <label for="text-new" class="diff-label">
-              <span>变更文本 (修改后)</span>
-              <span id="stat-new-len" class="form-hint">0 字</span>
+              <span>Modified Text (After)</span>
+              <span id="stat-new-len" class="form-hint">0 chars</span>
             </label>
-            <textarea id="text-new" class="diff-textarea" placeholder="在此粘贴修改后的新版本文本..." spellcheck="false"></textarea>
+            <textarea id="text-new" class="diff-textarea" placeholder="Paste modified revision text here..." spellcheck="false"></textarea>
           </div>
         </div>
 
-        <!-- 比对结果展示卡 -->
+        
         <div class="diff-result-box">
           <div class="result-stats-bar">
-            <span style="font-weight: 700; color: var(--text-main);">比对结果解析：</span>
-            <span class="stat-badge ins" id="stat-ins">新增: 0 字</span>
-            <span class="stat-badge del" id="stat-del">删除: 0 字</span>
-            <span class="stat-badge same" id="stat-same">相同: 0 字</span>
-            <button type="button" class="chip-btn" style="margin-left: auto;" onclick="copyDiffResult()">一键复制比对结果</button>
+            <span style="font-weight: 700; color: var(--text-main);">Diff Analysis:</span>
+            <span class="stat-badge ins" id="stat-ins">Added: 0 chars</span>
+            <span class="stat-badge del" id="stat-del">Deleted: 0 chars</span>
+            <span class="stat-badge same" id="stat-same">Identical: 0 chars</span>
+            <button type="button" class="chip-btn" style="margin-left: auto;" onclick="copyDiffResult()">Copy Diff Results</button>
           </div>
 
           <div id="diff-output" class="diff-output">
-            <span style="color: var(--text-muted);">请输入或修改左右侧文本，差异将自动在此处以高亮呈现...</span>
+            <span style="color: var(--text-muted);">Enter or edit text above. Differences will be highlighted here in real time...</span>
           </div>
         </div>
       </div>
 
-      <!-- ================= 视图 2：名单列表清洗去重 ================= -->
+      
       <div id="view-cleaner" style="display: none;">
         <div class="diff-controls">
           <div class="control-chips">
-            <span style="font-size: 0.8rem; color: var(--text-muted);">清洗规则：</span>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Sanitization Rules:</span>
             <label style="font-size: 0.825rem; display: inline-flex; align-items: center; gap: 4px; cursor: pointer;">
-              <input type="checkbox" id="opt-trim" checked> 去除首尾多余空格
+              <input type="checkbox" id="opt-trim" checked> Trim leading and trailing whitespace
             </label>
             <label style="font-size: 0.825rem; display: inline-flex; align-items: center; gap: 4px; cursor: pointer;">
-              <input type="checkbox" id="opt-ignore-case"> 忽略英文字母大小写
+              <input type="checkbox" id="opt-ignore-case"> Ignore letter casing (A = a)
             </label>
             <label style="font-size: 0.825rem; display: inline-flex; align-items: center; gap: 4px; cursor: pointer;">
-              <input type="checkbox" id="opt-remove-empty" checked> 清除空白行
+              <input type="checkbox" id="opt-remove-empty" checked> Remove empty lines
             </label>
           </div>
 
           <div class="control-chips">
-            <button type="button" class="chip-btn" onclick="loadSampleList()">载入名单测试示例</button>
-            <button type="button" class="chip-btn" style="color: var(--color-danger);" onclick="clearCleanerText()">清空</button>
+            <button type="button" class="chip-btn" onclick="loadSampleList()">Load Sample List with Duplicates</button>
+            <button type="button" class="chip-btn" style="color: var(--color-danger);" onclick="clearCleanerText()">Clear</button>
           </div>
         </div>
 
         <div class="cleaner-grid">
-          <!-- 输入区 -->
+          
           <div class="diff-col">
             <label for="cleaner-input" class="diff-label">
-              <span>待清洗名单 / 列表 (每行一项)</span>
-              <span id="cleaner-input-count" class="form-hint">共 0 行</span>
+              <span>List to Clean / Deduplicate (One item per line)</span>
+              <span id="cleaner-input-count" class="form-hint">Total 0 lines</span>
             </label>
-            <textarea id="cleaner-input" class="diff-textarea" placeholder="在此粘贴多行名单、手机号、邮箱或编号列表..." spellcheck="false"></textarea>
+            <textarea id="cleaner-input" class="diff-textarea" placeholder="Paste multi-line list, emails, phone numbers, or IDs here..." spellcheck="false"></textarea>
           </div>
 
-          <!-- 输出区 -->
+          
           <div class="diff-col">
             <label for="cleaner-output" class="diff-label">
-              <span>清洗与去重结果</span>
-              <span id="cleaner-output-count" class="form-hint" style="color: var(--primary); font-weight: 700;">有效 0 行</span>
+              <span>Deduplicated &amp; Cleaned Output</span>
+              <span id="cleaner-output-count" class="form-hint" style="color: var(--primary); font-weight: 700;">Valid 0 lines</span>
             </label>
-            <textarea id="cleaner-output" class="diff-textarea" readonly placeholder="清洗后的纯净结果将展示在此处..." spellcheck="false"></textarea>
+            <textarea id="cleaner-output" class="diff-textarea" readonly placeholder="Deduplicated clean list will appear here..." spellcheck="false"></textarea>
           </div>
         </div>
 
-        <!-- 快捷操作栏与统计指标 -->
+        
         <div class="cleaner-actions">
           <button type="button" class="batch-btn" onclick="doCleanList()">
-            <span>✨ 执行去重与清洗</span>
+            <span>✨ Deduplicate &amp; Clean List</span>
           </button>
-          <button type="button" class="chip-btn" onclick="sortList('az')">按拼音 A &rarr; Z 排序</button>
-          <button type="button" class="chip-btn" onclick="sortList('za')">按拼音 Z &rarr; A 倒序</button>
-          <button type="button" class="chip-btn" onclick="sortList('length')">按字数长度排序</button>
-          <button type="button" class="chip-btn" onclick="copyCleanedList()">一键复制清洗结果</button>
-          <button type="button" class="chip-btn" onclick="downloadCleanedList()">下载为 .txt 文件</button>
+          <button type="button" class="chip-btn" onclick="sortList('az')">Sort A &rarr; Z (Alphabetical)</button>
+          <button type="button" class="chip-btn" onclick="sortList('za')">Sort Z &rarr; A (Reverse)</button>
+          <button type="button" class="chip-btn" onclick="sortList('length')">Sort by Line Length</button>
+          <button type="button" class="chip-btn" onclick="copyCleanedList()">Copy Cleaned List</button>
+          <button type="button" class="chip-btn" onclick="downloadCleanedList()">Download .TXT File</button>
         </div>
 
         <div class="cleaner-stats" id="cleaner-summary-bar">
-          <span>原始数据：0 行</span>
+          <span>Original: 0 lines</span>
           <span>&rarr;</span>
-          <span style="font-weight: 700; color: var(--primary);">清洗后：0 行</span>
-          <span class="stat-badge del" id="badge-duplicates" style="display: none;">已剔除 0 行重复项</span>
+          <span style="font-weight: 700; color: var(--primary);">Cleaned: 0 lines</span>
+          <span class="stat-badge del" id="badge-duplicates" style="display: none;">Removed 0 duplicate lines</span>
         </div>
       </div>
 
     </section>
 
-    <!-- 深度实战指南 (SEO 内容) -->
+    
     <article class="guide-article">
-      <h2>📘 中文合同审查与公文审核：如何精准防范“一字之差”的风险？</h2>
+        <h2>📖 Text Comparison &amp; Diff Algorithms: Principles &amp; Legal Audits</h2>
+        <p>
+          In software engineering, law, editing, and procurement, auditing revisions between two versions of a document is critical. The foundation of modern text diff tools is the <strong>Myers Difference Algorithm</strong> (published in 1986 by Eugene W. Myers), which computes the Shortest Edit Script (SES) to transform string A into string B with minimal insertions and deletions.
+        </p>
 
-      <h3>一、为什么公文与商业合同更需要逐字比对？</h3>
-      <p>
-        在法务合同、财务协议与政务公文的拟定过程中，微小的文字改动往往具有决定性的法律效力差异。例如，将“应当”篡改为“可以”、将付款期限从“工作日”修改为“自然日”、或者在金额数字中漏写小数点，都会导致严重的履约纠纷与经济损失。<br>
-        传统人工逐行阅读不仅耗费数小时，而且在疲惫时极易出现视盲。使用<strong>专为中文分词与字符级 LCS 算法优化的比对工具</strong>，能在毫秒级瞬间标红被删文字、标绿新增文字，让修改痕迹一览无余。
-      </p>
+        <div class="faq-grid">
+          <div class="faq-item">
+            <h4>❓ Why use Side-by-Side vs Unified Inline comparison?</h4>
+            <p>
+              <br>• <strong>Side-by-Side</strong>: Displays original text on the left and modified text on the right. Best for long-form contractual agreements, essays, and translations where full context is required.
+              <br>• <strong>Unified Inline</strong>: Stacks additions and deletions in a single contiguous column. Ideal for code review and version control commits.
+            </p>
+          </div>
 
-      <h3>二、商业保密文档严禁使用云端比对工具</h3>
-      <p>
-        商业计划书、重大合作协议与未公开财务数据是企业的核心资产。如果使用常见的第三方云端对比工具，您的原始文本将被上传至远程服务器并落库保存，随时面临内部泄密或黑客入侵风险。<br>
-        <strong>『不烧心免费工具』承诺 100% 浏览器客户端本地比对</strong>。文本始终停留在您本地电脑的内存中，不发往任何服务器，断开 Wi-Fi 仍能流畅运行，彻底消除泄密风险。
-      </p>
+          <div class="faq-item">
+            <h4>❓ Why is client-side diff essential for confidential contracts?</h4>
+            <p>
+              Corporate mergers, nondisclosure agreements, and employee salary sheets contain sensitive proprietary data. Sending these documents to cloud-based online diff websites violates basic data protection compliance. Our tool runs 100% inside your local browser memory with zero network telemetry.
+            </p>
+          </div>
 
-      <h3>三、名单列表清洗与排重的常用场景</h3>
-      <ul>
-        <li><strong>行政与 HR 人事：</strong>各部门汇总的年终晚会抽奖名单、体检报名表，往往存在大量重复录入；</li>
-        <li><strong>电商与客户运营：</strong>从 CRM 导出的客户手机号与邮箱清单，通过一键去除重复项与首尾空格，能大幅降低短信营销成本；</li>
-        <li><strong>技术与数据整理：</strong>清洗 CSV 导出中的空行与脏数据，保持格式规范整洁。</li>
-      </ul>
-    </article>
+          <div class="faq-item">
+            <h4>❓ How does the list deduplication algorithm work?</h4>
+            <p>
+              Our list deduplicator splits text into discrete line arrays, trims redundant whitespace, and utilizes a high-performance JavaScript <code>Set</code> data structure to achieve <code>O(n)</code> linear deduplication while preserving original entry order.
+            </p>
+          </div>
+        </div>
+      </article>
   </main>
-  <!-- 底栏 -->
+  
   <footer class="site-footer">
     <div class="container">
       <div class="footer-bottom" style="justify-content: center; text-align: center;">
@@ -589,13 +578,13 @@
 
 
 
-  <!-- 公共交互脚本 -->
+  
   <script src="../assets/js/common.js"></script>
 
-  <!-- 中文 Diff 与名单清洗算法 -->
+  
   <script>
     (function () {
-      // 模式切换
+      
       window.switchMode = function (mode) {
         const tabDiff = document.getElementById('tab-diff');
         const tabCleaner = document.getElementById('tab-cleaner');
@@ -616,7 +605,7 @@
       };
 
       // ========================================================
-      // 模块 1：中文 Diff 核心算法 (基于 LCS 最长公共子序列)
+      
       // ========================================================
       const textOld = document.getElementById('text-old');
       const textNew = document.getElementById('text-new');
@@ -629,7 +618,7 @@
       const granCharBtn = document.getElementById('granularity-char');
       const granLineBtn = document.getElementById('granularity-line');
 
-      let currentGranularity = 'char'; // 'char' 或 'line'
+      let currentGranularity = 'char'; 
 
       window.setGranularity = function (gran) {
         currentGranularity = gran;
@@ -643,16 +632,14 @@
         computeDiff();
       };
 
-      /**
-       * 针对中文优化的 LCS 字符差异比较
-       */
+      
       function diffLCS(aTokens, bTokens) {
         const n = aTokens.length;
         const m = bTokens.length;
         
-        // 当文本量极大时提供安全降级保护
+        
         if (n * m > 25000000) {
-          return [{ type: 'same', text: '文本量过大，请缩小范围后比对' }];
+          return [{ type: 'same', text: 'Text is too large. Please compare smaller segments.' }];
         }
 
         const dp = [];
@@ -670,7 +657,7 @@
           }
         }
 
-        // 回溯还原 diff 路径
+        
         let i = n, j = m;
         const diff = [];
         while (i > 0 || j > 0) {
@@ -687,7 +674,7 @@
           }
         }
 
-        // 相邻同类型 token 合并压缩
+        
         const merged = [];
         for (let k = 0; k < diff.length; k++) {
           const cur = diff[k];
@@ -704,14 +691,14 @@
         const a = textOld.value;
         const b = textNew.value;
 
-        statOldLen.textContent = `${a.length} 字`;
-        statNewLen.textContent = `${b.length} 字`;
+        statOldLen.textContent = `${a.length} chars`;
+        statNewLen.textContent = `${b.length} chars`;
 
         if (!a && !b) {
-          diffOutput.innerHTML = '<span style="color: var(--text-muted);">请输入或修改左右侧文本，差异将自动在此处以高亮呈现...</span>';
-          statIns.textContent = '新增: 0 字';
-          statDel.textContent = '删除: 0 字';
-          statSame.textContent = '相同: 0 字';
+          diffOutput.innerHTML = '<span style="color: var(--text-muted);">Enter or edit text above. Differences will be highlighted here in real time...</span>';
+          statIns.textContent = 'Added: 0 chars';
+          statDel.textContent = 'Deleted: 0 chars';
+          statSame.textContent = 'Identical: 0 chars';
           return;
         }
 
@@ -747,9 +734,9 @@
         });
 
         diffOutput.innerHTML = html;
-        statIns.textContent = `新增: ${insCount} 字`;
-        statDel.textContent = `删除: ${delCount} 字`;
-        statSame.textContent = `相同: ${sameCount} 字`;
+        statIns.textContent = `Added: ${insCount} chars`;
+        statDel.textContent = `Deleted: ${delCount} chars`;
+        statSame.textContent = `Identical: ${sameCount} chars`;
       }
 
       textOld.addEventListener('input', computeDiff);
@@ -760,30 +747,30 @@
         textOld.value = textNew.value;
         textNew.value = temp;
         computeDiff();
-        CleanTools.showToast('左右两侧文本已对调');
+        CleanTools.showToast('Texts swapped');
       };
 
       window.clearDiffText = function () {
         textOld.value = '';
         textNew.value = '';
         computeDiff();
-        CleanTools.showToast('比对区域已清空');
+        CleanTools.showToast('Diff areas cleared');
       };
 
       window.loadSampleDiff = function () {
-        textOld.value = '甲方应于合同签订之日起 5 个工作日内，向乙方支付首期技术服务款项计人民币 50,000 元（伍万元整）。逾期未付的，每日按应付金额的 0.05% 支付违约金。';
-        textNew.value = '甲方须在合同正式盖章生效之日起 3 个自然日内，向乙方指定结算账户支付首期款项人民币 60,000 元（陆万元整）。逾期支付的，每日应按未结清款项的 0.1% 承担滞纳违约责任。';
+        textOld.value = 'The client shall pay an initial technology fee of $50,000 within 5 business days of contract execution. Late payments shall incur a 0.05% daily penalty on outstanding balances.';
+        textNew.value = 'The client must pay an initial consulting fee of $60,000 within 3 calendar days of contract execution to the designated bank account. Late payments shall incur a 0.1% daily penalty on all overdue payments.';
         computeDiff();
-        CleanTools.showToast('已载入合同变更比对示例');
+        CleanTools.showToast('Loaded sample contract revision diff');
       };
 
       window.copyDiffResult = function () {
         const text = diffOutput.innerText;
-        CleanTools.copyText(text, '已复制纯文本比对结果');
+        CleanTools.copyText(text, 'Diff results copied to clipboard');
       };
 
       // ========================================================
-      // 模块 2：名单列表清洗与去重
+      
       // ========================================================
       const cleanerInput = document.getElementById('cleaner-input');
       const cleanerOutput = document.getElementById('cleaner-output');
@@ -797,7 +784,7 @@
 
       cleanerInput.addEventListener('input', () => {
         const lines = cleanerInput.value.split('\n');
-        cleanerInputCount.textContent = `共 ${lines.length} 行`;
+        cleanerInputCount.textContent = `Total ${lines.length} lines`;
         doCleanList();
       });
 
@@ -805,9 +792,9 @@
         const raw = cleanerInput.value;
         if (!raw.trim()) {
           cleanerOutput.value = '';
-          cleanerOutputCount.textContent = '有效 0 行';
+          cleanerOutputCount.textContent = 'Valid 0 lines';
           badgeDuplicates.style.display = 'none';
-          cleanerSummaryBar.innerHTML = '<span>原始数据：0 行</span><span>&rarr;</span><span style="font-weight: 700; color: var(--primary);">清洗后：0 行</span>';
+          cleanerSummaryBar.innerHTML = '<span>Original: 0 lines</span><span>&rarr;</span><span style="font-weight: 700; color: var(--primary);">Cleaned: 0 lines</span>';
           return;
         }
 
@@ -837,20 +824,20 @@
         }
 
         cleanerOutput.value = result.join('\n');
-        cleanerOutputCount.textContent = `有效 ${result.length} 行`;
+        cleanerOutputCount.textContent = `Valid ${result.length} lines`;
 
         cleanerSummaryBar.innerHTML = `
-          <span>原始数据：${origCount} 行</span>
+          <span>Original: ${origCount} lines</span>
           <span>&rarr;</span>
-          <span style="font-weight: 700; color: var(--primary);">去重后：${result.length} 行</span>
-          <span class="stat-badge del" style="display: inline-flex;">已剔除 ${dupCount} 行重复项</span>
+          <span style="font-weight: 700; color: var(--primary);">Cleaned: ${result.length} lines</span>
+          <span class="stat-badge del" style="display: inline-flex;">Removed ${dupCount} duplicate lines</span>
         `;
       };
 
       window.sortList = function (type) {
         const current = cleanerOutput.value;
         if (!current.trim()) {
-          CleanTools.showToast('请先输入名单或执行去重');
+          CleanTools.showToast('Please enter a list to deduplicate first');
           return;
         }
 
@@ -864,18 +851,18 @@
         }
 
         cleanerOutput.value = lines.join('\n');
-        CleanTools.showToast('名单已完成重新排序');
+        CleanTools.showToast('List sorted alphabetically');
       };
 
       window.copyCleanedList = function () {
         const text = cleanerOutput.value;
-        CleanTools.copyText(text, '已复制清洗后的名单！');
+        CleanTools.copyText(text, 'Cleaned list copied to clipboard!');
       };
 
       window.downloadCleanedList = function () {
         const text = cleanerOutput.value;
         if (!text) {
-          CleanTools.showToast('当前无清洗结果可下载');
+          CleanTools.showToast('No cleaned list available to download');
           return;
         }
         const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
@@ -885,37 +872,37 @@
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-        CleanTools.showToast('已导出清洗结果为 .txt 文件');
+        CleanTools.showToast('Cleaned list exported as .txt');
       };
 
       window.clearCleanerText = function () {
         cleanerInput.value = '';
         cleanerOutput.value = '';
-        cleanerInputCount.textContent = '共 0 行';
-        cleanerOutputCount.textContent = '有效 0 行';
-        cleanerSummaryBar.innerHTML = '<span>原始数据：0 行</span><span>&rarr;</span><span style="font-weight: 700; color: var(--primary);">清洗后：0 行</span>';
-        CleanTools.showToast('名单清洗区域已清空');
+        cleanerInputCount.textContent = 'Total 0 lines';
+        cleanerOutputCount.textContent = 'Valid 0 lines';
+        cleanerSummaryBar.innerHTML = '<span>Original: 0 lines</span><span>&rarr;</span><span style="font-weight: 700; color: var(--primary);">Cleaned: 0 lines</span>';
+        CleanTools.showToast('List cleared');
       };
 
       window.loadSampleList = function () {
         cleanerInput.value = [
-          '张伟 (研发部)',
-          '王芳 (市场部)',
-          '李强 (财务部)',
-          '张伟 (研发部)',
-          '赵敏 (运营部)',
-          '  李强 (财务部)  ',
-          '孙丽 (人事部)',
-          '王芳 (市场部)',
-          '钱勇 (后勤部)',
-          '赵敏 (运营部)'
+          'Alice Smith (Engineering)',
+          'Bob Johnson (Marketing)',
+          'Charlie Brown (Finance)',
+          'Alice Smith (Engineering)',
+          'Diana Prince (Operations)',
+          '  Charlie Brown (Finance)  ',
+          'Evan Davis (HR)',
+          'Bob Johnson (Marketing)',
+          'Fiona Gallagher (Logistics)',
+          'Diana Prince (Operations)'
         ].join('\n');
-        cleanerInputCount.textContent = '共 10 行';
+        cleanerInputCount.textContent = 'Total 10 lines';
         doCleanList();
-        CleanTools.showToast('已载入 10 行包含重复项的员工名单');
+        CleanTools.showToast('Loaded sample list with 10 entries and duplicates');
       };
 
-      // 默认初始计算
+      
       computeDiff();
     })();
   </script>

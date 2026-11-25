@@ -28,9 +28,14 @@
     }, duration);
   }
 
-  // 2. 剪贴板复制工具
-  async function copyText(text, successMsg = '已复制到剪贴板') {
+  // 2. 剪贴板复制工具 (Clipboard Copy Utility)
+  async function copyText(text, successMsg) {
     if (!text) return false;
+    const isEn = document.documentElement.lang === 'en';
+    if (!successMsg) {
+      successMsg = isEn ? 'Copied to clipboard' : '已复制到剪贴板';
+    }
+    const failMsg = isEn ? 'Copy failed, please copy manually' : '复制失败，请手动选取复制';
     try {
       if (navigator.clipboard && window.isSecureContext) {
         await navigator.clipboard.writeText(text);
@@ -52,8 +57,8 @@
         }
       }
     } catch (err) {
-      console.error('复制失败:', err);
-      showToast('复制失败，请手动选取复制');
+      console.error('Copy failed:', err);
+      showToast(failMsg);
       return false;
     }
   }
