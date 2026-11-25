@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zalgo 文本生成器 - 在线混沌故障文字/Discord昵称代码 | 不烧心工具</title>
+  <meta name="description" content="免费好用的 Zalgo 文本生成器。一键将普通字符转化为充满神秘克苏鲁触手、故障风与损坏乱码的 Zalgo 文本。提供 Discord 安全防破框模式与深渊极度混乱模式，纯前端本地秒级生成，安全无痕。">
+  <meta name="keywords" content="Zalgo文本生成器,Zalgo生成器,Zalgo text generator,故障文字,混沌文字,Discord昵称特殊字体,乱码生成器,克苏鲁文字">
+  <link rel="canonical" href="https://tools.ucncn.cn/zalgo-text.html">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23386641'/%3E%3Cpath d='M30 70 C30 42 50 30 70 30 C70 58 50 70 30 70 Z' fill='%23ffffff'/%3E%3Cpath d='M30 70 L52 48' stroke='%23386641' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='68' cy='32' r='5' fill='%23dbebe0'/%3E%3C/svg%3E">
+
+  <!-- 公共样式基座 -->
+  <link rel="stylesheet" href="assets/css/style.css?v=20261125_2">
+
+  <style>
+    /* 工具页面顶部返回与标题 */
+    .tool-header {
+      padding: 32px 0 20px;
+    }
+    .back-link {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      text-decoration: none;
+      transition: color var(--transition-fast);
+    }
+    .back-link svg {
+      display: inline-block !important;
+      flex-shrink: 0;
+      transition: transform var(--transition-fast);
+    }
+    .back-link:hover {
+      color: var(--primary);
+    }
+    .back-link:hover svg {
+      transform: translateX(-3px);
+    }
+    .tool-page-title {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .tool-page-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 720px;
+      line-height: 1.6;
+    }
+
+    /* 兄弟工具联动胶囊 */
+    .link-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      color: var(--primary);
+      text-decoration: none;
+      margin-top: 8px;
+      transition: all var(--transition-fast);
+    }
+    .link-pill:hover {
+      background: #fff;
+      border-color: var(--primary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* 主工作台布局 */
+    .workspace-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-top: 20px;
+    }
+
+    .editor-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .card-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .textarea-box {
+      width: 100%;
+      min-height: 100px;
+      padding: 14px 16px;
+      font-size: 1.05rem;
+      font-family: inherit;
+      line-height: 1.6;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      background: var(--bg-main);
+      color: var(--text-main);
+      resize: vertical;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+      box-sizing: border-box;
+    }
+
+    .textarea-box:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    /* 快捷功能条 */
+    .quick-preset-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+      align-items: center;
+    }
+
+    .preset-chip {
+      font-size: 0.82rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .preset-chip:hover {
+      background: #fff;
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* 模式切换选项 */
+    .mode-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px dashed var(--border-color);
+    }
+
+    .mode-tab-btn {
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 0.86rem;
+      font-weight: 600;
+      border: 1px solid var(--border-color);
+      background: var(--bg-main);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .mode-tab-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .mode-tab-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    /* 实时 Discord 模拟与主输出卡片 */
+    .main-output-card {
+      background: var(--bg-card);
+      border: 2px solid var(--primary);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-top: 24px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .chat-simulator-box {
+      background: #313338;
+      border-radius: var(--radius-md);
+      padding: 20px 24px;
+      color: #dbdee1;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin-top: 12px;
+      min-height: 120px;
+      overflow-x: auto;
+    }
+
+    .chat-user-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .chat-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #5865f2, #eb459e);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .chat-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .chat-author {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #f2f3f5;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .chat-time {
+      font-size: 0.75rem;
+      color: #949ba4;
+      font-weight: 400;
+    }
+
+    .chat-text-content {
+      font-size: 1.25rem;
+      line-height: 2.2;
+      color: #ffffff;
+      word-break: break-all;
+      white-space: pre-wrap;
+      user-select: all;
+    }
+
+    /* 变体推荐网格 */
+    .variants-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .variant-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: all var(--transition-fast);
+    }
+
+    .variant-card:hover {
+      border-color: var(--primary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .variant-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .variant-name {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .variant-box {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 14px 16px;
+      min-height: 60px;
+      font-size: 1.1rem;
+      line-height: 2.0;
+      color: var(--text-main);
+      word-break: break-all;
+      white-space: pre-wrap;
+      overflow-y: auto;
+      max-height: 140px;
+      user-select: all;
+    }
+
+    /* 按钮规范 */
+    .btn-copy-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.8rem;
+      padding: 5px 12px;
+      border-radius: 4px;
+      border: 1px solid var(--border-color);
+      background: #fff;
+      color: var(--text-main);
+      cursor: pointer;
+      font-weight: 500;
+      transition: all var(--transition-fast);
+    }
+
+    .btn-copy-chip:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .btn-copy-chip.copied {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .btn-action-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.9rem;
+      padding: 8px 18px;
+      border-radius: var(--radius-md);
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background var(--transition-fast);
+    }
+
+    .btn-action-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-action-primary.copied {
+      background: #2e7d32;
+    }
+
+    /* 科普指南 */
+    .guide-article {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      margin-top: 36px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .guide-article h2 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 20px;
+      letter-spacing: -0.01em;
+    }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .faq-item {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px;
+    }
+
+    .faq-item h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+
+    .faq-item p {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      margin-bottom: 0;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 640px) {
+      .variants-grid {
+        grid-template-columns: 1fr;
+      }
+      .guide-article {
+        padding: 20px;
+      }
+      .chat-simulator-box {
+        padding: 16px 12px;
+      }
+      .chat-text-content {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 统一顶部导航 -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="brand">
+          <span class="brand-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+            </svg>
+          </span>
+          <span class="brand-text">tools.ucncn.cn</span>
+        </a>
+        <span class="site-slogan">用着不烧心的免费在线工具箱。免费、免登录、不上传、无广告。</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+      <!-- 统一面包屑导航 -->
+      <div class="tool-header">
+        <a href="index.html" class="back-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          返回工具大厅
+        </a>
+        <h1 class="tool-page-title">
+          <span>⚡ Zalgo 文本生成器</span>
+          <span style="font-size: 0.8rem; font-weight: 500; background: var(--bg-subtle); padding: 3px 10px; border-radius: 999px; border: 1px solid var(--border-color); color: var(--text-muted);">
+            克苏鲁 · 故障艺术
+          </span>
+        </h1>
+        <p class="tool-page-desc">
+          专门面向 Discord 聊天、Steam 个人主页与社交签名的 Zalgo 故障文字工具。提供“防破框聊天安全模式”与“满级混沌深渊模式”，支持一键复制，纯前端运算绝不收集个人数据。
+        </p>
+        <a href="cursed-text.html" class="link-pill">
+          <span>🩸 探索更多方向：前往 诅咒文本生成器 &rarr;</span>
+        </a>
+      </div>
+
+      <!-- 主工作区 -->
+      <div class="workspace-layout">
+        <!-- 输入卡片 -->
+        <div class="editor-card">
+          <div class="card-header-bar">
+            <span class="card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+              输入基准文字 (Base Text)
+            </span>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn-copy-chip" id="pasteBtn">粘贴</button>
+              <button class="btn-copy-chip" id="clearBtn">清空</button>
+            </div>
+          </div>
+
+          <textarea id="inputText" class="textarea-box" placeholder="在此输入想要转换为 Zalgo 的文本...">HE COMES TO CORRUPT 疯狂与混沌已降临</textarea>
+
+          <!-- 预设示例 -->
+          <div class="quick-preset-bar">
+            <span style="font-size: 0.8rem; color: var(--text-muted);">快捷预设：</span>
+            <button class="preset-chip" data-text="HE COMES TO CORRUPT 疯狂与混沌已降临">克苏鲁降临</button>
+            <button class="preset-chip" data-text="SYSTEM CORRUPTED 核心致命报错">赛博崩溃</button>
+            <button class="preset-chip" data-text="ZALGO THE VOID CALLS">深渊呼唤</button>
+            <button class="preset-chip" data-text="NEVER LOOK BACK 绝不要回头">恐怖短语</button>
+          </div>
+
+          <!-- 预置场景模式切换 Tabs -->
+          <div class="mode-tabs">
+            <button class="mode-tab-btn" data-mode="safe">
+              <span>🛡️ Discord 防破框安全模式</span>
+            </button>
+            <button class="mode-tab-btn active" data-mode="normal">
+              <span>⚡ 典型故障混沌模式</span>
+            </button>
+            <button class="mode-tab-btn" data-mode="extreme">
+              <span>🩸 满级深渊吞噬 (HE COMES)</span>
+            </button>
+            <button class="mode-tab-btn" data-mode="lightning">
+              <span>🌩️ 闪电火花穿透模式</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Discord 聊天仿真预览主卡片 -->
+        <div class="main-output-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+            <div style="font-weight: 700; font-size: 1.05rem; color: var(--text-main); display: flex; align-items: center; gap: 8px;">
+              <span>💬 聊天软件效果实时预览 (Discord 仿真)</span>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn-copy-chip" id="rerollBtn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                重新摇乱
+              </button>
+              <button class="btn-action-primary" id="copyMainBtn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                复制当前结果
+              </button>
+            </div>
+          </div>
+
+          <!-- 仿真气泡 -->
+          <div class="chat-simulator-box">
+            <div class="chat-user-row">
+              <div class="chat-avatar">👾</div>
+              <div class="chat-body">
+                <div class="chat-author">
+                  <span>ZalgoEntity</span>
+                  <span class="chat-time">今天 04:04</span>
+                </div>
+                <div id="chatOutput" class="chat-text-content"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 大专属 Zalgo 变体推荐 -->
+        <div>
+          <h2 style="font-size: 1.15rem; font-weight: 700; color: var(--text-main); margin: 0 0 12px 0;">
+            更多常用 Zalgo 格式变体
+          </h2>
+          <div class="variants-grid">
+            <!-- 变体 1: 闪电穿透 -->
+            <div class="variant-card">
+              <div class="variant-top">
+                <span class="variant-name">🌩️ 闪电电弧穿透 (Sparks &amp; Lightning)</span>
+                <button class="btn-copy-chip copy-var-btn" data-target="boxLightning">复制</button>
+              </div>
+              <div id="boxLightning" class="variant-box"></div>
+            </div>
+
+            <!-- 变体 2: 绝密涂黑机密 (Redacted / Censor) -->
+            <div class="variant-card">
+              <div class="variant-top">
+                <span class="variant-name">█ 绝密机密档案 (SCP Censor Glitch)</span>
+                <button class="btn-copy-chip copy-var-btn" data-target="boxCensor">复制</button>
+              </div>
+              <div id="boxCensor" class="variant-box"></div>
+            </div>
+
+            <!-- 变体 3: 双重划线破碎 -->
+            <div class="variant-card">
+              <div class="variant-top">
+                <span class="variant-name">🪓 斩断双划线 (Double Strike Glitch)</span>
+                <button class="btn-copy-chip copy-var-btn" data-target="boxStrike">复制</button>
+              </div>
+              <div id="boxStrike" class="variant-box"></div>
+            </div>
+
+            <!-- 变体 4: 微型克制昵称 -->
+            <div class="variant-card">
+              <div class="variant-top">
+                <span class="variant-name">🛡️ 游戏昵称克制款 (Steam / Bio Safe)</span>
+                <button class="btn-copy-chip copy-var-btn" data-target="boxSafe">复制</button>
+              </div>
+              <div id="boxSafe" class="variant-box"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 科普指南 -->
+      <article class="guide-article">
+        <h2>📖 什么是 Zalgo 文本？起源与使用指南</h2>
+        <p>
+          <strong>Zalgo</strong> 起源于 2004 年的早期的网络恐怖都市传说（Creepypasta），象征着一股腐蚀现实、撕裂常理的无序混乱实体。在数字技术世界中，程序员们发现 Unicode 的零宽度组合字符（Combining Characters）能够不受限制地在同一字母上无限纵向叠加大批重音符号，创造出仿佛文字被“侵蚀”的骇人视觉效果。
+        </p>
+
+        <div class="faq-grid">
+          <div class="faq-item">
+            <h4>❓ 什么是“Discord 安全模式”？</h4>
+            <p>
+              在传统的 Zalgo 文本中，组合标记会无限向上或向下延伸，容易超出聊天软件的气泡范围，导致界面变形或被管理员警告。我们的“安全模式”严格将每个字符的堆叠限制在 1~2 个精选变音符，既有浓烈的故障感，又保证字符边界绝不破框。
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h4>❓ 手机上复制后发送给好友会乱码吗？</h4>
+            <p>
+              不会乱码。因为所有符号都是 iOS、Android、Windows、macOS 操作系统底层完全内置支持的 Unicode 国际通用标准。无论是微信、QQ、Discord 还是小红书，都可以原汁原味地渲染呈现。
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h4>❓ 为什么中文汉字也能添加 Zalgo 效果？</h4>
+            <p>
+              Unicode 变音符对任何语言字符都具备附着能力。中文字符本身结构饱满，附着上方与下方的组合符号后，能呈现出极具中式怪谈与中二动漫气质的古老符咒效果。
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h4>❓ 本工具是否有使用限制或收费？</h4>
+            <p>
+              永久免费，绝不收费，无任何限制。所有转换均在本地浏览器毫秒级计算完成，不消耗云端带宽，不读取用户数据。
+            </p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <!-- 统一纯净页脚 -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom" style="justify-content: center; text-align: center;">
+        <div class="footer-desc">
+          &copy; 2026 tools.ucncn.cn · 用着不烧心的免费在线工具箱。免费、免登录、不上传、无广告。
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 核心逻辑脚本 -->
+  <script>
+    (function() {
+      const inputEl = document.getElementById('inputText');
+      const chatOutput = document.getElementById('chatOutput');
+      const copyMainBtn = document.getElementById('copyMainBtn');
+      const rerollBtn = document.getElementById('rerollBtn');
+      const clearBtn = document.getElementById('clearBtn');
+      const pasteBtn = document.getElementById('pasteBtn');
+
+      const boxLightning = document.getElementById('boxLightning');
+      const boxCensor = document.getElementById('boxCensor');
+      const boxStrike = document.getElementById('boxStrike');
+      const boxSafe = document.getElementById('boxSafe');
+
+      let currentMode = 'normal';
+
+      // 字符库
+      const ZALGO_UP = [
+        '\u030d', '\u030e', '\u0304', '\u0305', '\u033f', '\u0311', '\u0306', '\u0310',
+        '\u0352', '\u0357', '\u0351', '\u0307', '\u0308', '\u030a', '\u0342', '\u0343',
+        '\u0300', '\u0301', '\u0302', '\u0303', '\u030b', '\u030c', '\u0312', '\u0313',
+        '\u0314', '\u033d', '\u0309', '\u0363', '\u0364', '\u0365', '\u0366', '\u0367'
+      ];
+      const ZALGO_MID = [
+        '\u0315', '\u031b', '\u0340', '\u0341', '\u0358', '\u0321', '\u0322', '\u0327',
+        '\u0328', '\u0334', '\u0335', '\u0336', '\u034f', '\u035c', '\u035d', '\u0338'
+      ];
+      const ZALGO_DOWN = [
+        '\u0316', '\u0317', '\u0318', '\u0319', '\u031c', '\u031d', '\u031e', '\u031f',
+        '\u0320', '\u0324', '\u0325', '\u0326', '\u0329', '\u032a', '\u032b', '\u032c',
+        '\u032d', '\u032e', '\u032f', '\u0330', '\u0331', '\u0332', '\u0333', '\u0339'
+      ];
+
+      const LIGHTNING_MARKS = ['\u035b', '\u0311', '\u0334', '\u0338', '\u0361'];
+
+      function pick(arr) {
+        return arr[Math.floor(Math.random() * arr.length)];
+      }
+
+      function buildZalgo(text, intensityUp, intensityMid, intensityDown) {
+        if (!text) return '';
+        let res = '';
+        for (const ch of Array.from(text)) {
+          if (ch === '\n' || ch === '\r') {
+            res += ch;
+            continue;
+          }
+          res += ch;
+          if (/\s/.test(ch)) continue;
+
+          const upCount = Math.floor(Math.random() * (intensityUp + 1));
+          const midCount = Math.floor(Math.random() * (intensityMid + 1));
+          const downCount = Math.floor(Math.random() * (intensityDown + 1));
+
+          for (let i = 0; i < upCount; i++) res += pick(ZALGO_UP);
+          for (let i = 0; i < midCount; i++) res += pick(ZALGO_MID);
+          for (let i = 0; i < downCount; i++) res += pick(ZALGO_DOWN);
+        }
+        return res;
+      }
+
+      function buildLightning(text) {
+        if (!text) return '';
+        let res = '';
+        for (const ch of Array.from(text)) {
+          res += ch;
+          if (!/\s/.test(ch)) {
+            res += pick(LIGHTNING_MARKS);
+            if (Math.random() < 0.4) res += '⚡';
+          }
+        }
+        return res;
+      }
+
+      function buildCensor(text) {
+        if (!text) return '';
+        let res = '';
+        const blocks = ['█', '▓', '▒'];
+        for (const ch of Array.from(text)) {
+          if (Math.random() < 0.22 && !/\s/.test(ch)) {
+            res += pick(blocks);
+          } else {
+            res += ch + '\u0336'; // 涂划
+          }
+        }
+        return res;
+      }
+
+      function buildDoubleStrike(text) {
+        if (!text) return '';
+        return Array.from(text).map(ch => /\s/.test(ch) ? ch : ch + '\u0336\u0335').join('');
+      }
+
+      function render() {
+        const raw = inputEl.value;
+        if (!raw.trim()) {
+          chatOutput.textContent = '输入文字以实时预览 Zalgo 聊天效果...';
+          boxLightning.textContent = '';
+          boxCensor.textContent = '';
+          boxStrike.textContent = '';
+          boxSafe.textContent = '';
+          return;
+        }
+
+        // 主气泡渲染
+        let mainTxt = '';
+        if (currentMode === 'safe') {
+          mainTxt = buildZalgo(raw, 1, 1, 1);
+        } else if (currentMode === 'normal') {
+          mainTxt = buildZalgo(raw, 4, 2, 4);
+        } else if (currentMode === 'extreme') {
+          mainTxt = buildZalgo(raw, 12, 5, 12);
+        } else if (currentMode === 'lightning') {
+          mainTxt = buildLightning(raw);
+        }
+        chatOutput.textContent = mainTxt;
+
+        // 变体更新
+        boxLightning.textContent = buildLightning(raw);
+        boxCensor.textContent = buildCensor(raw);
+        boxStrike.textContent = buildDoubleStrike(raw);
+        boxSafe.textContent = buildZalgo(raw, 1, 1, 1);
+      }
+
+      // 事件
+      inputEl.addEventListener('input', render);
+      rerollBtn.addEventListener('click', render);
+
+      document.querySelectorAll('.mode-tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.mode-tab-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentMode = btn.getAttribute('data-mode');
+          render();
+        });
+      });
+
+      document.querySelectorAll('.preset-chip').forEach(btn => {
+        btn.addEventListener('click', () => {
+          inputEl.value = btn.getAttribute('data-text');
+          render();
+        });
+      });
+
+      clearBtn.addEventListener('click', () => {
+        inputEl.value = '';
+        render();
+        inputEl.focus();
+      });
+
+      pasteBtn.addEventListener('click', async () => {
+        try {
+          const t = await navigator.clipboard.readText();
+          if (t) {
+            inputEl.value = t;
+            render();
+          }
+        } catch (e) {
+          alert('请使用 Ctrl+V 粘贴');
+        }
+      });
+
+      function copyStr(str, btn) {
+        if (!str || str.startsWith('输入文字')) return;
+        navigator.clipboard.writeText(str).then(() => {
+          const old = btn.innerHTML;
+          btn.classList.add('copied');
+          btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> 已复制';
+          setTimeout(() => {
+            btn.classList.remove('copied');
+            btn.innerHTML = old;
+          }, 1500);
+        });
+      }
+
+      copyMainBtn.addEventListener('click', () => {
+        copyStr(chatOutput.textContent, copyMainBtn);
+      });
+
+      document.querySelectorAll('.copy-var-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const target = document.getElementById(btn.getAttribute('data-target'));
+          if (target) copyStr(target.textContent, btn);
+        });
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>
