@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>多功能在线单位转换器 - 长度/重量/面积/体积/温度/压力/数据等全能换算 | 不烧心工具</title>
+  <meta name="description" content="免费实用的全能单位换算器。涵盖长度距离、质量重量、面积、容积体积、温度、压力气压、速度、数据存储、时间、功率与能量等11大核心类别。单次输入即时矩阵换算所有对应单位，纯前端离线运行，无广告免登录。">
+  <meta name="keywords" content="单位换算器,单位转换器,长度单位换算,重量单位换算,温度换算,压力单位转换,体积换算,数据存储单位转换,各种单位转换">
+  <link rel="canonical" href="https://tools.ucncn.cn/unit-converter.html">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23386641'/%3E%3Cpath d='M30 70 C30 42 50 30 70 30 C70 58 50 70 30 70 Z' fill='%23ffffff'/%3E%3Cpath d='M30 70 L52 48' stroke='%23386641' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='68' cy='32' r='5' fill='%23dbebe0'/%3E%3C/svg%3E">
+
+  <!-- 公共样式基座 -->
+  <link rel="stylesheet" href="assets/css/style.css?v=20261125_2">
+
+  <style>
+    /* 工具页面顶部返回与标题 */
+    .tool-header {
+      padding: 32px 0 20px;
+    }
+    .back-link {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      text-decoration: none;
+      transition: color var(--transition-fast);
+    }
+    .back-link svg {
+      display: inline-block !important;
+      flex-shrink: 0;
+      transition: transform var(--transition-fast);
+    }
+    .back-link:hover {
+      color: var(--primary);
+    }
+    .back-link:hover svg {
+      transform: translateX(-3px);
+    }
+    .tool-page-title {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .tool-page-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 760px;
+      line-height: 1.6;
+    }
+
+    /* 分类标签横向滑动条 */
+    .category-scroll-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      margin-top: 20px;
+      border-bottom: 1px solid var(--border-color);
+      scrollbar-width: thin;
+    }
+
+    .cat-tab-btn {
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      cursor: pointer;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all var(--transition-fast);
+    }
+
+    .cat-tab-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .cat-tab-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      box-shadow: 0 2px 8px rgba(56, 102, 65, 0.25);
+    }
+
+    /* 主转换器交互面板 */
+    .converter-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-top: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .input-source-panel {
+      display: grid;
+      grid-template-columns: 1fr 220px auto;
+      gap: 14px;
+      align-items: center;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px;
+    }
+
+    .source-val-input {
+      height: 48px;
+      font-size: 1.35rem;
+      font-weight: 700;
+      font-family: inherit;
+      padding: 0 16px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      background: #fff;
+      color: var(--text-main);
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    .source-val-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    .unit-select {
+      height: 48px;
+      padding: 0 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      background: #fff;
+      color: var(--text-main);
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .unit-select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .action-btn-pill {
+      height: 48px;
+      padding: 0 18px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      background: #fff;
+      color: var(--text-main);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .action-btn-pill:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    /* 辅助控制条 (精度与常用预设) */
+    .controls-secondary {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 14px;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .presets-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .chip-small {
+      font-size: 0.78rem;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .chip-small:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: #fff;
+    }
+
+    .precision-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .precision-select {
+      height: 28px;
+      padding: 0 6px;
+      border-radius: 4px;
+      border: 1px solid var(--border-color);
+      background: #fff;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+
+    /* 全量换算矩阵结果卡片网格 */
+    .results-matrix-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 24px 0 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .matrix-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .units-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 12px;
+    }
+
+    .unit-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: all var(--transition-fast);
+      position: relative;
+    }
+
+    .unit-card:hover {
+      border-color: var(--primary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .unit-card.is-active-source {
+      background: #f7faf7;
+      border-color: var(--primary);
+    }
+
+    .unit-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .unit-name-box {
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .unit-symbol {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .btn-copy-card {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-fast);
+    }
+
+    .btn-copy-card:hover {
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .unit-card-val {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-main);
+      word-break: break-all;
+      user-select: all;
+      font-family: monospace, inherit;
+    }
+
+    /* 常见指南与常识卡 */
+    .guide-article {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      margin-top: 36px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .guide-article h2 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 20px;
+      letter-spacing: -0.01em;
+    }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .faq-item {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px;
+    }
+
+    .faq-item h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+
+    .faq-item p {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      margin-bottom: 0;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      .input-source-panel {
+        grid-template-columns: 1fr;
+      }
+      .converter-card {
+        padding: 16px;
+      }
+      .units-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 统一顶部导航 -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="brand">
+          <span class="brand-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+            </svg>
+          </span>
+          <span class="brand-text">tools.ucncn.cn</span>
+        </a>
+        <span class="site-slogan">用着不烧心的免费在线工具箱。免费、免登录、不上传、无广告。</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+      <!-- 统一面包屑导航 -->
+      <div class="tool-header">
+        <a href="index.html" class="back-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          返回工具大厅
+        </a>
+        <h1 class="tool-page-title">
+          <span>📐 多功能在线单位转换器</span>
+          <span style="font-size: 0.8rem; font-weight: 500; background: var(--bg-subtle); padding: 3px 10px; border-radius: 999px; border: 1px solid var(--border-color); color: var(--text-muted);">
+            全量即时矩阵换算
+          </span>
+        </h1>
+        <p class="tool-page-desc">
+          涵盖长度距离、质量重量、面积、容积体积、温度、压力气压、速度、数据存储、时间、功率与热量能量等11大核心类别。单次输入立即矩阵呈现所有对应单位数值，纯前端本地实时运算。
+        </p>
+      </div>
+
+      <!-- 11 大类别横向切换滚动条 -->
+      <div class="category-scroll-bar" id="categoryTabs">
+        <button class="cat-tab-btn active" data-cat="length">📏 长度距离</button>
+        <button class="cat-tab-btn" data-cat="mass">⚖️ 质量重量</button>
+        <button class="cat-tab-btn" data-cat="area">🗺️ 面积面积</button>
+        <button class="cat-tab-btn" data-cat="volume">🧪 容积体积</button>
+        <button class="cat-tab-btn" data-cat="temperature">🌡️ 温度冷热</button>
+        <button class="cat-tab-btn" data-cat="pressure">🎈 压力压强</button>
+        <button class="cat-tab-btn" data-cat="speed">⚡ 速度航速</button>
+        <button class="cat-tab-btn" data-cat="data">💾 数据存储</button>
+        <button class="cat-tab-btn" data-cat="time">⏳ 时间跨度</button>
+        <button class="cat-tab-btn" data-cat="power">💡 功率功耗</button>
+        <button class="cat-tab-btn" data-cat="energy">🔥 能量热量</button>
+      </div>
+
+      <!-- 转换主卡片 -->
+      <div class="converter-card">
+        <!-- 核心输入面板 -->
+        <div class="input-source-panel">
+          <div>
+            <input type="number" id="sourceVal" class="source-val-input" value="1" step="any" placeholder="输入数值...">
+          </div>
+          <div>
+            <select id="sourceUnitSelect" class="unit-select"></select>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="action-btn-pill" id="clearBtn" title="重置数值">重置</button>
+            <button class="action-btn-pill" id="copyAllTableBtn" title="一键复制全部转换结果清单">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              复制清单
+            </button>
+          </div>
+        </div>
+
+        <!-- 辅助设置与预设 -->
+        <div class="controls-secondary">
+          <div class="presets-row" id="presetsRow"></div>
+          <div class="precision-control">
+            <span>小数精度：</span>
+            <select id="precisionSelect" class="precision-select">
+              <option value="2">2 位小数</option>
+              <option value="4" selected>4 位小数 (推荐)</option>
+              <option value="6">6 位小数</option>
+              <option value="8">8 位小数</option>
+              <option value="auto">自适应最高精度</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 转换结果网格 -->
+        <div class="results-matrix-header">
+          <span class="matrix-title">
+            <span>📊 对应换算结果矩阵</span>
+            <span style="font-size: 0.8rem; font-weight: normal; color: var(--text-muted);">(点击右上角图标快速复制)</span>
+          </span>
+        </div>
+
+        <div class="units-grid" id="unitsGrid"></div>
+      </div>
+
+      <!-- 百科常识与常见问题 -->
+      <article class="guide-article">
+        <h2>📖 常用单位换算常识与技术解析</h2>
+        <div class="faq-grid">
+          <div class="faq-item">
+            <h4>❓ 1 亩等于多少平方米？</h4>
+            <p>
+              在传统市制与公制换算中，<strong>1 亩 = 60 平方丈 = 约 666.67 平方米</strong>；而 1 公顷（ha）等于 15 亩，等于 10,000 平方米。
+            </p>
+          </div>
+          <div class="faq-item">
+            <h4>❓ 为什么数据存储中 1KB 有时是 1000 有时是 1024？</h4>
+            <p>
+              操作系统（Windows）与计算机内存底层基于二进制，采用 <code>1 KB = 1024 Byte</code>；而硬盘与固态U盘制造商通常采用国际十进制标准 <code>1 KB = 1000 Byte</code>，这就是为什么 512GB 硬盘在电脑里显示只有约 476GB 的原因。
+            </p>
+          </div>
+          <div class="faq-item">
+            <h4>❓ 汽车轮胎胎压 2.5 到底是什么单位？</h4>
+            <p>
+              汽修厂常说的“2.5 胎压”通常是指 <strong>2.5 bar（巴）</strong>，约等于 2.5 个标准大气压（atm）、250 千帕（kPa）或 36.26 psi（磅/平方英寸）。
+            </p>
+          </div>
+          <div class="faq-item">
+            <h4>❓ 摄氏度与华氏度是如何互相换算的？</h4>
+            <p>
+              华氏度换算公式为：<code>°F = °C × 1.8 + 32</code>；逆向换算为：<code>°C = (°F - 32) ÷ 1.8</code>。例如人体的标准体温 37°C 对应华氏度为 98.6°F。
+            </p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <!-- 统一纯净页脚 -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom" style="justify-content: center; text-align: center;">
+        <div class="footer-desc">
+          &copy; 2026 tools.ucncn.cn · 用着不烧心的免费在线工具箱。免费、免登录、不上传、无广告。
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 核心换算引擎 -->
+  <script>
+    (function() {
+      // 11 大类物理量完整数据库定义
+      const DB = {
+        length: {
+          name: '长度距离',
+          base: 'm',
+          units: [
+            { id: 'km', name: '千米 / 公里', symbol: 'km', rate: 1000 },
+            { id: 'm', name: '米 (基准)', symbol: 'm', rate: 1 },
+            { id: 'dm', name: '分米', symbol: 'dm', rate: 0.1 },
+            { id: 'cm', name: '厘米 / 公分', symbol: 'cm', rate: 0.01 },
+            { id: 'mm', name: '毫米', symbol: 'mm', rate: 0.001 },
+            { id: 'um', name: '微米', symbol: 'μm', rate: 1e-6 },
+            { id: 'nm', name: '纳米', symbol: 'nm', rate: 1e-9 },
+            { id: 'mi', name: '英里', symbol: 'mi', rate: 1609.344 },
+            { id: 'yd', name: '码', symbol: 'yd', rate: 0.9144 },
+            { id: 'ft', name: '英尺', symbol: 'ft', rate: 0.3048 },
+            { id: 'in', name: '英寸', symbol: 'in', rate: 0.0254 },
+            { id: 'nmi', name: '海里', symbol: 'nmi', rate: 1852 },
+            { id: 'shili', name: '市里', symbol: '市里', rate: 500 },
+            { id: 'shizhang', name: '市丈', symbol: '市丈', rate: 10 / 3 },
+            { id: 'shichi', name: '市尺', symbol: '市尺', rate: 1 / 3 },
+            { id: 'shicun', name: '市寸', symbol: '市寸', rate: 1 / 30 }
+          ],
+          presets: [
+            { label: '1 公里 换算', val: 1, unit: 'km' },
+            { label: '1 英寸 (屏幕尺寸)', val: 1, unit: 'in' },
+            { label: '6 英尺 (身高)', val: 6, unit: 'ft' },
+            { label: '1 海里', val: 1, unit: 'nmi' }
+          ]
+        },
+        mass: {
+          name: '质量重量',
+          base: 'g',
+          units: [
+            { id: 't', name: '吨 (公吨)', symbol: 't', rate: 1e6 },
+            { id: 'kg', name: '千克 / 公斤', symbol: 'kg', rate: 1000 },
+            { id: 'g', name: '克 (基准)', symbol: 'g', rate: 1 },
+            { id: 'mg', name: '毫克', symbol: 'mg', rate: 0.001 },
+            { id: 'ug', name: '微克', symbol: 'μg', rate: 1e-6 },
+            { id: 'lb', name: '磅 (常衡)', symbol: 'lb', rate: 453.59237 },
+            { id: 'oz', name: '盎司 (常衡)', symbol: 'oz', rate: 28.349523125 },
+            { id: 'ct', name: '克拉 (珠宝钻石)', symbol: 'ct', rate: 0.2 },
+            { id: 'shijin', name: '市斤', symbol: '市斤', rate: 500 },
+            { id: 'shiliang', name: '市两', symbol: '市两', rate: 50 },
+            { id: 'shiqian', name: '市钱', symbol: '市钱', rate: 5 }
+          ],
+          presets: [
+            { label: '1 公斤', val: 1, unit: 'kg' },
+            { label: '1 磅 (蛋糕/网购)', val: 1, unit: 'lb' },
+            { label: '1 盎司 (黄金/烘焙)', val: 1, unit: 'oz' },
+            { label: '1 克拉 (钻石)', val: 1, unit: 'ct' }
+          ]
+        },
+        area: {
+          name: '面积面积',
+          base: 'm2',
+          units: [
+            { id: 'km2', name: '平方千米 / 平方公里', symbol: 'km²', rate: 1e6 },
+            { id: 'ha', name: '公顷', symbol: 'ha', rate: 10000 },
+            { id: 'mu', name: '市亩', symbol: '亩', rate: 2000 / 3 },
+            { id: 'm2', name: '平方米 (基准)', symbol: 'm²', rate: 1 },
+            { id: 'dm2', name: '平方分米', symbol: 'dm²', rate: 0.01 },
+            { id: 'cm2', name: '平方厘米', symbol: 'cm²', rate: 1e-4 },
+            { id: 'sq_mi', name: '平方英里', symbol: 'sq mi', rate: 2589988.110336 },
+            { id: 'ac', name: '英亩', symbol: 'ac', rate: 4046.8564224 },
+            { id: 'sq_yd', name: '平方码', symbol: 'sq yd', rate: 0.83612736 },
+            { id: 'sq_ft', name: '平方英尺', symbol: 'sq ft', rate: 0.09290304 },
+            { id: 'sq_in', name: '平方英寸', symbol: 'sq in', rate: 0.00064516 }
+          ],
+          presets: [
+            { label: '100 平米 (房产面积)', val: 100, unit: 'm2' },
+            { label: '1 亩地', val: 1, unit: 'mu' },
+            { label: '1 公顷', val: 1, unit: 'ha' },
+            { label: '1 英亩', val: 1, unit: 'ac' }
+          ]
+        },
+        volume: {
+          name: '容积体积',
+          base: 'L',
+          units: [
+            { id: 'm3', name: '立方米', symbol: 'm³', rate: 1000 },
+            { id: 'dm3', name: '立方分米', symbol: 'dm³', rate: 1 },
+            { id: 'cm3', name: '立方厘米', symbol: 'cm³', rate: 0.001 },
+            { id: 'L', name: '升 (基准)', symbol: 'L', rate: 1 },
+            { id: 'mL', name: '毫升', symbol: 'mL', rate: 0.001 },
+            { id: 'gal_us', name: '美制加仑', symbol: 'gal (US)', rate: 3.785411784 },
+            { id: 'gal_uk', name: '英制加仑', symbol: 'gal (UK)', rate: 4.54609 },
+            { id: 'floz_us', name: '美制液量盎司', symbol: 'fl oz', rate: 0.0295735295625 },
+            { id: 'bbl', name: '桶 (石油桶)', symbol: 'bbl', rate: 158.987294928 },
+            { id: 'cu_ft', name: '立方英尺', symbol: 'cu ft', rate: 28.316846592 },
+            { id: 'cu_in', name: '立方英寸', symbol: 'cu in', rate: 0.016387064 }
+          ],
+          presets: [
+            { label: '1 升纯水', val: 1, unit: 'L' },
+            { label: '1 美制加仑 (燃油)', val: 1, unit: 'gal_us' },
+            { label: '1 原油桶', val: 1, unit: 'bbl' }
+          ]
+        },
+        temperature: {
+          name: '温度冷热',
+          isCustom: true,
+          units: [
+            { id: 'C', name: '摄氏度', symbol: '°C' },
+            { id: 'F', name: '华氏度', symbol: '°F' },
+            { id: 'K', name: '热力学开尔文', symbol: 'K' },
+            { id: 'R', name: '兰氏度', symbol: '°R' }
+          ],
+          toBase: function(v, fromId) {
+            if (fromId === 'C') return v;
+            if (fromId === 'F') return (v - 32) / 1.8;
+            if (fromId === 'K') return v - 273.15;
+            if (fromId === 'R') return (v - 491.67) / 1.8;
+            return v;
+          },
+          fromBase: function(baseC, toId) {
+            if (toId === 'C') return baseC;
+            if (toId === 'F') return baseC * 1.8 + 32;
+            if (toId === 'K') return baseC + 273.15;
+            if (toId === 'R') return (baseC + 273.15) * 1.8;
+            return baseC;
+          },
+          presets: [
+            { label: '0 °C (冰点)', val: 0, unit: 'C' },
+            { label: '37 °C (正常体温)', val: 37, unit: 'C' },
+            { label: '100 °C (水沸点)', val: 100, unit: 'C' },
+            { label: '72 °F (舒适室温)', val: 72, unit: 'F' }
+          ]
+        },
+        pressure: {
+          name: '压力压强',
+          base: 'Pa',
+          units: [
+            { id: 'MPa', name: '兆帕', symbol: 'MPa', rate: 1e6 },
+            { id: 'kPa', name: '千帕', symbol: 'kPa', rate: 1000 },
+            { id: 'Pa', name: '帕斯卡 (基准)', symbol: 'Pa', rate: 1 },
+            { id: 'bar', name: '巴', symbol: 'bar', rate: 1e5 },
+            { id: 'mbar', name: '毫巴', symbol: 'mbar', rate: 100 },
+            { id: 'atm', name: '标准大气压', symbol: 'atm', rate: 101325 },
+            { id: 'mmHg', name: '毫米汞柱 / 托', symbol: 'mmHg', rate: 133.322368421 },
+            { id: 'psi', name: '磅力/平方英寸', symbol: 'psi', rate: 6894.757293168 }
+          ],
+          presets: [
+            { label: '2.5 bar (标准胎压)', val: 2.5, unit: 'bar' },
+            { label: '1 标准大气压 (atm)', val: 1, unit: 'atm' },
+            { label: '120 mmHg (高压收缩压)', val: 120, unit: 'mmHg' }
+          ]
+        },
+        speed: {
+          name: '速度航速',
+          base: 'ms',
+          units: [
+            { id: 'ms', name: '米/秒 (基准)', symbol: 'm/s', rate: 1 },
+            { id: 'kmh', name: '千米/小时 (时速)', symbol: 'km/h', rate: 1 / 3.6 },
+            { id: 'mph', name: '英里/小时 (迈)', symbol: 'mph', rate: 0.44704 },
+            { id: 'knot', name: '节 (海里/小时)', symbol: 'knot', rate: 1852 / 3600 },
+            { id: 'mach', name: '马赫 (音速标况)', symbol: 'Mach', rate: 340.29 },
+            { id: 'c', name: '光速 (真空中)', symbol: 'c', rate: 299792458 }
+          ],
+          presets: [
+            { label: '120 km/h (高速限速)', val: 120, unit: 'kmh' },
+            { label: '60 mph (美加公路)', val: 60, unit: 'mph' },
+            { label: '1 马赫 (超音速)', val: 1, unit: 'mach' },
+            { label: '20 节 (轮船巡航)', val: 20, unit: 'knot' }
+          ]
+        },
+        data: {
+          name: '数据存储',
+          base: 'B',
+          units: [
+            { id: 'bit', name: '比特 (位)', symbol: 'bit', rate: 0.125 },
+            { id: 'B', name: '字节 (Byte)', symbol: 'B', rate: 1 },
+            { id: 'KB', name: '千字节 (KB)', symbol: 'KB', rate: 1024 },
+            { id: 'MB', name: '兆字节 (MB)', symbol: 'MB', rate: 1024 * 1024 },
+            { id: 'GB', name: '吉字节 (GB)', symbol: 'GB', rate: 1024 * 1024 * 1024 },
+            { id: 'TB', name: '太字节 (TB)', symbol: 'TB', rate: 1024 * 1024 * 1024 * 1024 },
+            { id: 'PB', name: '拍字节 (PB)', symbol: 'PB', rate: 1024 * 1024 * 1024 * 1024 * 1024 }
+          ],
+          presets: [
+            { label: '100 Mbps (宽带网速)', val: 100 * 1024 * 1024 / 8, unit: 'B' },
+            { label: '1 GB (流量包)', val: 1, unit: 'GB' },
+            { label: '1 TB (固态移动硬盘)', val: 1, unit: 'TB' }
+          ]
+        },
+        time: {
+          name: '时间跨度',
+          base: 's',
+          units: [
+            { id: 'yr', name: '年 (标准常年)', symbol: 'yr', rate: 31536000 },
+            { id: 'mo', name: '月 (30天均值)', symbol: 'mo', rate: 2592000 },
+            { id: 'wk', name: '周 (星期)', symbol: 'wk', rate: 604800 },
+            { id: 'd', name: '天 (日)', symbol: 'd', rate: 86400 },
+            { id: 'h', name: '小时', symbol: 'h', rate: 3600 },
+            { id: 'min', name: '分钟', symbol: 'min', rate: 60 },
+            { id: 's', name: '秒 (基准)', symbol: 's', rate: 1 },
+            { id: 'ms', name: '毫秒', symbol: 'ms', rate: 0.001 },
+            { id: 'us', name: '微秒', symbol: 'μs', rate: 1e-6 },
+            { id: 'ns', name: '纳秒', symbol: 'ns', rate: 1e-9 }
+          ],
+          presets: [
+            { label: '1 天 (86400秒)', val: 1, unit: 'd' },
+            { label: '1 周', val: 1, unit: 'wk' },
+            { label: '1 年 (365天)', val: 1, unit: 'yr' }
+          ]
+        },
+        power: {
+          name: '功率功耗',
+          base: 'W',
+          units: [
+            { id: 'MW', name: '兆瓦', symbol: 'MW', rate: 1e6 },
+            { id: 'kW', name: '千瓦 (kW)', symbol: 'kW', rate: 1000 },
+            { id: 'W', name: '瓦特 (基准)', symbol: 'W', rate: 1 },
+            { id: 'hp_ps', name: '公制马力 (PS)', symbol: 'hp (公制)', rate: 735.49875 },
+            { id: 'hp_uk', name: '英制马力 (HP)', symbol: 'hp (英制)', rate: 745.69987 },
+            { id: 'Js', name: '焦耳/秒', symbol: 'J/s', rate: 1 },
+            { id: 'kcalh', name: '千卡/小时', symbol: 'kcal/h', rate: 1.163 }
+          ],
+          presets: [
+            { label: '100 马力 (汽车引擎)', val: 100, unit: 'hp_ps' },
+            { label: '1 kW (千瓦电器)', val: 1, unit: 'kW' }
+          ]
+        },
+        energy: {
+          name: '能量热量',
+          base: 'J',
+          units: [
+            { id: 'kWh', name: '度 (千瓦时)', symbol: 'kW·h', rate: 3.6e6 },
+            { id: 'Wh', name: '瓦时', symbol: 'W·h', rate: 3600 },
+            { id: 'kJ', name: '千焦', symbol: 'kJ', rate: 1000 },
+            { id: 'J', name: '焦耳 (基准)', symbol: 'J', rate: 1 },
+            { id: 'kcal', name: '千卡 / 大卡 (热量摄入)', symbol: 'kcal', rate: 4184 },
+            { id: 'cal', name: '卡路里', symbol: 'cal', rate: 4.184 },
+            { id: 'BTU', name: '英热单位', symbol: 'BTU', rate: 1055.05585 }
+          ],
+          presets: [
+            { label: '1 度电 (1 kWh)', val: 1, unit: 'kWh' },
+            { label: '500 大卡 (运动消耗)', val: 500, unit: 'kcal' }
+          ]
+        }
+      };
+
+      // 状态变量
+      let currentCategory = 'length';
+      const sourceValInput = document.getElementById('sourceVal');
+      const sourceUnitSelect = document.getElementById('sourceUnitSelect');
+      const unitsGrid = document.getElementById('unitsGrid');
+      const presetsRow = document.getElementById('presetsRow');
+      const precisionSelect = document.getElementById('precisionSelect');
+      const clearBtn = document.getElementById('clearBtn');
+      const copyAllTableBtn = document.getElementById('copyAllTableBtn');
+
+      // 格式化输出数字（避免长串或极度小数值溢出）
+      function formatNum(num, precision) {
+        if (isNaN(num)) return '--';
+        if (num === 0) return '0';
+
+        const abs = Math.abs(num);
+        if (precision === 'auto') {
+          if (abs >= 1e12 || (abs < 1e-4 && abs > 0)) {
+            return num.toExponential(4);
+          }
+          // 剔除末尾多余0
+          return parseFloat(num.toFixed(6)).toString();
+        }
+
+        const p = parseInt(precision, 10);
+        if (abs >= 1e12 || (abs < 1e-4 && abs > 0)) {
+          return num.toExponential(p);
+        }
+        return parseFloat(num.toFixed(p)).toString();
+      }
+
+      // 刷新当前分类的下拉框和预设
+      function refreshCategoryUI() {
+        const catData = DB[currentCategory];
+
+        // 1. 刷新下拉框
+        sourceUnitSelect.innerHTML = '';
+        catData.units.forEach(u => {
+          const opt = document.createElement('option');
+          opt.value = u.id;
+          opt.textContent = `${u.name} (${u.symbol})`;
+          sourceUnitSelect.appendChild(opt);
+        });
+
+        // 默认选择第 2 个（通常是日常常用单位如 米、公斤等）
+        if (catData.units.length > 1) {
+          sourceUnitSelect.selectedIndex = 1;
+        }
+
+        // 2. 刷新快速预设
+        presetsRow.innerHTML = '<span style="color:var(--text-muted);">快速预设：</span>';
+        if (catData.presets) {
+          catData.presets.forEach(p => {
+            const btn = document.createElement('button');
+            btn.className = 'chip-small';
+            btn.textContent = p.label;
+            btn.addEventListener('click', () => {
+              sourceValInput.value = p.val;
+              sourceUnitSelect.value = p.unit;
+              calculateAll();
+            });
+            presetsRow.appendChild(btn);
+          });
+        }
+
+        calculateAll();
+      }
+
+      // 核心计算与结果矩阵渲染
+      function calculateAll() {
+        const catData = DB[currentCategory];
+        const rawVal = parseFloat(sourceValInput.value);
+        const sourceUnitId = sourceUnitSelect.value;
+        const prec = precisionSelect.value;
+
+        unitsGrid.innerHTML = '';
+
+        if (isNaN(rawVal)) {
+          return;
+        }
+
+        // 换算至基准单位 (Base)
+        let baseVal = 0;
+        if (catData.isCustom) {
+          baseVal = catData.toBase(rawVal, sourceUnitId);
+        } else {
+          const sUnit = catData.units.find(u => u.id === sourceUnitId);
+          baseVal = rawVal * sUnit.rate;
+        }
+
+        // 遍历所有单位输出
+        catData.units.forEach(unit => {
+          let converted = 0;
+          if (catData.isCustom) {
+            converted = catData.fromBase(baseVal, unit.id);
+          } else {
+            converted = baseVal / unit.rate;
+          }
+
+          const formatted = formatNum(converted, prec);
+          const isSource = (unit.id === sourceUnitId);
+
+          const card = document.createElement('div');
+          card.className = `unit-card ${isSource ? 'is-active-source' : ''}`;
+
+          card.innerHTML = `
+            <div class="unit-card-top">
+              <span class="unit-name-box">
+                <span>${unit.name}</span>
+                <span class="unit-symbol">${unit.symbol}</span>
+                ${isSource ? '<span style="font-size:0.7rem; background:var(--primary); color:#fff; padding:1px 6px; border-radius:3px;">输入源</span>' : ''}
+              </span>
+              <button class="btn-copy-card" title="复制此数值" data-val="${formatted}">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              </button>
+            </div>
+            <div class="unit-card-val">${formatted}</div>
+          `;
+
+          // 单个复制
+          card.querySelector('.btn-copy-card').addEventListener('click', (e) => {
+            const val = e.currentTarget.getAttribute('data-val');
+            navigator.clipboard.writeText(val).then(() => {
+              const btn = e.currentTarget;
+              btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+              btn.style.color = 'var(--primary)';
+              setTimeout(() => {
+                btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
+                btn.style.color = '';
+              }, 1200);
+            });
+          });
+
+          unitsGrid.appendChild(card);
+        });
+      }
+
+      // 分类切换事件
+      document.querySelectorAll('.cat-tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.cat-tab-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentCategory = btn.getAttribute('data-cat');
+          refreshCategoryUI();
+        });
+      });
+
+      // 输入变化
+      sourceValInput.addEventListener('input', calculateAll);
+      sourceUnitSelect.addEventListener('change', calculateAll);
+      precisionSelect.addEventListener('change', calculateAll);
+
+      // 重置
+      clearBtn.addEventListener('click', () => {
+        sourceValInput.value = '1';
+        calculateAll();
+        sourceValInput.focus();
+      });
+
+      // 复制全部转换清单
+      copyAllTableBtn.addEventListener('click', () => {
+        const catData = DB[currentCategory];
+        const val = sourceValInput.value;
+        const currentU = catData.units.find(u => u.id === sourceUnitSelect.value);
+        const lines = [
+          `【${catData.name}换算结果】：${val} ${currentU.symbol} (${currentU.name}) 相当于：`
+        ];
+
+        document.querySelectorAll('.unit-card').forEach(card => {
+          const name = card.querySelector('.unit-name-box').textContent.replace('输入源', '').trim();
+          const resultVal = card.querySelector('.unit-card-val').textContent.trim();
+          lines.push(`• ${name}: ${resultVal}`);
+        });
+
+        navigator.clipboard.writeText(lines.join('\n')).then(() => {
+          const old = copyAllTableBtn.innerHTML;
+          copyAllTableBtn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> 已复制清单';
+          copyAllTableBtn.style.color = 'var(--primary)';
+          setTimeout(() => {
+            copyAllTableBtn.innerHTML = old;
+            copyAllTableBtn.style.color = '';
+          }, 1500);
+        });
+      });
+
+      // 初始化一次
+      refreshCategoryUI();
+    })();
+  </script>
+</body>
+</html>
