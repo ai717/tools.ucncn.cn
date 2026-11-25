@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- Google 代码 (GTM-52RQ295V) -->
+  <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-52RQ295V"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  </script>
+  <!-- End Google 代码 -->
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>二维码极速生成与美化 — 带Logo/矢量SVG导出/免跳转无套路 | 不烧心免费工具</title>
+  <meta name="description" content="纯浏览器本地运行的二维码美化生成器。直接输出真实目标网址，绝无中间跳转收集隐私，支持中心插入自定义 Logo、雅致莫兰迪配色调节，一键导出高清 PNG 与矢量 SVG 格式，永久免费零水印。">
+  <meta name="keywords" content="二维码生成器,带logo二维码,矢量svg二维码,高清二维码制作,纯本地二维码,无跳转二维码,二维码美化">
+  <meta name="author" content="不烧心免费工具 (tools.ucncn.cn)">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="theme-color" content="#386641">
+  <link rel="canonical" href="https://tools.ucncn.cn/qrcode.html">
+
+  <!-- 开放图谱标签 (Open Graph) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="二维码极速生成与美化 — 带Logo/矢量SVG导出/免跳转无套路">
+  <meta property="og:description" content="直接输出目标真实网址，绝无中间跳板收集个人隐私。支持带 Logo 美化、高清 PNG 与矢量 SVG 导出。">
+  <meta property="og:url" content="https://tools.ucncn.cn/qrcode.html">
+  <meta property="og:site_name" content="不烧心免费工具">
+  <meta property="og:locale" content="zh_CN">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23386641'/%3E%3Cpath d='M30 70 C30 42 50 30 70 30 C70 58 50 70 30 70 Z' fill='%23ffffff'/%3E%3Cpath d='M30 70 L52 48' stroke='%23386641' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='68' cy='32' r='5' fill='%23dbebe0'/%3E%3C/svg%3E">
+
+  <!-- 公共样式基座 -->
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <style>
+    /* 局部页面布局 */
+    .tool-header {
+      padding: 32px 0 20px;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      transition: color var(--transition-fast);
+    }
+    .back-link:hover {
+      color: var(--primary);
+    }
+    .tool-page-title {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .tool-page-desc {
+      font-size: 0.95rem;
+      color: var(--text-regular);
+      max-width: 760px;
+      line-height: 1.6;
+    }
+
+    /* 二维码工作台网格 */
+    .qr-workbench {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 28px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: 32px;
+      margin-bottom: 36px;
+    }
+
+    .form-section {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .form-label {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .form-hint {
+      font-size: 0.775rem;
+      color: var(--text-muted);
+      font-weight: normal;
+    }
+
+    .text-input {
+      width: 100%;
+      min-height: 108px;
+      padding: 12px 16px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-regular);
+      border-radius: var(--radius-md);
+      color: var(--text-main);
+      resize: vertical;
+      transition: all var(--transition-fast);
+    }
+    .text-input:focus {
+      outline: none;
+      background: #ffffff;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(56, 102, 65, 0.12);
+    }
+
+    /* 快捷模板预设 */
+    .preset-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .preset-chip {
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xs);
+      padding: 4px 10px;
+      font-size: 0.775rem;
+      color: var(--text-regular);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    .preset-chip:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+      border-color: var(--primary-subtle);
+    }
+
+    /* 颜色与配置行 */
+    .config-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      padding: 18px;
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+    }
+    .color-picker-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .color-input {
+      -webkit-appearance: none;
+      border: 1px solid var(--border-regular);
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      padding: 0;
+      background: none;
+    }
+    .color-input::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
+    .color-input::-webkit-color-swatch {
+      border: none;
+      border-radius: var(--radius-sm);
+    }
+
+    .color-presets {
+      display: flex;
+      gap: 6px;
+    }
+    .color-dot {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid #ffffff;
+      box-shadow: 0 0 0 1px var(--border-regular);
+      transition: transform var(--transition-fast);
+    }
+    .color-dot:hover {
+      transform: scale(1.15);
+    }
+
+    /* Logo 上传区域 */
+    .logo-upload-box {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 16px;
+      background: var(--bg-surface-alt);
+      border: 1px dashed var(--border-regular);
+      border-radius: var(--radius-md);
+    }
+    .logo-preview-thumb {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-sm);
+      object-fit: contain;
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      display: none;
+    }
+    .logo-upload-btn {
+      background: #ffffff;
+      border: 1px solid var(--border-regular);
+      color: var(--text-main);
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.825rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      position: relative;
+    }
+    .logo-upload-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    .logo-file-input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* 右侧预览区 */
+    .preview-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 24px;
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      text-align: center;
+    }
+    .preview-canvas-wrapper {
+      background: #ffffff;
+      padding: 16px;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-light);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-width: 100%;
+      overflow: hidden;
+    }
+    #qr-canvas {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .preview-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+    .action-btn {
+      width: 100%;
+      padding: 10px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all var(--transition-fast);
+      border: 1px solid transparent;
+    }
+    .action-btn.primary {
+      background: var(--primary);
+      color: #ffffff;
+    }
+    .action-btn.primary:hover {
+      background: var(--primary-hover);
+      box-shadow: var(--shadow-xs);
+    }
+    .action-btn.secondary {
+      background: #ffffff;
+      color: var(--text-main);
+      border-color: var(--border-regular);
+    }
+    .action-btn.secondary:hover {
+      background: var(--bg-surface);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* 底部 SEO 文章 */
+    .guide-article {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      margin-bottom: 40px;
+    }
+    .guide-article h2 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .guide-article h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 20px 0 10px;
+    }
+    .guide-article p {
+      font-size: 0.9rem;
+      color: var(--text-regular);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .guide-article ul, .guide-article ol {
+      padding-left: 20px;
+      margin-bottom: 16px;
+      font-size: 0.9rem;
+      color: var(--text-regular);
+      line-height: 1.7;
+    }
+    .guide-article li {
+      margin-bottom: 6px;
+    }
+
+    @media (max-width: 860px) {
+      .qr-workbench {
+        grid-template-columns: 1fr;
+      }
+      .preview-section {
+        order: -1;
+      }
+    }
+  </style>
+
+  <!-- 结构化数据 (JSON-LD: WebApplication & FAQPage) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "二维码极速生成与美化 (QR Code Generator)",
+        "url": "https://tools.ucncn.cn/qrcode.html",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "All",
+        "inLanguage": "zh-CN",
+        "description": "纯本地离线二维码美化生成器。直接输出真实目标网址，绝无中间跳转收集隐私，支持中心插入自定义 Logo、莫兰迪配色调节，一键导出高清 PNG 与矢量 SVG 格式。",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "为什么很多所谓的免费二维码生成器扫描后会有跳转页面？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "市面上许多不良工具站将您的真实网址替换成了他们自建的中间短网址（活码）。当用户扫描时，会先跳转至对方服务器收集设备与地理位置信息，甚至在数月后强行弹出付费提示或广告。而‘不烧心’二维码工具采用纯静态生成，内容直通目标，绝无中间跳板。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "在二维码中心插入 Logo 为什么偶尔会扫不出来？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "因为 Logo 遮挡了一部分二维码点阵。解决方法：将‘容错率’设置为最高等级 H (30%) 或 Q (25%)，且 Logo 尺寸建议控制在二维码总宽度的 20%~25% 以内，本工具已自动内置白底安全防护框，确保极佳扫码识别率。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "印刷物料（名片、海报、展架）应该导出什么格式？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "推荐导出 SVG 矢量图格式。矢量图可无限放大而不产生任何锯齿模糊，能完美适配印刷级高分辨率输出需求。"
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- 顶栏导航 -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="./" class="brand" title="返回不烧心免费工具大厅">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12A10 10 0 0 1 12 2z"></path>
+            <path d="M12 6v6l4 2"></path>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">不烧心免费工具</span>
+          <span class="brand-subtitle">tools.ucncn.cn · 纯本地极速运行</span>
+        </div>
+      </a>
+
+      <div class="header-actions">
+        <div class="header-badge" title="安全沙盒运作中：数据绝不上传服务器">
+          <span class="pulse-dot"></span>
+          <span>纯本地沙盒已就绪</span>
+        </div>
+        <a href="./" class="nav-link">
+          <span>🏠 工具大厅</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主体区域 -->
+  <main class="container">
+    <div class="tool-header">
+      <a href="./" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span>返回工具大厅</span>
+      </a>
+      <h1 class="tool-page-title">
+        <span>🏁</span>
+        <span>二维码极速生成与美化 (免跳转·带Logo·矢量导出)</span>
+      </h1>
+      <p class="tool-page-desc">
+        直接输出真实目标网址，绝无中间跳转收集隐私。支持嵌入自定义 Logo、莫兰迪雅致配色调节，一键导出高清 PNG 与矢量 SVG 格式。
+      </p>
+    </div>
+
+    <!-- 二维码工作台 -->
+    <section class="qr-workbench">
+      <!-- 左侧配置区 -->
+      <div class="form-section">
+        <div class="form-group">
+          <label for="qr-text" class="form-label">
+            <span>输入二维码内容（网址或文本）</span>
+            <span class="form-hint">即输即转 · 支持多行文本与 UTF-8 中文</span>
+          </label>
+          <textarea id="qr-text" class="text-input" placeholder="输入网址如：https://tools.ucncn.cn 或任意文本内容..." spellcheck="false">https://tools.ucncn.cn/</textarea>
+          
+          <!-- 快捷模板 -->
+          <div class="preset-chips">
+            <span style="font-size: 0.775rem; color: var(--text-muted); align-self: center;">快捷填入：</span>
+            <button type="button" class="preset-chip" onclick="setText('https://tools.ucncn.cn/')">本站网址</button>
+            <button type="button" class="preset-chip" onclick="setText('https://ucncn.cn/')">菜鸟笔记</button>
+            <button type="button" class="preset-chip" onclick="setText('WIFI:S:MyHomeWiFi;T:WPA;P:12345678;;')">WiFi 连接卡</button>
+            <button type="button" class="preset-chip" onclick="setText('你好，欢迎使用不烧心免费在线工具！')">纯中文文本</button>
+          </div>
+        </div>
+
+        <!-- Logo 嵌入配置 -->
+        <div class="form-group">
+          <label class="form-label">
+            <span>中心 Logo 图标 (可选)</span>
+            <span class="form-hint">本地安全读取，自动加入防遮挡白边</span>
+          </label>
+          <div class="logo-upload-box">
+            <img id="logo-preview" class="logo-preview-thumb" alt="Logo 预览">
+            <button type="button" class="logo-upload-btn">
+              <span>🖼️ 上传 Logo 图片</span>
+              <input type="file" id="logo-input" class="logo-file-input" accept="image/*">
+            </button>
+            <button type="button" id="remove-logo-btn" class="preset-chip" style="display: none; color: var(--color-danger);" onclick="removeLogo()">
+              ✕ 移除 Logo
+            </button>
+            <span id="logo-status-text" style="font-size: 0.8rem; color: var(--text-muted);">未选择 Logo</span>
+          </div>
+        </div>
+
+        <!-- 视觉与技术参数 -->
+        <div class="config-grid">
+          <!-- 前景颜色 -->
+          <div class="form-group">
+            <label class="form-label"><span>🎨 码点颜色 (前景色)</span></label>
+            <div class="color-picker-row">
+              <input type="color" id="color-dark" class="color-input" value="#1d2b22">
+              <div class="color-presets">
+                <span class="color-dot" style="background: #1d2b22;" title="曜石黑" onclick="setColorDark('#1d2b22')"></span>
+                <span class="color-dot" style="background: #386641;" title="莫兰迪绿" onclick="setColorDark('#386641')"></span>
+                <span class="color-dot" style="background: #1e3a8a;" title="商务深蓝" onclick="setColorDark('#1e3a8a')"></span>
+                <span class="color-dot" style="background: #8f6e52;" title="温润原木" onclick="setColorDark('#8f6e52')"></span>
+                <span class="color-dot" style="background: #991b1b;" title="典雅酒红" onclick="setColorDark('#991b1b')"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 背景颜色 -->
+          <div class="form-group">
+            <label class="form-label"><span>✨ 背景颜色</span></label>
+            <div class="color-picker-row">
+              <input type="color" id="color-light" class="color-input" value="#ffffff">
+              <div class="color-presets">
+                <span class="color-dot" style="background: #ffffff;" title="纯白" onclick="setColorLight('#ffffff')"></span>
+                <span class="color-dot" style="background: #f8faf8;" title="微绿自然白" onclick="setColorLight('#f8faf8')"></span>
+                <span class="color-dot" style="background: #faf7f2;" title="象牙米白" onclick="setColorLight('#faf7f2')"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 容错率 -->
+          <div class="form-group">
+            <label for="ec-level" class="form-label"><span>🛡️ 容错级别</span></label>
+            <select id="ec-level" class="control-select">
+              <option value="H" selected>高容错 H (30% · 嵌入Logo强力推荐)</option>
+              <option value="Q">中高容错 Q (25%)</option>
+              <option value="M">标准容错 M (15%)</option>
+              <option value="L">低容错 L (7%)</option>
+            </select>
+          </div>
+
+          <!-- 边距与尺寸 -->
+          <div class="form-group">
+            <label for="qr-margin" class="form-label"><span>📐 留白边距 (Margin)</span></label>
+            <select id="qr-margin" class="control-select">
+              <option value="20" selected>标准留白 (推荐)</option>
+              <option value="30">宽松留白</option>
+              <option value="10">紧凑留白</option>
+              <option value="0">无留白</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- 右侧预览与下载区 -->
+      <div class="preview-section">
+        <div class="preview-canvas-wrapper">
+          <canvas id="qr-canvas" width="280" height="280"></canvas>
+        </div>
+
+        <div class="preview-actions">
+          <button type="button" class="action-btn primary" onclick="downloadPNG()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>下载高清 PNG 图片</span>
+          </button>
+
+          <button type="button" class="action-btn secondary" onclick="downloadSVG()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="16 18 22 12 16 6"></polyline>
+              <polyline points="8 6 2 12 8 18"></polyline>
+            </svg>
+            <span>下载矢量 SVG 文件 (印刷无损)</span>
+          </button>
+
+          <button type="button" class="action-btn secondary" onclick="copyImage()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span>一键复制图片到剪贴板</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 深度实战指南 (SEO 内容) -->
+    <article class="guide-article">
+      <h2>📘 为什么千万不要使用带“中间跳板”的二维码生成工具？</h2>
+
+      <h3>一、传统免费“活码”工具站的致命陷阱</h3>
+      <p>
+        在互联网上搜索“免费二维码生成器”，许多商业站点声称能免费生成“活码”。但其底层原理是：它们并没有直接把您的真实网址编码进二维码，而是生成了一个<strong>指向该工具站域名的重定向中间网址（如 <code>http://xxx.com/redirect?id=12345</code>）</strong>。
+      </p>
+      <ul>
+        <li><strong>隐私泄密：</strong>每一次扫码，您的客户的 IP 地址、所在省市、手机型号与扫码时间全部被对方后台记录；</li>
+        <li><strong>敲诈与拦截：</strong>一旦该二维码被印在几万份包装袋、名片或广告牌上，对方服务器可能会在几个月后突然把跳转页面替换为“该二维码已过期，请充值 199 元升级 VIP”；</li>
+        <li><strong>域名失效风险：</strong>如果该工具站倒闭或被封禁，您所有印出的二维码将全部变成死链。</li>
+      </ul>
+
+      <h3>二、“不烧心”纯本地二维码的纯粹承诺</h3>
+      <p>
+        本站生成的二维码采用<strong>“内容直编”</strong>模式：您的原始网址、文字或 WiFi 密码直接作为数据点阵存放在二维码中。扫码枪或微信摄像头解码后<strong>直接打开真实地址，中间没有任何跳板服务器</strong>。即使本站明天关站，您生成的二维码也永久有效！
+      </p>
+
+      <h3>三、印刷海报与名片的建议配置</h3>
+      <ul>
+        <li><strong>印刷物料建议选用 SVG 矢量格式：</strong>SVG 无论放大至几米都不会出现马赛克，是设计师印刷展架、易拉宝与彩页的黄金标准；</li>
+        <li><strong>带 Logo 时必须选用 H 级容错：</strong>H 级容错允许最高 30% 的点阵被遮挡，能确保手机摄像头在各种逆光与反光场景下秒级识别。</li>
+      </ul>
+    </article>
+  </main>
+
+  <!-- 底栏 -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-brand-title">
+            <span>🌿</span>
+            <span>不烧心免费工具 (NoHeartburn Tools)</span>
+          </div>
+          <p class="footer-brand-desc">
+            用着不烧心的免费在线工具箱。免登录、真免费、数据不上云、无伪装广告。
+          </p>
+        </div>
+
+        <div>
+          <button type="button" class="footer-support-btn" onclick="CleanTools.openModal('tea-modal')">
+            <span>☕</span>
+            <span>请站长喝杯清茶</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 tools.ucncn.cn · 保留所有权利</div>
+        <div class="footer-links">
+          <a href="./" class="footer-link">工具大厅</a>
+          <a href="https://ucncn.cn/" class="footer-link" target="_blank" rel="noopener">菜鸟笔记</a>
+          <a href="https://md.ucncn.cn/" class="footer-link" target="_blank" rel="noopener">MD2Post</a>
+          <a href="https://beian.miit.gov.cn/" class="footer-icp" target="_blank" rel="noopener nofollow">苏ICP备2024150485号-5</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 赞助弹窗 -->
+  <div id="tea-modal" class="modal-overlay" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <button type="button" class="modal-close">&times;</button>
+      <div class="modal-title">
+        <span>🍵</span>
+        <span>请站长喝杯清茶</span>
+      </div>
+      <p class="modal-desc">
+        天下打工人懂打工人。如果您觉得“二维码生成与美化”帮您避开了中间跳转陷阱与水印套路，欢迎随意支持！
+      </p>
+      <div style="background: var(--bg-surface-alt); border: 1px dashed var(--border-regular); border-radius: var(--radius-md); padding: 20px; text-align: center; margin-bottom: 16px;">
+        <div style="font-weight: 700; color: var(--text-main); margin-bottom: 6px;">真诚开源 · 纯粹为打工人减负</div>
+        <div style="font-size: 0.85rem; color: var(--text-muted);">
+          直通真实目标，绝无中间跳转收集隐私。
+        </div>
+      </div>
+      <button type="button" class="btn" style="width: 100%; text-align: center; background: var(--primary); border: 1px solid var(--primary); color: #fff; padding: 10px 16px; border-radius: var(--radius-sm); font-size: 0.875rem; font-weight: 600; cursor: pointer;" onclick="CleanTools.copyText('https://tools.ucncn.cn/qrcode.html', '已复制本工具链接，感谢分享！'); CleanTools.closeModal('tea-modal');">
+        🔗 复制并分享本工具
+      </button>
+    </div>
+  </div>
+
+  <!-- 公共交互脚本 -->
+  <script src="assets/js/common.js"></script>
+  <!-- 二维码核心引擎 -->
+  <script src="assets/js/qrcode.min.js"></script>
+
+  <!-- 二维码页面驱动逻辑 -->
+  <script>
+    (function () {
+      const qrText = document.getElementById('qr-text');
+      const qrCanvas = document.getElementById('qr-canvas');
+      const colorDarkInput = document.getElementById('color-dark');
+      const colorLightInput = document.getElementById('color-light');
+      const ecLevelSelect = document.getElementById('ec-level');
+      const qrMarginSelect = document.getElementById('qr-margin');
+      const logoInput = document.getElementById('logo-input');
+      const logoPreview = document.getElementById('logo-preview');
+      const removeLogoBtn = document.getElementById('remove-logo-btn');
+      const logoStatusText = document.getElementById('logo-status-text');
+
+      let currentLogoImage = null;
+      let currentQRModel = null;
+
+      function renderQRCode() {
+        const text = qrText.value.trim();
+        if (!text) {
+          const ctx = qrCanvas.getContext('2d');
+          ctx.clearRect(0, 0, qrCanvas.width, qrCanvas.height);
+          return;
+        }
+
+        const ecStr = ecLevelSelect.value;
+        const ecMap = {
+          'L': QRCodeGenerator.ErrorCorrectLevel.L,
+          'M': QRCodeGenerator.ErrorCorrectLevel.M,
+          'Q': QRCodeGenerator.ErrorCorrectLevel.Q,
+          'H': QRCodeGenerator.ErrorCorrectLevel.H
+        };
+
+        try {
+          currentQRModel = QRCodeGenerator.generate(text, {
+            errorCorrectLevel: ecMap[ecStr] !== undefined ? ecMap[ecStr] : QRCodeGenerator.ErrorCorrectLevel.H
+          });
+
+          const size = 300;
+          const margin = parseInt(qrMarginSelect.value, 10);
+          const colorDark = colorDarkInput.value;
+          const colorLight = colorLightInput.value;
+
+          QRCodeGenerator.drawCanvas(qrCanvas, currentQRModel, {
+            size: size,
+            margin: margin,
+            colorDark: colorDark,
+            colorLight: colorLight,
+            logoImage: currentLogoImage,
+            logoSize: 0.22
+          });
+        } catch (err) {
+          console.error('二维码生成错误:', err);
+        }
+      }
+
+      // 输入监听
+      qrText.addEventListener('input', renderQRCode);
+      colorDarkInput.addEventListener('input', renderQRCode);
+      colorLightInput.addEventListener('input', renderQRCode);
+      ecLevelSelect.addEventListener('change', renderQRCode);
+      qrMarginSelect.addEventListener('change', renderQRCode);
+
+      // Logo 上传
+      logoInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function (evt) {
+          const img = new Image();
+          img.onload = function () {
+            currentLogoImage = img;
+            logoPreview.src = evt.target.result;
+            logoPreview.style.display = 'block';
+            removeLogoBtn.style.display = 'inline-block';
+            logoStatusText.textContent = file.name;
+            renderQRCode();
+            CleanTools.showToast('已嵌入 Logo，已为您自动启用防遮挡保护框');
+          };
+          img.src = evt.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+
+      window.removeLogo = function () {
+        currentLogoImage = null;
+        logoInput.value = '';
+        logoPreview.src = '';
+        logoPreview.style.display = 'none';
+        removeLogoBtn.style.display = 'none';
+        logoStatusText.textContent = '未选择 Logo';
+        renderQRCode();
+        CleanTools.showToast('已移除 Logo');
+      };
+
+      window.setText = function (text) {
+        qrText.value = text;
+        renderQRCode();
+        qrText.focus();
+      };
+
+      window.setColorDark = function (hex) {
+        colorDarkInput.value = hex;
+        renderQRCode();
+      };
+
+      window.setColorLight = function (hex) {
+        colorLightInput.value = hex;
+        renderQRCode();
+      };
+
+      // 导出 PNG
+      window.downloadPNG = function () {
+        if (!qrCanvas) return;
+        const link = document.createElement('a');
+        link.download = `qrcode_${Date.now()}.png`;
+        link.href = qrCanvas.toDataURL('image/png');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        CleanTools.showToast('已开始下载高清 PNG 二维码');
+      };
+
+      // 导出矢量 SVG
+      window.downloadSVG = function () {
+        if (!currentQRModel) return;
+        const margin = parseInt(qrMarginSelect.value, 10);
+        const colorDark = colorDarkInput.value;
+        const colorLight = colorLightInput.value;
+        const svgContent = QRCodeGenerator.generateSVG(currentQRModel, {
+          size: 600,
+          margin: margin * 2,
+          colorDark: colorDark,
+          colorLight: colorLight
+        });
+
+        const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
+        const link = document.createElement('a');
+        link.download = `qrcode_${Date.now()}.svg`;
+        link.href = URL.createObjectURL(blob);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        CleanTools.showToast('已导出印刷级矢量 SVG 二维码');
+      };
+
+      // 一键复制图片到剪贴板
+      window.copyImage = async function () {
+        if (!qrCanvas) return;
+        try {
+          qrCanvas.toBlob(async function (blob) {
+            if (navigator.clipboard && window.ClipboardItem) {
+              await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+              CleanTools.showToast('已成功复制二维码图片到剪贴板！');
+            } else {
+              downloadPNG();
+            }
+          });
+        } catch (err) {
+          console.warn('剪贴板复制图片受限:', err);
+          downloadPNG();
+        }
+      };
+
+      // 页面载入初始生成
+      renderQRCode();
+    })();
+  </script>
+</body>
+</html>

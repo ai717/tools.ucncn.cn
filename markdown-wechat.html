@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- Google 代码 (GTM-52RQ295V) -->
+  <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-52RQ295V"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  </script>
+  <!-- End Google 代码 -->
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown 一键排版微信公众号 — 极简优雅富文本复制/样式不丢 | 不烧心免费工具</title>
+  <meta name="description" content="专为微信公众号小编与技术博主打造的纯本地 Markdown 排版工具。预置极简莫兰迪绿、经典黑白与科技蓝排版主题，一键复制带行内样式的富文本，直粘公众号后台零丢格式。免登录、草稿本地自动保存。">
+  <meta name="keywords" content="markdown微信公众号排版,微信公众号编辑器,公众号排版工具,富文本复制,微信md排版,极简公众号主题">
+  <meta name="author" content="不烧心免费工具 (tools.ucncn.cn)">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="theme-color" content="#386641">
+  <link rel="canonical" href="https://tools.ucncn.cn/markdown-wechat.html">
+
+  <!-- 开放图谱标签 (Open Graph) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Markdown 一键排版微信公众号 — 极简优雅富文本复制/样式不丢">
+  <meta property="og:description" content="左侧写 Markdown，右侧实时预览，一键复制带行内样式的富文本，直粘公众号后台排版零丢失。">
+  <meta property="og:url" content="https://tools.ucncn.cn/markdown-wechat.html">
+  <meta property="og:site_name" content="不烧心免费工具">
+  <meta property="og:locale" content="zh_CN">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23386641'/%3E%3Cpath d='M30 70 C30 42 50 30 70 30 C70 58 50 70 30 70 Z' fill='%23ffffff'/%3E%3Cpath d='M30 70 L52 48' stroke='%23386641' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='68' cy='32' r='5' fill='%23dbebe0'/%3E%3C/svg%3E">
+
+  <!-- 公共样式基座 -->
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <style>
+    /* 局部页面布局 */
+    .tool-header {
+      padding: 32px 0 20px;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      transition: color var(--transition-fast);
+    }
+    .back-link:hover {
+      color: var(--primary);
+    }
+    .tool-page-title {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .tool-page-desc {
+      font-size: 0.95rem;
+      color: var(--text-regular);
+      max-width: 760px;
+      line-height: 1.6;
+    }
+
+    /* 微信排版工作台 */
+    .md-workbench {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: 24px;
+      margin-bottom: 36px;
+    }
+
+    .md-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding-bottom: 16px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .toolbar-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .editor-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      min-height: 580px;
+    }
+    .editor-pane {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .pane-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .md-textarea {
+      width: 100%;
+      flex: 1;
+      min-height: 540px;
+      padding: 16px;
+      font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-regular);
+      border-radius: var(--radius-md);
+      color: var(--text-main);
+      resize: vertical;
+      transition: all var(--transition-fast);
+    }
+    .md-textarea:focus {
+      outline: none;
+      background: #ffffff;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(56, 102, 65, 0.12);
+    }
+
+    .preview-pane {
+      background: #ffffff;
+      border: 1px solid var(--border-regular);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      overflow-y: auto;
+      height: 100%;
+      max-height: 700px;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.02);
+    }
+
+    /* 微信排版特定渲染样式 */
+    #wechat-output {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      font-size: 15px;
+      line-height: 1.75;
+      color: #333333;
+      letter-spacing: 0.5px;
+    }
+
+    /* 底部 SEO 文章 */
+    .guide-article {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      margin-bottom: 40px;
+    }
+    .guide-article h2 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .guide-article h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 20px 0 10px;
+    }
+    .guide-article p {
+      font-size: 0.9rem;
+      color: var(--text-regular);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .guide-article ul, .guide-article ol {
+      padding-left: 20px;
+      margin-bottom: 16px;
+      font-size: 0.9rem;
+      color: var(--text-regular);
+      line-height: 1.7;
+    }
+    .guide-article li {
+      margin-bottom: 6px;
+    }
+
+    @media (max-width: 860px) {
+      .editor-grid {
+        grid-template-columns: 1fr;
+      }
+      .md-textarea {
+        min-height: 320px;
+      }
+      .preview-pane {
+        max-height: 500px;
+      }
+    }
+  </style>
+
+  <!-- 结构化数据 (JSON-LD: WebApplication & FAQPage) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "Markdown 一键排版微信公众号 (Markdown Wechat Formatter)",
+        "url": "https://tools.ucncn.cn/markdown-wechat.html",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "All",
+        "inLanguage": "zh-CN",
+        "description": "专为微信公众号小编与技术博主打造的纯本地 Markdown 排版工具。一键复制带行内样式的富文本直粘公众号后台零丢格式。",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "为什么直接把 Markdown 粘贴到微信公众号后台会乱码或丢失样式？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "微信公众号编辑器采用的是基于内联行内 CSS（inline style）的受限富文本沙盒，不读取外部 CSS 样式表。本工具会自动将标题、引用块、代码与段落的精美样式注入到每个 HTML 元素的 style 属性中，确保粘贴后 100% 高保真还原。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "排版内容会保存在云端吗？是否会被他人查看？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "绝对不会。本工具 100% 运行在浏览器本地，草稿仅通过浏览器的 localStorage 安全暂存，绝不上载服务器，全面保护未发布文章的首发权与隐私。"
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- 顶栏导航 -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="./" class="brand" title="返回不烧心免费工具大厅">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12A10 10 0 0 1 12 2z"></path>
+            <path d="M12 6v6l4 2"></path>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">不烧心免费工具</span>
+          <span class="brand-subtitle">tools.ucncn.cn · 纯本地极速运行</span>
+        </div>
+      </a>
+
+      <div class="header-actions">
+        <div class="header-badge" title="安全沙盒运作中：数据绝不上传服务器">
+          <span class="pulse-dot"></span>
+          <span>纯本地沙盒已就绪</span>
+        </div>
+        <a href="https://md.ucncn.cn/" class="nav-link" target="_blank" rel="noopener" title="访问独立二级域名 MD2Post 专业版">
+          <span>🚀 MD2Post 完整版</span>
+        </a>
+        <a href="./" class="nav-link">
+          <span>🏠 工具大厅</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主体区域 -->
+  <main class="container">
+    <div class="tool-header">
+      <a href="./" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span>返回工具大厅</span>
+      </a>
+      <h1 class="tool-page-title">
+        <span>📝</span>
+        <span>Markdown 一键微信排版 (富文本直粘·样式零丢失)</span>
+      </h1>
+      <p class="tool-page-desc">
+        左侧编辑 Markdown，右侧实时渲染带内联样式的公众号图文。一键复制直接粘贴公众号后台，草稿本地自动暂存。
+      </p>
+    </div>
+
+    <!-- 工作台卡片 -->
+    <section class="md-workbench">
+      <div class="md-toolbar">
+        <div class="toolbar-group">
+          <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-main);">🎨 排版主题：</span>
+          <button type="button" class="chip-btn active" id="theme-morandi" onclick="setTheme('morandi')">🌿 极简莫兰迪绿</button>
+          <button type="button" class="chip-btn" id="theme-black" onclick="setTheme('black')">⬛ 经典黑白极简</button>
+          <button type="button" class="chip-btn" id="theme-tech" onclick="setTheme('tech')">💻 极客科技蓝</button>
+        </div>
+
+        <div class="toolbar-group">
+          <button type="button" class="chip-btn" onclick="loadSampleMd()">载入范文</button>
+          <button type="button" class="chip-btn" style="color: var(--color-danger);" onclick="clearMd()">清空</button>
+          <button type="button" class="batch-btn" onclick="copyWechatRichText()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span>一键复制微信富文本</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="editor-grid">
+        <!-- 左侧编辑区 -->
+        <div class="editor-pane">
+          <div class="pane-header">
+            <span>Markdown 源码输入</span>
+            <span id="md-stat" class="form-hint">0 字 · 预估朗读 0 分钟</span>
+          </div>
+          <textarea id="md-input" class="md-textarea" placeholder="在此输入或粘贴 Markdown 内容..." spellcheck="false"></textarea>
+        </div>
+
+        <!-- 右侧预览区 -->
+        <div class="editor-pane">
+          <div class="pane-header">
+            <span>微信富文本预览效果 (已注入行内样式)</span>
+            <span class="header-badge" style="font-size: 0.725rem;">所见即所得</span>
+          </div>
+          <div class="preview-pane">
+            <div id="wechat-output">
+              <!-- 渲染结果 -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 深度实战指南 (SEO 内容) -->
+    <article class="guide-article">
+      <h2>📘 为什么直接把 Markdown 粘贴到微信公众号后台会格式错乱？</h2>
+
+      <h3>一、微信公众号富文本沙盒的特殊性</h3>
+      <p>
+        微信公众号后台的编辑器不支持读取任何 <code>&lt;style&gt;</code> 标签或外部 CSS 文件。当您从常规 Markdown 网站直接复制代码时，由于丢失了样式表定义，粘贴进微信后台后，标题字体过大、代码块丢失底色、引用块边框消失，原本漂亮的排版会彻底变成毫无美感的素文本。
+      </p>
+
+      <h3>二、“不烧心”一键行内样式注入机制</h3>
+      <p>
+        本工具在浏览器渲染 Markdown 时，会自动将排版色彩、内边距、字号与圆角样式，逐一注入到每一个标签的 <code>style="..."</code> 属性中（即 Inline Style）。<br>
+        点击<strong>“一键复制微信富文本”</strong>后，剪贴板会同时写入高标准的 HTML 富文本包，无论您粘贴至微信公众号、知乎专栏、飞书文档还是邮件客户端，格式都能做到 100% 完美保真。
+      </p>
+
+      <h3>三、打造高质感公众号排版的黄金建议</h3>
+      <ul>
+        <li><strong>留白适度：</strong>段落之间保持 1.5 到 1.75 倍行高，每段控制在 3~5 句话以内，避免大篇密不透风的文字压迫感；</li>
+        <li><strong>主色克制：</strong>整篇文章的主题色不要超过两种。推荐使用沉静的莫兰迪绿或高级炭黑，突出文字本身的质感。</li>
+      </ul>
+    </article>
+  </main>
+
+  <!-- 底栏 -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-brand-title">
+            <span>🌿</span>
+            <span>不烧心免费工具 (NoHeartburn Tools)</span>
+          </div>
+          <p class="footer-brand-desc">
+            用着不烧心的免费在线工具箱。免登录、真免费、数据不上云、无伪装广告。
+          </p>
+        </div>
+
+        <div>
+          <button type="button" class="footer-support-btn" onclick="CleanTools.openModal('tea-modal')">
+            <span>☕</span>
+            <span>请站长喝杯清茶</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 tools.ucncn.cn · 保留所有权利</div>
+        <div class="footer-links">
+          <a href="./" class="footer-link">工具大厅</a>
+          <a href="https://ucncn.cn/" class="footer-link" target="_blank" rel="noopener">菜鸟笔记</a>
+          <a href="https://md.ucncn.cn/" class="footer-link" target="_blank" rel="noopener">MD2Post</a>
+          <a href="https://beian.miit.gov.cn/" class="footer-icp" target="_blank" rel="noopener nofollow">苏ICP备2024150485号-5</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 赞助弹窗 -->
+  <div id="tea-modal" class="modal-overlay" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <button type="button" class="modal-close">&times;</button>
+      <div class="modal-title">
+        <span>🍵</span>
+        <span>请站长喝杯清茶</span>
+      </div>
+      <p class="modal-desc">
+        天下打工人懂打工人。如果您觉得“Markdown 微信排版”帮您大幅提高了内容创作效率，欢迎随意支持！
+      </p>
+      <div style="background: var(--bg-surface-alt); border: 1px dashed var(--border-regular); border-radius: var(--radius-md); padding: 20px; text-align: center; margin-bottom: 16px;">
+        <div style="font-weight: 700; color: var(--text-main); margin-bottom: 6px;">真诚开源 · 纯粹为打工人减负</div>
+        <div style="font-size: 0.85rem; color: var(--text-muted);">
+          100% 浏览器客户端运行，草稿安全存在本地。
+        </div>
+      </div>
+      <button type="button" class="btn" style="width: 100%; text-align: center; background: var(--primary); border: 1px solid var(--primary); color: #fff; padding: 10px 16px; border-radius: var(--radius-sm); font-size: 0.875rem; font-weight: 600; cursor: pointer;" onclick="CleanTools.copyText('https://tools.ucncn.cn/markdown-wechat.html', '已复制本工具链接，感谢分享！'); CleanTools.closeModal('tea-modal');">
+        🔗 复制并分享本工具
+      </button>
+    </div>
+  </div>
+
+  <!-- 公共交互脚本 -->
+  <script src="assets/js/common.js"></script>
+
+  <!-- 纯前端轻量 Markdown 解析与行内样式渲染器 -->
+  <script>
+    (function () {
+      const mdInput = document.getElementById('md-input');
+      const wechatOutput = document.getElementById('wechat-output');
+      const mdStat = document.getElementById('md-stat');
+
+      let currentTheme = 'morandi';
+
+      const themes = {
+        morandi: {
+          primary: '#386641',
+          primaryBg: '#f2f7f3',
+          border: '#dbebe0',
+          codeBg: '#f6f9f7',
+          quoteBg: '#f0f5f1',
+          quoteBorder: '#386641'
+        },
+        black: {
+          primary: '#222222',
+          primaryBg: '#f4f4f4',
+          border: '#e0e0e0',
+          codeBg: '#f8f8f8',
+          quoteBg: '#f9f9f9',
+          quoteBorder: '#333333'
+        },
+        tech: {
+          primary: '#1e3a8a',
+          primaryBg: '#eff6ff',
+          border: '#dbeafe',
+          codeBg: '#f1f5f9',
+          quoteBg: '#f8fafc',
+          quoteBorder: '#2563eb'
+        }
+      };
+
+      window.setTheme = function (themeName) {
+        currentTheme = themeName;
+        document.querySelectorAll('.toolbar-group .chip-btn').forEach(btn => btn.classList.remove('active'));
+        const activeBtn = document.getElementById(`theme-${themeName}`);
+        if (activeBtn) activeBtn.classList.add('active');
+        render();
+        CleanTools.showToast(`已切换排版主题：${themeName}`);
+      };
+
+      /**
+       * 纯前端自包含 Markdown 解析器并自动注入微信公众号 Inline Style
+       */
+      function parseMarkdownToWechatHTML(md, tName) {
+        if (!md) return '';
+        const t = themes[tName] || themes.morandi;
+
+        let lines = md.split('\n');
+        let html = [];
+        let inList = false;
+        let inCode = false;
+        let codeBuffer = [];
+
+        for (let i = 0; i < lines.length; i++) {
+          let line = lines[i];
+
+          // 代码块
+          if (line.startsWith('```')) {
+            if (inCode) {
+              html.push(`<pre style="background: ${t.codeBg}; padding: 12px 16px; border-radius: 6px; font-family: Consolas, Monaco, monospace; font-size: 13px; line-height: 1.5; color: #2d3748; overflow-x: auto; margin: 16px 0; border: 1px solid ${t.border};"><code>${CleanTools.escapeHTML(codeBuffer.join('\n'))}</code></pre>`);
+              codeBuffer = [];
+              inCode = false;
+            } else {
+              inCode = true;
+            }
+            continue;
+          }
+          if (inCode) {
+            codeBuffer.push(line);
+            continue;
+          }
+
+          // 一级标题
+          if (line.startsWith('# ')) {
+            let text = line.substring(2);
+            html.push(`<h1 style="font-size: 20px; font-weight: bold; color: ${t.primary}; border-bottom: 2px solid ${t.primary}; padding-bottom: 8px; margin: 28px 0 16px; letter-spacing: 0.5px;">${formatInline(text, t)}</h1>`);
+            continue;
+          }
+
+          // 二级标题
+          if (line.startsWith('## ')) {
+            let text = line.substring(3);
+            html.push(`<h2 style="font-size: 17px; font-weight: bold; color: #ffffff; background: ${t.primary}; padding: 4px 12px; border-radius: 4px; display: inline-block; margin: 24px 0 12px; letter-spacing: 0.5px;">${formatInline(text, t)}</h2>`);
+            continue;
+          }
+
+          // 三级标题
+          if (line.startsWith('### ')) {
+            let text = line.substring(4);
+            html.push(`<h3 style="font-size: 16px; font-weight: bold; color: ${t.primary}; margin: 20px 0 10px; border-left: 4px solid ${t.primary}; padding-left: 8px;">${formatInline(text, t)}</h3>`);
+            continue;
+          }
+
+          // 引用块
+          if (line.startsWith('> ')) {
+            let text = line.substring(2);
+            html.push(`<blockquote style="margin: 16px 0; padding: 12px 16px; background: ${t.quoteBg}; border-left: 4px solid ${t.quoteBorder}; color: #555555; font-size: 14px; border-radius: 0 4px 4px 0; line-height: 1.65;">${formatInline(text, t)}</blockquote>`);
+            continue;
+          }
+
+          // 无序列表
+          if (line.startsWith('- ') || line.startsWith('* ')) {
+            let text = line.substring(2);
+            html.push(`<p style="margin: 6px 0; padding-left: 14px; position: relative; font-size: 15px; color: #333333; line-height: 1.75;"><span style="color: ${t.primary}; font-weight: bold; margin-right: 6px;">•</span>${formatInline(text, t)}</p>`);
+            continue;
+          }
+
+          // 分割线
+          if (line.trim() === '---' || line.trim() === '***') {
+            html.push(`<hr style="border: none; border-top: 1px dashed ${t.border}; margin: 28px 0;">`);
+            continue;
+          }
+
+          // 普通段落
+          if (line.trim() === '') {
+            continue;
+          }
+
+          html.push(`<p style="margin: 14px 0; font-size: 15px; line-height: 1.75; color: #333333; text-align: justify;">${formatInline(line, t)}</p>`);
+        }
+
+        return html.join('\n');
+      }
+
+      function formatInline(str, t) {
+        // 粗体 **text**
+        str = str.replace(/\*\*(.*?)\*\*/g, `<strong style="color: ${t.primary}; font-weight: 700;">$1</strong>`);
+        // 行内代码 `code`
+        str = str.replace(/`(.*?)`/g, `<code style="background: ${t.codeBg}; color: ${t.primary}; padding: 2px 6px; border-radius: 3px; font-family: monospace; font-size: 13.5px; border: 1px solid ${t.border};">$1</code>`);
+        // 链接 [text](url)
+        str = str.replace(/\[(.*?)\]\((.*?)\)/g, `<a href="$2" style="color: ${t.primary}; text-decoration: underline; font-weight: 500;">$1</a>`);
+        return str;
+      }
+
+      function updateStats(text) {
+        const clean = text.replace(/[\s\r\n]+/g, '');
+        const count = clean.length;
+        const mins = Math.max(1, Math.round(count / 300));
+        mdStat.textContent = `${count} 字 · 预估朗读 ${mins} 分钟`;
+      }
+
+      function render() {
+        const text = mdInput.value;
+        localStorage.setItem('cleantools_md_draft', text);
+        const html = parseMarkdownToWechatHTML(text, currentTheme);
+        wechatOutput.innerHTML = html;
+        updateStats(text);
+      }
+
+      mdInput.addEventListener('input', render);
+
+      window.copyWechatRichText = async function () {
+        const content = wechatOutput.innerHTML;
+        if (!content.trim()) {
+          CleanTools.showToast('请先输入 Markdown 内容');
+          return;
+        }
+
+        try {
+          if (navigator.clipboard && window.ClipboardItem) {
+            const blobHtml = new Blob([content], { type: 'text/html' });
+            const blobText = new Blob([wechatOutput.innerText], { type: 'text/plain' });
+            await navigator.clipboard.write([
+              new ClipboardItem({
+                'text/html': blobHtml,
+                'text/plain': blobText
+              })
+            ]);
+            CleanTools.showToast('已复制微信带样式富文本！可直接粘贴至公众号后台');
+          } else {
+            // 兼容性选择器复制
+            const range = document.createRange();
+            range.selectNodeContents(wechatOutput);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            document.execCommand('copy');
+            selection.removeAllRanges();
+            CleanTools.showToast('已复制富文本内容！');
+          }
+        } catch (err) {
+          console.error('富文本复制失败:', err);
+          CleanTools.showToast('浏览器限制自动写入富文本，请在右侧全选后按 Ctrl+C');
+        }
+      };
+
+      window.clearMd = function () {
+        mdInput.value = '';
+        render();
+        CleanTools.showToast('编辑器已清空');
+      };
+
+      window.loadSampleMd = function () {
+        mdInput.value = `# 用着不烧心的免费在线工具箱
+
+在这个充满**强制扫码关注**、导出加巨大水印与乱弹窗的互联网环境里，我们想做一点不一样的事情。
+
+## 为什么天下打工人苦流氓工具站久矣？
+
+每次急着给财务报销一张发票，或者给政务系统上传一张证件照时，经常会遇到：
+
+- 前 3 页完全免费，第 4 页突然弹出窗口要求充值 **9.9 元月卡**；
+- 满屏闪烁着极其逼真的“高速下载”钓鱼捆绑按钮；
+- 把包含身份证与公司机密的合同上传到了对方未知的远程服务器。
+
+> “反内耗、去套路。天下打工人需要的是一个干干净净、打开就能用、文件绝不上云的好工具。”
+
+## 核心承诺与技术架构
+
+所有工具均 100% 运行在浏览器本地沙盒（HTML5 Canvas 与 WebAssembly），数据**不出设备，刷新即焚**。
+
+\`\`\`javascript
+// 纯本地离线计算，文件零泄漏
+const result = await processLocalFile(file);
+console.log("处理完毕，数据未离开设备！");
+\`\`\`
+
+欢迎将 [不烧心免费工具箱](https://tools.ucncn.cn/) 分享给身边的同事与朋友！`;
+        render();
+        CleanTools.showToast('已载入范文示例');
+      };
+
+      // 读取本地暂存草稿或默认范文
+      const saved = localStorage.getItem('cleantools_md_draft');
+      if (saved) {
+        mdInput.value = saved;
+      } else {
+        loadSampleMd();
+      }
+      render();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- Google 代码 (GTM-52RQ295V) -->
+  <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-52RQ295V"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  </script>
+  <!-- End Google 代码 -->
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>不烧心免费工具 — 用着不烧心的免费在线工具箱 | tools.ucncn.cn</title>
+  <meta name="description" content="不烧心免费工具箱 (NoHeartburn Tools) 是一款主打“免登录、真免费、数据不上云、无伪装广告”的纯前端实用工具箱。精选人民币金额大写、图片本地压缩、PDF合并拆分、二维码生成、中文文本比对等高频工具，纯浏览器本地运算，数据不离设备。">
+  <meta name="keywords" content="不烧心工具箱,免费在线工具,人民币大写转换,在线图片压缩,pdf合并拆分,二维码生成器,文本对比去重,markdown微信排版,字数统计,密码生成器,纯前端工具">
+  <meta name="author" content="不烧心免费工具 (tools.ucncn.cn)">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="theme-color" content="#386641">
+  <link rel="canonical" href="https://tools.ucncn.cn/">
+
+  <!-- 开放图谱标签 (Open Graph) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="不烧心免费工具 — 用着不烧心的免费在线工具箱">
+  <meta property="og:description" content="免登录、真免费、数据不上云、无伪装广告。精选高频实用工具，纯浏览器本地极速运算，天下打工人苦流氓工具站久矣，这里只做不烧心的好工具。">
+  <meta property="og:url" content="https://tools.ucncn.cn/">
+  <meta property="og:site_name" content="不烧心免费工具">
+  <meta property="og:locale" content="zh_CN">
+
+  <!-- Twitter 社交卡片 -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="不烧心免费工具 — 用着不烧心的免费在线工具箱">
+  <meta name="twitter:description" content="免登录、真免费、数据不上云、无伪装广告。纯浏览器本地运算，保护隐私，拒绝套路。">
+
+  <!-- 品牌 Favicon (莫兰迪森绿极简叶芽徽标) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23386641'/%3E%3Cpath d='M30 70 C30 42 50 30 70 30 C70 58 50 70 30 70 Z' fill='%23ffffff'/%3E%3Cpath d='M30 70 L52 48' stroke='%23386641' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='68' cy='32' r='5' fill='%23dbebe0'/%3E%3C/svg%3E">
+
+  <!-- 公共样式基座 -->
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <!-- 结构化数据 (JSON-LD: WebApplication & FAQPage) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "不烧心免费工具 (NoHeartburn Tools)",
+        "url": "https://tools.ucncn.cn/",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "All",
+        "browserRequirements": "支持现代 JavaScript 与 HTML5 的浏览器",
+        "inLanguage": "zh-CN",
+        "description": "用着不烧心的免费在线工具箱。免登录、真免费、数据不上云、无伪装广告，纯前端极速运行。",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "CNY"
+        },
+        "featureList": [
+          "人民币金额转大写 (规范会计大写)",
+          "图片本地极速无损压缩 (支持压到 2MB 以内)",
+          "PDF 纯前端合并与页面拆分 (pdf-lib 离线运算)",
+          "二维码极速生成与加 Logo 美化",
+          "中文文本差异对比与名单去重",
+          "Markdown 一键排版微信公众号",
+          "中文字数统计与朗读时长预估",
+          "安全随机密码与强口令生成"
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "“不烧心免费工具”真的是完全免费吗？未来会收费吗？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "本站承诺永久真免费，绝无‘试用导出加巨大水印’、‘前3页免费第4页付9.9’的恶心陷阱。所有基础功能完全开放，无需充值任何会员卡。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "我的发票、敏感合同或图片会被上传到服务器吗？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "绝不上传！本站 100% 依托浏览器端 JavaScript 和 WebAssembly 本地技术运行。无论是发票金额换算、合同 PDF 页面拆合，还是图片压缩，数据自始至终停留在您的电脑内存中，刷新网页即焚，绝不上云。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "使用这些工具需要注册登录或关注公众号吗？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "完全不需要。打开网页即刻可用，不要手机号，不强制微信扫码关注，彻底拒绝以工具为诱饵收集个人信息的套路。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "为什么在断网（离线）状态下也能运行？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "因为核心算法完全打包在前端代码中。当您首次加载页面后，所有的计算与文件处理均由您本地设备的 CPU 与浏览器沙盒完成，不需要后端的任何计算接口支持。"
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- ========================================================================
+       顶栏导航 (Site Header)
+       ======================================================================== -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="./" class="brand" title="返回不烧心免费工具大厅">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12A10 10 0 0 1 12 2z"></path>
+            <path d="M12 6v6l4 2"></path>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">不烧心免费工具</span>
+          <span class="brand-subtitle">tools.ucncn.cn · 纯本地极速运行</span>
+        </div>
+      </a>
+
+      <div class="header-actions">
+        <div class="header-badge" title="安全沙盒运作中：数据绝不上传服务器">
+          <span class="pulse-dot"></span>
+          <span>纯本地沙盒已就绪</span>
+        </div>
+        <button type="button" class="nav-link" style="background: none; border: none; cursor: pointer;" onclick="CleanTools.openModal('tea-modal')">
+          <span>🍵</span>
+          <span style="font-weight: 500;">请站长喝茶</span>
+        </button>
+        <a href="https://md.ucncn.cn/" class="nav-link" target="_blank" rel="noopener" title="MD2Post — Markdown 微信一键排版">
+          <span>📝 MD2Post</span>
+        </a>
+        <a href="https://ucncn.cn/" class="nav-link" target="_blank" rel="noopener" title="菜鸟笔记主站">
+          <span>🏠 菜鸟笔记</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       英雄区 (Hero & Brand Manifesto)
+       ======================================================================== -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-pill">
+        <span class="pill-tag">反内耗 · 去套路</span>
+        <span>天下打工人苦流氓工具站久矣，这里只有干干净净的好工具</span>
+      </div>
+      <h1 class="hero-title">
+        用着<span class="highlight">不烧心</span>的免费在线工具箱
+      </h1>
+      <p class="hero-desc">
+        免登录、不收费、不玩套路，100% 依托浏览器本地内存与极速算法运算。<br>
+        敏感文件不出设备，刷新即焚，给打工人最纯粹的效率体验。
+      </p>
+
+      <!-- 四大不烧心铁律卡片 -->
+      <div class="principles-grid">
+        <div class="principle-card">
+          <div class="principle-header">
+            <div class="principle-icon green">🌿</div>
+            <div class="principle-name">免登录不烧心</div>
+          </div>
+          <p class="principle-desc">
+            打开就能直接用。不要手机号注册，绝不强制微信扫码关注公众号，拒绝任何信息采集套路。
+          </p>
+        </div>
+
+        <div class="principle-card">
+          <div class="principle-header">
+            <div class="principle-icon wood">💎</div>
+            <div class="principle-name">真免费不烧心</div>
+          </div>
+          <p class="principle-desc">
+            无试用期陷阱。绝无“导出加巨大水印”、“前3页免费第4页付9.9”的恶心操作，真诚永久可用。
+          </p>
+        </div>
+
+        <div class="principle-card">
+          <div class="principle-header">
+            <div class="principle-icon blue">🔒</div>
+            <div class="principle-name">数据不上云不烧心</div>
+          </div>
+          <p class="principle-desc">
+            100% 本地运算。发票、合同、名单与私密文件绝不离开用户电脑，利用浏览器端技术刷新即焚。
+          </p>
+        </div>
+
+        <div class="principle-card">
+          <div class="principle-header">
+            <div class="principle-icon amber">🍃</div>
+            <div class="principle-name">无伪装广告不烧心</div>
+          </div>
+          <p class="principle-desc">
+            视觉清爽克制。页面干干净净，绝无闪烁的“高速下载”钓鱼捆绑按钮，绝无误触弹窗与陷阱链接。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       工具大厅区：筛选过滤与工具网格 (Tools Section)
+       ======================================================================== -->
+  <main class="tools-section">
+    <div class="container">
+      <!-- 搜索与分类控制栏 -->
+      <div class="filter-bar">
+        <div class="category-tabs" role="tablist">
+          <button type="button" class="category-tab active" data-category="all" role="tab" aria-selected="true">
+            <span>全部工具</span>
+            <span class="tab-count">8</span>
+          </button>
+          <button type="button" class="category-tab" data-category="finance" role="tab" aria-selected="false">
+            <span>常用财务与日常</span>
+            <span class="tab-count">3</span>
+          </button>
+          <button type="button" class="category-tab" data-category="efficiency" role="tab" aria-selected="false">
+            <span>效率与内容排版</span>
+            <span class="tab-count">3</span>
+          </button>
+          <button type="button" class="category-tab" data-category="media" role="tab" aria-selected="false">
+            <span>文件与媒体小帮手</span>
+            <span class="tab-count">2</span>
+          </button>
+        </div>
+
+        <div class="search-wrapper">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="tool-search" class="search-input" placeholder="搜索工具或关键词..." autocomplete="off">
+          <span class="search-shortcut" title="按 / 键快速搜索">/</span>
+        </div>
+      </div>
+
+      <!-- 工具卡片网格 -->
+      <div class="tools-grid" id="tools-container">
+
+        <!-- 工具 01：人民币金额转大写 -->
+        <a href="rmb-capital.html" class="tool-card" data-category="finance" data-name="人民币金额转大写" data-keywords="发票大写 会计记账 财务金额 报销 人民币大写转换">
+          <div class="tool-card-header">
+            <div class="tool-icon-box">💴</div>
+            <span class="tool-badge featured">财务必备</span>
+          </div>
+          <div class="tool-card-body">
+            <h2 class="tool-card-title">人民币金额转大写</h2>
+            <p class="tool-card-desc">
+              输入数字即时换算为标准银行会计大写规范，自动校验角分零整，附带防篡改说明与票据规范表。
+            </p>
+          </div>
+          <div class="tool-card-meta">
+            <span class="meta-tag">财务发票</span>
+            <span class="meta-tag">防篡改规范</span>
+            <span class="tool-card-action">立即使用 &rarr;</span>
+          </div>
+        </a>
+
+        <!-- 工具 02：图片本地极速无损压缩 -->
+        <a href="image-compress.html" class="tool-card" data-category="media" data-name="图片本地极速无损压缩" data-keywords="图片压缩 压小 减小体积 2mb以内 500kb 证件照 报名照">
+          <div class="tool-card-header">
+            <div class="tool-icon-box">🖼️</div>
+            <span class="tool-badge featured">本地保护</span>
+          </div>
+          <div class="tool-card-body">
+            <h2 class="tool-card-title">图片本地极速压缩</h2>
+            <p class="tool-card-desc">
+              基于 Wasm 浏览器端纯本地压缩，支持一键压到 2MB / 500KB 以内，政务报销与考试上传零泄密。
+            </p>
+          </div>
+          <div class="tool-card-meta">
+            <span class="meta-tag">Wasm 极速</span>
+            <span class="meta-tag">不传服务器</span>
+            <span class="tool-card-action">立即使用 &rarr;</span>
+          </div>
+        </a>
+
+        <!-- 工具 03：PDF 纯前端合并与页面拆分 -->
+        <a href="pdf-tool.html" class="tool-card" data-category="media" data-name="PDF 纯前端合并与页面拆分" data-keywords="pdf合并 pdf拆分 提取页面 合同整理 pdf-lib 免费pdf">
+          <div class="tool-card-header">
+            <div class="tool-icon-box">📑</div>
+            <span class="tool-badge">不限页数</span>
+          </div>
+          <div class="tool-card-body">
+            <h2 class="tool-card-title">PDF 纯前端合并拆分</h2>
+            <p class="tool-card-desc">
+              无需安装 WPS 与第三方软件。支持任意拖拽提取单页、多份合同批量合并，无水印无页数限制。
+            </p>
+          </div>
+          <div class="tool-card-meta">
+            <span class="meta-tag">pdf-lib</span>
+            <span class="meta-tag">免装软件</span>
+            <span class="tool-card-action">立即使用 &rarr;</span>
+          </div>
+        </a>
+
+        <!-- 工具 04：二维码极速生成与美化 -->
+        <a href="qrcode.html" class="tool-card" data-category="finance" data-name="二维码极速生成与美化" data-keywords="二维码制作 带logo二维码 矢量svg 网址二维码 名片二维码">
+          <div class="tool-card-header">
+            <div class="tool-icon-box">🏁</div>
+            <span class="tool-badge">高清矢量</span>
+          </div>
+          <div class="tool-card-body">
+            <h2 class="tool-card-title">二维码生成与美化</h2>
+            <p class="tool-card-desc">
+              支持中间自定义插入 Logo 图标、调整点阵圆角与自然配色，极速导出无损高清 PNG 与 SVG 矢量图。
+            </p>
+          </div>
+          <div class="tool-card-meta">
+            <span class="meta-tag">带Logo</span>
+            <span class="meta-tag">矢量导出</span>
+            <span class="tool-card-action">立即使用 &rarr;</span>
+          </div>
+        </a>
+
+        <!-- 工具 05：中文文本差异对比与去重 -->
+        <a href="text-diff.html" class="tool-card" data-category="efficiency" data-name="中文文本差异对比与去重" data-keywords="文本比对 diff 找不同 清单去重 清除空行 排序清洗">
+          <div class="tool-card-header">
+            <div class="tool-icon-box">⚖️</div>
+            <span class="tool-badge">清洗排重</span>
+          </div>
+          <div class="tool-card-body">
+            <h2 class="tool-card-title">中文文本对比与去重</h2>
+            <p class="tool-card-desc">
+              专为中文段落优化的差异对比，红绿双色清晰标出增删改；支持名单列表一键去重、去空行与排序。
+            </p>
+          </div>
+          <div class="tool-card-meta">
+            <span class="meta-tag">中文Diff</span>
+            <span class="meta-tag">名单去重</span>
+            <span class="tool-card-action">立即使用 &rarr;</span>
+          </div>
+        </a>
+
+        <!-- 工具 06：Markdown 一键排版微信公众号 -->
+        <a href="markdown-wechat.html" class="tool-card" data-category="efficiency" data-name="Markdown 一键排版微信公众号" data-keywords="markdown排版 微信公众号编辑器 富文本复制 mdnice 微信排版">
+          <div class="tool-card-header">
+            <div class="tool-icon-box">📝</div>
+            <span class="tool-badge featured">新媒体神器</span>
+          </div>
+          <div class="tool-card-body">
+            <h2 class="tool-card-title">Markdown 微信排版</h2>
+            <p class="tool-card-desc">
+              左侧写 Markdown，预置极简黑白、微信绿与技术博客排版主题，一键复制富文本直接粘贴公众号后台。
+            </p>
+          </div>
+          <div class="tool-card-meta">
+            <span class="meta-tag">极简主题</span>
+            <span class="meta-tag">排版不丢</span>
+            <span class="tool-card-action">立即使用 &rarr;</span>
+          </div>
+        </a>
+
+        <!-- 工具 07：中文字数统计与朗读时长 -->
+        <a href="word-counter.html" class="tool-card" data-category="efficiency" data-name="中文字数统计与朗读时长" data-keywords="字数统计 汉字计数 配音时长 演讲计时 字符分析 段落统计">
+          <div class="tool-card-header">
+            <div class="tool-icon-box">⏱️</div>
+            <span class="tool-badge">精准切分</span>
+          </div>
+          <div class="tool-card-body">
+            <h2 class="tool-card-title">字数统计与朗读时长</h2>
+            <p class="tool-card-desc">
+              准确切分汉字、英文单词、标点与行数，依据中文正常演讲与配音语速精准估算朗读时长。
+            </p>
+          </div>
+          <div class="tool-card-meta">
+            <span class="meta-tag">汉字统计</span>
+            <span class="meta-tag">演讲计时</span>
+            <span class="tool-card-action">立即使用 &rarr;</span>
+          </div>
+        </a>
+
+        <!-- 工具 08：安全随机密码/口令生成 -->
+        <a href="password.html" class="tool-card" data-category="finance" data-name="安全随机密码/口令生成" data-keywords="随机密码 强密码 密码生成器 口令生成 过滤易混淆 离线安全">
+          <div class="tool-card-header">
+            <div class="tool-icon-box">🔑</div>
+            <span class="tool-badge">离线安全</span>
+          </div>
+          <div class="tool-card-body">
+            <h2 class="tool-card-title">安全随机密码生成器</h2>
+            <p class="tool-card-desc">
+              纯本地高熵安全随机算法，可自选长度与字符集，支持智能过滤 1/l、0/O 等易混淆字符。
+            </p>
+          </div>
+          <div class="tool-card-meta">
+            <span class="meta-tag">高熵防破解</span>
+            <span class="meta-tag">过滤混淆字符</span>
+            <span class="tool-card-action">立即使用 &rarr;</span>
+          </div>
+        </a>
+
+      </div>
+
+      <!-- 搜索无结果占位 -->
+      <div id="empty-state" class="empty-state">
+        <div class="empty-icon">🍃</div>
+        <div class="empty-title">未找到匹配的工具</div>
+        <p class="empty-desc">尝试更换搜索词，或切换顶部分类标签查看全量工具</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- ========================================================================
+       深度对比与安全承诺区 (Trust & Comparison Section)
+       ======================================================================== -->
+  <section class="trust-section">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-tag">去伪存真</span>
+        <h2 class="section-title">为什么我们坚持做“不烧心”的工具？</h2>
+        <p class="section-subtitle">
+          在这个充满弹窗、强制关注、诱导下载和套路收费的互联网环境中，我们想给打工人留下一处清凉舒适的避风港。
+        </p>
+      </div>
+
+      <!-- 对比表格 -->
+      <div class="comparison-container">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th style="width: 22%;">体验维度</th>
+              <th class="col-bad" style="width: 39%;">⚠️ 常见套路工具站的糟糕体验</th>
+              <th class="col-good" style="width: 39%;">🌿 不烧心免费工具的清爽体验</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>使用门槛</strong></td>
+              <td class="col-bad"><span class="icon-bad">✕</span> 强制微信扫码关注、强制手机验证码注册登录</td>
+              <td class="col-good"><span class="icon-good">✓</span> <strong>免登录直接用</strong>，打开网页即刻处理</td>
+            </tr>
+            <tr>
+              <td><strong>收费套路</strong></td>
+              <td class="col-bad"><span class="icon-bad">✕</span> 导出时强行加满屏大水印，前3页免费第4页付9.9</td>
+              <td class="col-good"><span class="icon-good">✓</span> <strong>完全零水印零扣费</strong>，真诚永久免费无套路</td>
+            </tr>
+            <tr>
+              <td><strong>隐私安全</strong></td>
+              <td class="col-bad"><span class="icon-bad">✕</span> 发票、个人合同、敏感图片被上传到未知云端服务器</td>
+              <td class="col-good"><span class="icon-good">✓</span> <strong>100% 浏览器本地运算</strong>，敏感数据不出设备，刷新即焚</td>
+            </tr>
+            <tr>
+              <td><strong>界面与广告</strong></td>
+              <td class="col-bad"><span class="icon-bad">✕</span> 满屏闪烁的“高速下载”钓鱼按钮，诱导捆绑垃圾软件</td>
+              <td class="col-good"><span class="icon-good">✓</span> <strong>界面干净雅致</strong>，绝无任何诱导性假下载按钮</td>
+            </tr>
+            <tr>
+              <td><strong>运行效率</strong></td>
+              <td class="col-bad"><span class="icon-bad">✕</span> 排队等待服务器上传与转换，遇到大文件频繁超时中断</td>
+              <td class="col-good"><span class="icon-good">✓</span> <strong>充分释放电脑算力</strong>，WebAssembly 本地毫秒级瞬时完成</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 常见问题 (FAQ) -->
+      <div class="section-head" style="margin-bottom: 24px;">
+        <h3 style="font-size: 1.35rem; font-weight: 700; color: var(--text-main);">常见问题解答 (FAQ)</h3>
+      </div>
+      <div class="faq-grid">
+        <div class="faq-card">
+          <div class="faq-q">
+            <span class="q-badge">问</span>
+            <span>“不烧心免费工具”真的是完全免费吗？未来会收费吗？</span>
+          </div>
+          <p class="faq-a">
+            本站承诺永久真免费，绝无“导出加巨大水印”、“前3页免费第4页付9.9”的恶心陷阱。所有首发与后续工具完全开放，不需要充值任何月卡或会员。
+          </p>
+        </div>
+
+        <div class="faq-card">
+          <div class="faq-q">
+            <span class="q-badge">问</span>
+            <span>我的发票、敏感合同或图片会被上传到服务器吗？</span>
+          </div>
+          <p class="faq-a">
+            绝不上传！本站 100% 依托浏览器端 JavaScript 和 WebAssembly 本地技术运行。无论是发票大写、合同拆合还是图片压缩，数据自始至终停留在您的电脑内存中，刷新网页即焚。
+          </p>
+        </div>
+
+        <div class="faq-card">
+          <div class="faq-q">
+            <span class="q-badge">问</span>
+            <span>为什么断网（离线）状态下有的工具也能直接跑？</span>
+          </div>
+          <p class="faq-a">
+            因为核心逻辑直接运行在您的浏览器前端。页面下载后，所有的计算任务均由您本地设备的 CPU 承担，无需任何后端计算服务器，真正做到零延迟、高安全。
+          </p>
+        </div>
+
+        <div class="faq-card">
+          <div class="faq-q">
+            <span class="q-badge">问</span>
+            <span>网站靠什么维持服务器开销？</span>
+          </div>
+          <p class="faq-a">
+            由于纯静态运行，我们的服务器开销极低。前期我们依靠打工人的纯粹热爱与极少量的用户自发请喝茶支持；后续即使加入少量展示位，也严格遵守克制原则，绝不打扰正常使用。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       底栏 (Site Footer)
+       ======================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-brand-title">
+            <span>🌿</span>
+            <span>不烧心免费工具 (NoHeartburn Tools)</span>
+          </div>
+          <p class="footer-brand-desc">
+            用着不烧心的免费在线工具箱。免登录、真免费、数据不上云、无伪装广告。精选中外开源优质工具，打造打工人最舒适的桌面效率站。
+          </p>
+        </div>
+
+        <div>
+          <button type="button" class="footer-support-btn" onclick="CleanTools.openModal('tea-modal')">
+            <span>☕</span>
+            <span>请站长喝杯不烧心的清茶</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          &copy; 2026 tools.ucncn.cn · 保留所有权利
+        </div>
+
+        <div class="footer-links">
+          <span style="color: var(--text-muted);">相关站点：</span>
+          <a href="https://ucncn.cn/" class="footer-link" target="_blank" rel="noopener">菜鸟笔记主站</a>
+          <a href="https://md.ucncn.cn/" class="footer-link" target="_blank" rel="noopener">MD2Post 微信排版</a>
+          <a href="https://m.ucncn.cn/" class="footer-link" target="_blank" rel="noopener">MoneyLab 实验室</a>
+          <a href="https://beian.miit.gov.cn/" class="footer-icp" target="_blank" rel="noopener nofollow">苏ICP备2024150485号-5</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================================
+       模态弹窗：请站长喝茶 (Tea Tip Modal)
+       ======================================================================== -->
+  <div id="tea-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-box">
+      <button type="button" class="modal-close" aria-label="关闭弹窗">&times;</button>
+      <div class="modal-title" id="modal-title">
+        <span>🍵</span>
+        <span>请站长喝杯清茶</span>
+      </div>
+      <p class="modal-desc">
+        天下打工人懂打工人。如果您觉得“不烧心工具箱”帮您省去了被套路扫码和充值的时间，欢迎随意支持！您的每一份善意都会化作持续更新的动力。
+      </p>
+
+      <div style="background: var(--bg-surface-alt); border: 1px dashed var(--border-regular); border-radius: var(--radius-md); padding: 24px 16px; text-align: center; margin-bottom: 18px;">
+        <div style="font-size: 2.2rem; margin-bottom: 8px;">🌱</div>
+        <div style="font-weight: 700; color: var(--text-main); margin-bottom: 4px;">真诚开源 · 纯粹为打工人减负</div>
+        <div style="font-size: 0.825rem; color: var(--text-muted); line-height: 1.5;">
+          站长平时也是一线搬砖打工人，深知被流氓工具恶心到的愤怒。<br>
+          如发现任何 Bug 或有想添加的工具，欢迎到主站留言交流！
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 10px;">
+        <a href="https://ucncn.cn/" target="_blank" rel="noopener" class="btn" style="flex: 1; text-align: center; background: var(--bg-surface-alt); border: 1px solid var(--border-light); padding: 9px 16px; border-radius: var(--radius-sm); font-size: 0.875rem; font-weight: 500; color: var(--text-regular);">
+          🏠 访问作者博客
+        </a>
+        <button type="button" class="btn" style="flex: 1; text-align: center; background: var(--primary); border: 1px solid var(--primary); color: #fff; padding: 9px 16px; border-radius: var(--radius-sm); font-size: 0.875rem; font-weight: 600; cursor: pointer;" onclick="CleanTools.copyText('https://tools.ucncn.cn', '已复制本站网址，感谢分享给身边的同事！'); CleanTools.closeModal('tea-modal');">
+          🔗 复制并分享本站
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 公共交互脚本 -->
+  <script src="assets/js/common.js"></script>
+</body>
+</html>

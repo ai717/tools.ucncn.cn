@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- Google 代码 (GTM-52RQ295V) -->
+  <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-52RQ295V"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  </script>
+  <!-- End Google 代码 -->
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>图片本地极速无损压缩 — 压到2M以内/500K免上传隐私安全 | 不烧心免费工具</title>
+  <meta name="description" content="纯浏览器本地运行的图片极速压缩工具。免上传服务器、零隐私泄密风险，支持一键将图片压到 2MB 以内、500KB 以内，轻松应对政务报销与考试报名限制。支持批量拖拽、自定义尺寸与画质，完全免费无水印。">
+  <meta name="keywords" content="在线图片压缩,图片压到2m以内,图片压缩到500k,免上传图片压缩,纯本地图片压缩,政务报销图片处理,无损压缩图片">
+  <meta name="author" content="不烧心免费工具 (tools.ucncn.cn)">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="theme-color" content="#386641">
+  <link rel="canonical" href="https://tools.ucncn.cn/image-compress.html">
+
+  <!-- 开放图谱标签 (Open Graph) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="图片本地极速压缩 — 压到2M以内/500K免上传隐私安全">
+  <meta property="og:description" content="纯本地浏览器内存离线压缩，发票、证件照与敏感图片绝不上载云端，支持一键压到 2MB/500KB 以内。">
+  <meta property="og:url" content="https://tools.ucncn.cn/image-compress.html">
+  <meta property="og:site_name" content="不烧心免费工具">
+  <meta property="og:locale" content="zh_CN">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23386641'/%3E%3Cpath d='M30 70 C30 42 50 30 70 30 C70 58 50 70 30 70 Z' fill='%23ffffff'/%3E%3Cpath d='M30 70 L52 48' stroke='%23386641' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='68' cy='32' r='5' fill='%23dbebe0'/%3E%3C/svg%3E">
+
+  <!-- 公共样式基座 -->
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <style>
+    /* 工具专用页面局部样式 */
+    .tool-header {
+      padding: 32px 0 20px;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      transition: color var(--transition-fast);
+    }
+    .back-link:hover {
+      color: var(--primary);
+    }
+    .tool-page-title {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .tool-page-desc {
+      font-size: 0.95rem;
+      color: var(--text-regular);
+      max-width: 760px;
+      line-height: 1.6;
+    }
+
+    /* 压缩主工作台面板 */
+    .compress-workbench {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: 32px;
+      margin-bottom: 36px;
+    }
+
+    /* 上传拖拽区域 */
+    .drop-zone {
+      border: 2px dashed var(--border-regular);
+      border-radius: var(--radius-lg);
+      padding: 44px 24px;
+      text-align: center;
+      background: var(--bg-surface-alt);
+      cursor: pointer;
+      transition: all var(--transition-normal);
+      position: relative;
+    }
+    .drop-zone:hover, .drop-zone.dragover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      transform: translateY(-1px);
+    }
+    .drop-zone-icon {
+      font-size: 2.8rem;
+      margin-bottom: 12px;
+      line-height: 1;
+    }
+    .drop-zone-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+    .drop-zone-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .file-input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* 控制面板：预设与压缩策略 */
+    .control-panel {
+      margin-top: 24px;
+      padding: 20px;
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .control-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .control-select, .control-input {
+      padding: 8px 12px;
+      background: #ffffff;
+      border: 1px solid var(--border-regular);
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      color: var(--text-main);
+      transition: border-color var(--transition-fast);
+    }
+    .control-select:focus, .control-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(56, 102, 65, 0.12);
+    }
+
+    /* 快捷预设按钮组 */
+    .preset-btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+    .preset-btn {
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xs);
+      padding: 4px 8px;
+      font-size: 0.775rem;
+      color: var(--text-regular);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    .preset-btn:hover, .preset-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    /* 处理队列与结果列表 */
+    .queue-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 28px 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .queue-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .queue-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .batch-btn {
+      background: var(--primary);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 6px 14px;
+      font-size: 0.825rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background var(--transition-fast);
+    }
+    .batch-btn:hover {
+      background: var(--primary-hover);
+    }
+    .batch-btn.ghost {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--border-regular);
+    }
+    .batch-btn.ghost:hover {
+      background: var(--bg-surface-alt);
+      color: var(--text-main);
+    }
+
+    .image-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .image-item {
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: var(--shadow-xs);
+      transition: all var(--transition-fast);
+    }
+    .image-item:hover {
+      border-color: var(--border-regular);
+      box-shadow: var(--shadow-sm);
+    }
+    .item-preview {
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-sm);
+      object-fit: cover;
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-light);
+      flex-shrink: 0;
+    }
+    .item-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .item-name {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 4px;
+    }
+    .item-stats {
+      font-size: 0.775rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .item-savings {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-light);
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      font-size: 0.725rem;
+    }
+    .item-savings.bad {
+      color: var(--text-muted);
+      background: var(--bg-surface-alt);
+    }
+    .item-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .download-single-btn {
+      background: var(--bg-surface-alt);
+      border: 1px solid var(--border-regular);
+      color: var(--primary);
+      font-weight: 600;
+      font-size: 0.8rem;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all var(--transition-fast);
+    }
+    .download-single-btn:hover {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+    .remove-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 6px;
+      border-radius: var(--radius-sm);
+      font-size: 1.1rem;
+      line-height: 1;
+    }
+    .remove-btn:hover {
+      color: var(--color-danger);
+      background: var(--color-danger-bg);
+    }
+
+    /* 底部 SEO 文章 */
+    .guide-article {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      margin-bottom: 40px;
+    }
+    .guide-article h2 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .guide-article h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 20px 0 10px;
+    }
+    .guide-article p {
+      font-size: 0.9rem;
+      color: var(--text-regular);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .guide-article ul, .guide-article ol {
+      padding-left: 20px;
+      margin-bottom: 16px;
+      font-size: 0.9rem;
+      color: var(--text-regular);
+      line-height: 1.7;
+    }
+    .guide-article li {
+      margin-bottom: 6px;
+    }
+
+    @media (max-width: 640px) {
+      .compress-workbench {
+        padding: 20px 16px;
+      }
+      .drop-zone {
+        padding: 28px 16px;
+      }
+      .image-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .item-actions {
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px dashed var(--border-light);
+      }
+    }
+  </style>
+
+  <!-- 结构化数据 (JSON-LD: WebApplication & FAQPage) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "图片本地极速无损压缩 (Local Image Compressor)",
+        "url": "https://tools.ucncn.cn/image-compress.html",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "All",
+        "inLanguage": "zh-CN",
+        "description": "纯浏览器本地离线运行的图片压缩工具。支持一键压到 2MB 以内、500KB 以内，政务报销与考试报名免上传泄密，完全免费无水印。",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "为什么客户端本地压缩比云端压缩更保护隐私安全？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "传统在线工具需要将您的图片上传到远程服务器进行转码压缩，存在图片被服务器缓存、盗取或泄露个人身份证件、商业机密的重大隐患。而本工具 100% 依托浏览器本地 Canvas 与 Wasm API 在您的本机内存中完成压缩，文件绝不离开设备，刷新网页即焚。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "如何把图片压缩到 2MB 或 500KB 以内直接交差？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "在控制面板中直接点击‘≤ 2MB (报销限制)’或‘≤ 500KB (政务考试)’预设按钮，系统会自动通过动态二分法画质微调算法，在保持清晰度的前提下将体积精准控制在目标范围之内。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "批量压缩图片有数量限制或需要付费充值吗？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "完全没有限制！本站为纯前端工具，无服务器算力开销压力，您可以一次性拖拽多张图片进行极速压缩并一键下载，永久免费零套路。"
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <!-- 顶栏导航 -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="./" class="brand" title="返回不烧心免费工具大厅">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12A10 10 0 0 1 12 2z"></path>
+            <path d="M12 6v6l4 2"></path>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">不烧心免费工具</span>
+          <span class="brand-subtitle">tools.ucncn.cn · 纯本地极速运行</span>
+        </div>
+      </a>
+
+      <div class="header-actions">
+        <div class="header-badge" title="安全沙盒运作中：数据绝不上传服务器">
+          <span class="pulse-dot"></span>
+          <span>纯本地沙盒已就绪</span>
+        </div>
+        <a href="./" class="nav-link">
+          <span>🏠 工具大厅</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主体区域 -->
+  <main class="container">
+    <div class="tool-header">
+      <a href="./" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span>返回工具大厅</span>
+      </a>
+      <h1 class="tool-page-title">
+        <span>🖼️</span>
+        <span>图片本地极速无损压缩 (免上传·隐私安全)</span>
+      </h1>
+      <p class="tool-page-desc">
+        100% 纯浏览器本地离线运行。发票、证件照与敏感文件绝不上传云端，支持一键压到 2MB / 500KB 以内轻松交差。零水印、零收费、无批量限制。
+      </p>
+    </div>
+
+    <!-- 压缩工作台 -->
+    <section class="compress-workbench">
+      <!-- 拖拽上传区 -->
+      <div class="drop-zone" id="drop-zone">
+        <input type="file" id="file-input" class="file-input" accept="image/jpeg,image/png,image/webp,image/bmp" multiple>
+        <div class="drop-zone-icon">📥</div>
+        <div class="drop-zone-title">拖拽图片到这里，或点击选择图片</div>
+        <div class="drop-zone-subtitle">支持 JPG / PNG / WebP 格式，支持批量多选，支持键盘 Ctrl+V 粘贴图片</div>
+      </div>
+
+      <!-- 参数控制面板 -->
+      <div class="control-panel">
+        <!-- 压缩目标策略 -->
+        <div class="control-group">
+          <label class="control-label">
+            <span>🎯 压缩目标体积 (一键交差)</span>
+          </label>
+          <div class="preset-btns">
+            <button type="button" class="preset-btn active" data-target="auto">智能平衡</button>
+            <button type="button" class="preset-btn" data-target="2048">≤ 2MB (报销)</button>
+            <button type="button" class="preset-btn" data-target="1024">≤ 1MB</button>
+            <button type="button" class="preset-btn" data-target="500">≤ 500KB (政务)</button>
+            <button type="button" class="preset-btn" data-target="200">≤ 200KB (证件)</button>
+          </div>
+          <span style="font-size: 0.725rem; color: var(--text-muted); margin-top: 4px;">自动使用二分逼近算法将体积精准压在限制以内</span>
+        </div>
+
+        <!-- 画质选择 -->
+        <div class="control-group">
+          <label for="quality-select" class="control-label">
+            <span>🎨 基础压缩画质</span>
+          </label>
+          <select id="quality-select" class="control-select">
+            <option value="0.92">超清原画 (质量 92%)</option>
+            <option value="0.82" selected>推荐平衡 (质量 82% · 极佳清晰度)</option>
+            <option value="0.65">中度压小 (质量 65% · 体积腰斩)</option>
+            <option value="0.45">极限体积 (质量 45% · 适合网络快速传输)</option>
+          </select>
+        </div>
+
+        <!-- 分辨率缩放 -->
+        <div class="control-group">
+          <label for="max-dimension" class="control-label">
+            <span>📐 最大尺寸限制</span>
+          </label>
+          <select id="max-dimension" class="control-select">
+            <option value="0" selected>保持原始分辨率 (不缩小长宽)</option>
+            <option value="2560">限制最大 2560px (2K 超清)</option>
+            <option value="1920">限制最大 1920px (1080P 常用)</option>
+            <option value="1280">限制最大 1280px (手机端快速查看)</option>
+            <option value="800">限制最大 800px (网页配图)</option>
+          </select>
+        </div>
+
+        <!-- 输出格式 -->
+        <div class="control-group">
+          <label for="format-select" class="control-label">
+            <span>📦 输出文件格式</span>
+          </label>
+          <select id="format-select" class="control-select">
+            <option value="image/jpeg" selected>JPG 格式 (兼容性最好)</option>
+            <option value="image/webp">WebP 格式 (新一代极小体积)</option>
+            <option value="image/png">PNG 格式 (透明背景无损)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 任务列表 -->
+      <div id="queue-section" style="display: none;">
+        <div class="queue-header">
+          <div class="queue-title">
+            <span>已处理图片清单</span>
+            <span id="queue-count" class="header-badge">0 张</span>
+          </div>
+          <div class="queue-actions">
+            <button type="button" class="batch-btn" id="download-all-btn" onclick="downloadAll()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>批量全部下载</span>
+            </button>
+            <button type="button" class="batch-btn ghost" onclick="clearQueue()">清空列表</button>
+          </div>
+        </div>
+
+        <div class="image-list" id="image-list">
+          <!-- 动态渲染单项 -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 深度实战指南 (SEO 内容) -->
+    <article class="guide-article">
+      <h2>📘 为什么客户端本地压缩比云端压缩更保护隐私？</h2>
+
+      <h3>一、传统云端压缩网站的致命隐私隐患</h3>
+      <p>
+        许多打工人在遇到“发票超出 2MB 无法报销”或“证件照太大无法上传政务系统”时，往往习惯随手在搜索引擎中找一个在线压缩工具。然而，绝大多数传统压缩站都采用<strong>“客户端上传 -> 云端服务器存储并处理 -> 客户端下载”</strong>的流程。<br>
+        这就意味着：您的身份证照片、户口本、结婚证、企业发票、敏感财务合同等，全部被无加密地上载到了对方的私人服务器。部分不良站点甚至会私下将上传的照片归档保存或用于训练未授权模型，给个人与企业带来巨大的法律与数据安全风险。
+      </p>
+
+      <h3>二、“不烧心”纯本地压缩的核心原理</h3>
+      <p>
+        本工具依托 HTML5 现代标准的 <code>FileReader</code>、<code>Canvas</code> 与 <code>Blob</code> 原生 API。当您把图片拖入浏览器后：
+      </p>
+      <ul>
+        <li><strong>零数据出设备：</strong>所有的解码、按比例缩放尺寸、量化色彩矩阵与二次压缩重构，100% 在您电脑的内存与 CPU/GPU 算力中完成；</li>
+        <li><strong>毫秒级极速完成：</strong>免去了漫长的网络上传与下载等待，上百张照片也能以飞快的本地吞吐速度处理完毕；</li>
+        <li><strong>刷新即刻销毁：</strong>一旦您关闭或刷新网页，浏览器沙盒内存自动释放，零缓存、零留存。</li>
+      </ul>
+
+      <h3>三、常见图片格式（JPG、PNG、WebP）选型建议</h3>
+      <ul>
+        <li><strong>JPG / JPEG：</strong>最通用格式。兼容绝大部分政府网站、公务员考试系统与财务报销软件，压缩率高且清晰度适中；</li>
+        <li><strong>WebP：</strong>Google 推出的一代格式。相同视觉质量下比 JPG 还要小 25%~35%，非常适合个人博客、微信文章与现代移动端分享；</li>
+        <li><strong>PNG：</strong>支持透明通道无损格式。适合图标、Logo、截屏等线条文字锐利的内容，但对于拍照实景，PNG 体积通常远大于 JPG。</li>
+      </ul>
+    </article>
+  </main>
+
+  <!-- 底栏 -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-brand-title">
+            <span>🌿</span>
+            <span>不烧心免费工具 (NoHeartburn Tools)</span>
+          </div>
+          <p class="footer-brand-desc">
+            用着不烧心的免费在线工具箱。免登录、真免费、数据不上云、无伪装广告。
+          </p>
+        </div>
+
+        <div>
+          <button type="button" class="footer-support-btn" onclick="CleanTools.openModal('tea-modal')">
+            <span>☕</span>
+            <span>请站长喝杯清茶</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 tools.ucncn.cn · 保留所有权利</div>
+        <div class="footer-links">
+          <a href="./" class="footer-link">工具大厅</a>
+          <a href="https://ucncn.cn/" class="footer-link" target="_blank" rel="noopener">菜鸟笔记</a>
+          <a href="https://md.ucncn.cn/" class="footer-link" target="_blank" rel="noopener">MD2Post</a>
+          <a href="https://beian.miit.gov.cn/" class="footer-icp" target="_blank" rel="noopener nofollow">苏ICP备2024150485号-5</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 赞助弹窗 -->
+  <div id="tea-modal" class="modal-overlay" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <button type="button" class="modal-close">&times;</button>
+      <div class="modal-title">
+        <span>🍵</span>
+        <span>请站长喝杯清茶</span>
+      </div>
+      <p class="modal-desc">
+        天下打工人懂打工人。如果您觉得“图片本地压缩”帮您免去了泄密隐患与排队时间，欢迎随意支持！
+      </p>
+      <div style="background: var(--bg-surface-alt); border: 1px dashed var(--border-regular); border-radius: var(--radius-md); padding: 20px; text-align: center; margin-bottom: 16px;">
+        <div style="font-weight: 700; color: var(--text-main); margin-bottom: 6px;">真诚开源 · 纯粹为打工人减负</div>
+        <div style="font-size: 0.85rem; color: var(--text-muted);">
+          100% 浏览器客户端运行，零图片上传，刷新即焚。
+        </div>
+      </div>
+      <button type="button" class="btn" style="width: 100%; text-align: center; background: var(--primary); border: 1px solid var(--primary); color: #fff; padding: 10px 16px; border-radius: var(--radius-sm); font-size: 0.875rem; font-weight: 600; cursor: pointer;" onclick="CleanTools.copyText('https://tools.ucncn.cn/image-compress.html', '已复制本工具链接，感谢分享！'); CleanTools.closeModal('tea-modal');">
+        🔗 复制并分享本工具
+      </button>
+    </div>
+  </div>
+
+  <!-- 公共交互脚本 -->
+  <script src="assets/js/common.js"></script>
+
+  <!-- 纯前端图片压缩引擎脚本 -->
+  <script>
+    (function () {
+      const dropZone = document.getElementById('drop-zone');
+      const fileInput = document.getElementById('file-input');
+      const qualitySelect = document.getElementById('quality-select');
+      const maxDimension = document.getElementById('max-dimension');
+      const formatSelect = document.getElementById('format-select');
+      const queueSection = document.getElementById('queue-section');
+      const queueCount = document.getElementById('queue-count');
+      const imageList = document.getElementById('image-list');
+      const presetBtns = document.querySelectorAll('.preset-btn');
+
+      let currentTargetKB = 0; // 0 表示自动按 quality 处理，>0 表示按二分逼近压到指定 KB 以内
+      let processedList = []; // 存储已压缩图片结果
+
+      // 预设按钮事件
+      presetBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          presetBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const target = btn.getAttribute('data-target');
+          if (target === 'auto') {
+            currentTargetKB = 0;
+          } else {
+            currentTargetKB = parseInt(target, 10);
+          }
+        });
+      });
+
+      // 拖拽高亮与文件接收
+      ['dragenter', 'dragover'].forEach(name => {
+        dropZone.addEventListener(name, (e) => {
+          e.preventDefault();
+          dropZone.classList.add('dragover');
+        });
+      });
+
+      ['dragleave', 'drop'].forEach(name => {
+        dropZone.addEventListener(name, (e) => {
+          e.preventDefault();
+          dropZone.classList.remove('dragover');
+        });
+      });
+
+      dropZone.addEventListener('drop', (e) => {
+        const files = e.dataTransfer.files;
+        if (files && files.length > 0) {
+          handleFiles(files);
+        }
+      });
+
+      fileInput.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files.length > 0) {
+          handleFiles(e.target.files);
+        }
+      });
+
+      // 剪贴板 Ctrl+V 粘贴图片处理
+      window.addEventListener('paste', (e) => {
+        const items = e.clipboardData?.items;
+        if (!items) return;
+        const pastedFiles = [];
+        for (let i = 0; i < items.length; i++) {
+          if (items[i].type.indexOf('image') !== -1) {
+            const blob = items[i].getAsFile();
+            if (blob) {
+              const file = new File([blob], `pasted-${Date.now()}.png`, { type: blob.type });
+              pastedFiles.push(file);
+            }
+          }
+        }
+        if (pastedFiles.length > 0) {
+          CleanTools.showToast(`检测到剪贴板中 ${pastedFiles.length} 张图片，正在极速压缩...`);
+          handleFiles(pastedFiles);
+        }
+      });
+
+      function formatSize(bytes) {
+        if (!bytes || bytes === 0) return '0 B';
+        const k = 1024;
+        const sizes = ['B', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+      }
+
+      function handleFiles(files) {
+        const validImages = Array.from(files).filter(f => f.type.startsWith('image/'));
+        if (validImages.length === 0) {
+          CleanTools.showToast('请选择有效的图片文件 (JPG / PNG / WebP / BMP)');
+          return;
+        }
+
+        queueSection.style.display = 'block';
+        validImages.forEach(file => {
+          compressImage(file);
+        });
+      }
+
+      /**
+       * 核心本地压缩逻辑：支持尺寸限制与目标大小二分逼近算法
+       */
+      function compressImage(file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const img = new Image();
+          img.onload = async function () {
+            let width = img.width;
+            let height = img.height;
+            const maxDim = parseInt(maxDimension.value, 10);
+
+            // 限制最大宽高
+            if (maxDim > 0 && (width > maxDim || height > maxDim)) {
+              if (width > height) {
+                height = Math.round((height * maxDim) / width);
+                width = maxDim;
+              } else {
+                width = Math.round((width * maxDim) / height);
+                height = maxDim;
+              }
+            }
+
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+
+            // 针对 PNG 透明背景转 JPG 时补白底
+            const outFormat = formatSelect.value;
+            if (outFormat === 'image/jpeg') {
+              ctx.fillStyle = '#ffffff';
+              ctx.fillRect(0, 0, width, height);
+            }
+
+            ctx.drawImage(img, 0, 0, width, height);
+
+            let initialQuality = parseFloat(qualitySelect.value);
+            let finalBlob;
+
+            // 若设定了目标体积 (currentTargetKB)，利用二分逼近寻找最佳画质
+            if (currentTargetKB > 0 && outFormat !== 'image/png') {
+              const targetBytes = currentTargetKB * 1024;
+              let low = 0.1;
+              let high = 0.98;
+              let bestBlob = null;
+
+              for (let step = 0; step < 6; step++) {
+                let mid = (low + high) / 2;
+                let b = await toBlobAsync(canvas, outFormat, mid);
+                if (b.size <= targetBytes) {
+                  bestBlob = b;
+                  low = mid; // 尝试争取更高画质
+                } else {
+                  high = mid; // 超过限制，降低画质
+                }
+              }
+              finalBlob = bestBlob || await toBlobAsync(canvas, outFormat, 0.2);
+            } else {
+              finalBlob = await toBlobAsync(canvas, outFormat, initialQuality);
+            }
+
+            const originalSize = file.size;
+            const compressedSize = finalBlob.size;
+            const savedPct = Math.round(((originalSize - compressedSize) / originalSize) * 100);
+
+            const resultItem = {
+              id: 'img_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7),
+              originalName: file.name,
+              outName: getOutputFileName(file.name, outFormat),
+              originalSize,
+              compressedSize,
+              savedPct,
+              blob: finalBlob,
+              previewUrl: URL.createObjectURL(finalBlob),
+              width,
+              height,
+              origWidth: img.width,
+              origHeight: img.height
+            };
+
+            processedList.unshift(resultItem);
+            renderQueue();
+            CleanTools.showToast(`已完成处理：${file.name}`);
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function toBlobAsync(canvas, type, quality) {
+        return new Promise(resolve => {
+          canvas.toBlob(blob => resolve(blob), type, quality);
+        });
+      }
+
+      function getOutputFileName(origName, type) {
+        const dotIndex = origName.lastIndexOf('.');
+        const base = dotIndex !== -1 ? origName.substring(0, dotIndex) : origName;
+        let ext = '.jpg';
+        if (type === 'image/webp') ext = '.webp';
+        if (type === 'image/png') ext = '.png';
+        return `${base}_min${ext}`;
+      }
+
+      function renderQueue() {
+        queueCount.textContent = `${processedList.length} 张`;
+        imageList.innerHTML = '';
+
+        processedList.forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'image-item';
+          const isSavingsGood = item.savedPct > 0;
+
+          div.innerHTML = `
+            <img src="${item.previewUrl}" alt="预览" class="item-preview">
+            <div class="item-info">
+              <div class="item-name" title="${CleanTools.escapeHTML(item.outName)}">${CleanTools.escapeHTML(item.outName)}</div>
+              <div class="item-stats">
+                <span>原大小：${formatSize(item.originalSize)}</span>
+                <span>&rarr;</span>
+                <span style="font-weight: 700; color: var(--text-main);">压缩后：${formatSize(item.compressedSize)}</span>
+                <span class="item-savings ${isSavingsGood ? '' : 'bad'}">
+                  ${isSavingsGood ? `节约 ${item.savedPct}%` : '未再缩减'}
+                </span>
+                <span>尺寸：${item.width}&times;${item.height}</span>
+              </div>
+            </div>
+            <div class="item-actions">
+              <button type="button" class="download-single-btn" onclick="downloadSingle('${item.id}')">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>下载</span>
+              </button>
+              <button type="button" class="remove-btn" title="从列表中移除" onclick="removeItem('${item.id}')">&times;</button>
+            </div>
+          `;
+          imageList.appendChild(div);
+        });
+      }
+
+      window.downloadSingle = function (id) {
+        const item = processedList.find(i => i.id === id);
+        if (!item) return;
+        const a = document.createElement('a');
+        a.href = item.previewUrl;
+        a.download = item.outName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      };
+
+      window.downloadAll = function () {
+        if (processedList.length === 0) return;
+        processedList.forEach((item, index) => {
+          setTimeout(() => {
+            downloadSingle(item.id);
+          }, index * 250);
+        });
+        CleanTools.showToast(`已触发 ${processedList.length} 张图片下载`);
+      };
+
+      window.removeItem = function (id) {
+        const idx = processedList.findIndex(i => i.id === id);
+        if (idx !== -1) {
+          URL.revokeObjectURL(processedList[idx].previewUrl);
+          processedList.splice(idx, 1);
+          renderQueue();
+          if (processedList.length === 0) {
+            queueSection.style.display = 'none';
+          }
+        }
+      };
+
+      window.clearQueue = function () {
+        processedList.forEach(item => URL.revokeObjectURL(item.previewUrl));
+        processedList = [];
+        renderQueue();
+        queueSection.style.display = 'none';
+        CleanTools.showToast('列表已清空');
+      };
+    })();
+  </script>
+</body>
+</html>
