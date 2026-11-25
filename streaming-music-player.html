@@ -613,6 +613,7 @@
   </style>
 </head>
 <body>
+  <button id="btnExitImmersive" class="btn-exit-immersive" title="退出沉浸模式 (Esc)">✕ 退出沉浸</button>
   <!-- 统一顶部导航 -->
   <header class="site-header">
     <div class="container">
@@ -770,6 +771,9 @@
               </div>
 
               <div class="controls-right">
+                <button class="mode-toggle-btn btn-immersive" id="btnImmersive" title="进入沉浸式视听模式 (只留核心舞台，不留多余按钮)">
+                  🌌 沉浸模式
+                </button>
                 <button class="mode-toggle-btn" id="btnToggleDisplay" title="切换音乐频谱舞台与视频画面">
                   📺 切换视频/音乐画面
                 </button>
@@ -808,7 +812,8 @@
       </div>
 
       <!-- 科普与常见问题 -->
-      <article class="guide-article">
+      <div class="guide-collapse-wrapper collapsed" id="guideCollapseWrapper">
+          <article class="guide-article">
         <h2>📖 什么是 HLS 流媒体播放器？技术原理与使用解答</h2>
         <p>
           <strong>HLS (HTTP Live Streaming)</strong> 是现代互联网中最广泛应用的流媒体传输协议。它将音频和视频切分为连续的微小片段（<code>.ts</code> 或 <code>.m4s</code>），并通过索引列表文件（<code>.m3u8</code>）动态下发，支持自适应码率（ABR），使播放能够根据网络状况平滑切换高低清晰度。
@@ -844,6 +849,12 @@
           </div>
         </div>
       </article>
+          <div class="guide-collapse-overlay" id="guideCollapseOverlay"></div>
+          <button type="button" class="btn-guide-toggle" id="btnToggleGuide">
+            <span id="guideToggleText">📖 展开技术原理与常见问答</span>
+            <svg class="toggle-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+        </div>
     </div>
   </main>
 
@@ -1402,6 +1413,46 @@
 
       // 初始就绪状态
       setStatus('等待输入并播放', '');
+      // 沉浸式视听模式与大段介绍折叠逻辑
+      const btnImmersive = document.getElementById('btnImmersive');
+      const btnExitImmersive = document.getElementById('btnExitImmersive');
+      const guideCollapseWrapper = document.getElementById('guideCollapseWrapper');
+      const btnToggleGuide = document.getElementById('btnToggleGuide');
+      const guideToggleText = document.getElementById('guideToggleText');
+
+      function enterImmersive() {
+        document.body.classList.add('immersive-player-mode');
+        setTimeout(() => resizeCanvas(), 100);
+        CleanTools.showToast('已进入沉浸模式 (按 Esc 或点击右上角退出)');
+      }
+
+      function exitImmersive() {
+        document.body.classList.remove('immersive-player-mode');
+        setTimeout(() => resizeCanvas(), 100);
+      }
+
+      if (btnImmersive) btnImmersive.addEventListener('click', enterImmersive);
+      if (btnExitImmersive) btnExitImmersive.addEventListener('click', exitImmersive);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && document.body.classList.contains('immersive-player-mode')) {
+          exitImmersive();
+        }
+      });
+
+      if (btnToggleGuide && guideCollapseWrapper) {
+        btnToggleGuide.addEventListener('click', () => {
+          const isCollapsed = guideCollapseWrapper.classList.contains('collapsed');
+          if (isCollapsed) {
+            guideCollapseWrapper.classList.remove('collapsed');
+            guideToggleText.textContent = '🔼 收起技术原理与常见问答';
+          } else {
+            guideCollapseWrapper.classList.add('collapsed');
+            guideToggleText.textContent = '📖 展开技术原理与常见问答';
+            guideCollapseWrapper.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        });
+      }
     })();
   </script>
   <script src="assets/js/common.js"></script>

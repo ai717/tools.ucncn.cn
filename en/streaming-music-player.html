@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Google 代码 (GTM-W435M5M8) -->
+  <!-- Google Tag Manager (GTM-W435M5M8) -->
   <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-W435M5M8"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
   </script>
-  <!-- End Google 代码 -->
+  <!-- End Google Tag Manager -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Web Streaming Radio & Audio Player - HLS / M3U8 Streamer | NoHeartburn Tools</title>
@@ -612,6 +612,7 @@
   </style>
 </head>
 <body>
+  <button id="btnExitImmersive" class="btn-exit-immersive" title="Exit Zen Mode (Esc)">✕ Exit Zen Mode</button>
   
   <header class="site-header">
     <div class="container header-inner">
@@ -774,6 +775,9 @@
               </div>
 
               <div class="controls-right">
+                <button class="mode-toggle-btn btn-immersive" id="btnImmersive" title="Enter Zen Mode (Distraction-free Stage Only)">
+                  🌌 Zen Mode
+                </button>
                 <button class="mode-toggle-btn" id="btnToggleDisplay" title="Toggle Audio Visualizer / Video Display">
                   📺 Toggle Video/Spectrum
                 </button>
@@ -812,7 +816,8 @@
       </div>
 
       
-      <article class="guide-article">
+      <div class="guide-collapse-wrapper collapsed" id="guideCollapseWrapper">
+          <article class="guide-article">
         <h2>📖 Understanding Web Audio Streaming: HLS, M3U8 &amp; CORS</h2>
         <p>
           <strong>HTTP Live Streaming (HLS)</strong> is an adaptive bitrate HTTP-based media streaming protocol developed by Apple. It breaks continuous audio/video streams into a sequence of small HTTP-based file downloads (usually 2 to 6 seconds each) indexed by an <code>.m3u8</code> playlist manifest.
@@ -848,6 +853,12 @@
           </div>
         </div>
       </article>
+          <div class="guide-collapse-overlay" id="guideCollapseOverlay"></div>
+          <button type="button" class="btn-guide-toggle" id="btnToggleGuide">
+            <span id="guideToggleText">📖 Expand Technical Architecture &amp; FAQs</span>
+            <svg class="toggle-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+        </div>
     </div>
   </main>
 
@@ -1406,6 +1417,46 @@
 
       
       setStatus('Awaiting stream URL', '');
+      // Zen / Immersive Mode & Collapsible Guide Logic
+      const btnImmersive = document.getElementById('btnImmersive');
+      const btnExitImmersive = document.getElementById('btnExitImmersive');
+      const guideCollapseWrapper = document.getElementById('guideCollapseWrapper');
+      const btnToggleGuide = document.getElementById('btnToggleGuide');
+      const guideToggleText = document.getElementById('guideToggleText');
+
+      function enterImmersive() {
+        document.body.classList.add('immersive-player-mode');
+        setTimeout(() => resizeCanvas(), 100);
+        CleanTools.showToast('Entered Zen Mode (Press Esc or click top-right to exit)');
+      }
+
+      function exitImmersive() {
+        document.body.classList.remove('immersive-player-mode');
+        setTimeout(() => resizeCanvas(), 100);
+      }
+
+      if (btnImmersive) btnImmersive.addEventListener('click', enterImmersive);
+      if (btnExitImmersive) btnExitImmersive.addEventListener('click', exitImmersive);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && document.body.classList.contains('immersive-player-mode')) {
+          exitImmersive();
+        }
+      });
+
+      if (btnToggleGuide && guideCollapseWrapper) {
+        btnToggleGuide.addEventListener('click', () => {
+          const isCollapsed = guideCollapseWrapper.classList.contains('collapsed');
+          if (isCollapsed) {
+            guideCollapseWrapper.classList.remove('collapsed');
+            guideToggleText.textContent = '🔼 Collapse Technical Guide';
+          } else {
+            guideCollapseWrapper.classList.add('collapsed');
+            guideToggleText.textContent = '📖 Expand Technical Architecture & FAQs';
+            guideCollapseWrapper.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        });
+      }
     })();
   </script>
   <script src="../assets/js/common.js"></script>
