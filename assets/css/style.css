@@ -1807,3 +1807,60 @@ body.immersive-player-mode .btn-exit-immersive {
   align-items: center;
   gap: 8px;
 }
+
+
+/* ==========================================================================
+   底栏友情链接 (Footer Friendly Links)
+   ========================================================================== */
+.footer-friend-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px dashed var(--border-color);
+  text-align: center;
+}
+
+.friend-links-label {
+  font-weight: 600;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.friend-links-list {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+}
+
+.friend-links-list .footer-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.friend-links-list .footer-link:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.friend-links-list .footer-sep {
+  color: var(--border-color);
+  user-select: none;
+}
+
+@media (max-width: 640px) {
+  .footer-friend-links {
+    flex-direction: column;
+    gap: 8px;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+  }
+}
